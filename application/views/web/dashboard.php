@@ -210,25 +210,21 @@
 									<td class="col-lg-12 p-0">
 										<div class="col-lg-12">
 											<!-- Downloading with analytics -->
-												<a href="<?=base_url("analytics/download_websupport/$def->id")?>" class="p-0 m-0 digital-con" target="_blank">
-													<div class="row m-0 p-0">
-														<div class="col-lg-12 p-2 m-0 top-con">
-															<h5>Click Here! For Download</h5>
-														</div>
-														<div class="col-lg-12 p-3 m-0 middle-con">
-															<?php if (empty($def->book_image)) { ?>
-																<img src="assets/img/3.png">
-															<?php } else { ?>
-																<img src="assets/bookicon/<?= $def->book_image ?>">
-															<?php } ?>
-														</div>
-														<div class="col-lg-12 p-2 m-0 bottom-con">
-															<h4><?= $def->title ?></h4>
-															<h6><?= $this->session->userdata('class_name') ?></h6>
-														</div>
-
+											<a href="<?= base_url("analytics/download_websupport/$def->id") ?>" class="p-0 m-0 digital-con" target="_blank">
+												<div class="row m-0 p-0">
+													<div class="col-lg-12 p-2 m-0 top-con">
+														<h5>Click Here! For Download</h5>
 													</div>
-													</a>
+													<div class="col-lg-12 p-3 m-0 middle-con">
+														<img src="<?= empty($def->book_image) ? 'assets/img/3.png' : "assets/bookicon/$def->book_image" ?>">
+													</div>
+													<div class="col-lg-12 p-2 m-0 bottom-con">
+														<h4><?= $def->title ?></h4>
+														<h6><?= $this->session->userdata('class_name') ?></h6>
+													</div>
+
+												</div>
+											</a>
 
 										</div>
 										<?php if ($this->session->userdata('category_name') == 'Test Paper Generator') { ?>
@@ -251,9 +247,9 @@
                 <?php if (empty($default)) { ?>
                     <p class="text-danger" style="font-size: 30px"> Coming Soon.....</p>
                 <?php
-				} else {
-					foreach ($default as $def) :
-				?>
+								} else {
+									foreach ($default as $def) :
+								?>
                         <div class="col-lg-3 p-2 m-0">
                             <a href="assets/files/<?= $def->file_name ?>" class="p-0 m-0 digital-con" target="_blank">
                                 <div class="row m-0 p-0">
@@ -280,8 +276,8 @@
 						</div>
 						<?php } ?>
                     <?php endforeach;
-				}
-					?>
+								}
+										?>
             </div>-->
 		</div>
 	</div>
