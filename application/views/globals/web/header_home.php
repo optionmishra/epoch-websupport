@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>Naman Publishing</title>
+	<title><?= $siteName ?></title>
 	<link rel="icon" type="image/png" href="assets/img/favicon.png">
 
 

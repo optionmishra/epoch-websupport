@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>Naman Publishing</title>
+	<title><?= $siteName ?></title>
 	<link rel="icon" type="image/png" href="<?php echo base_url(); ?>assets/img/favicon.png">
 
 
@@ -148,7 +148,7 @@
 					</div>
 
 					<div class="navbar-header d-flex align-items-center">
-						<img src="<?php echo base_url(); ?>assets/img/<?php echo $logo1['file_name']; ?>" alt="Naman Publishing">
+						<img src="<?php echo base_url(); ?>assets/img/<?php echo $logo1['file_name']; ?>" alt="<?= $siteName ?>">
 					</div>
 
 					<div id="navbarCollapse" class="navbar-collapse justify-content-start collapse">

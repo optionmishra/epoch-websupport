@@ -24,6 +24,8 @@ class Admin_master extends CI_Controller
 		$this->load->library('upload');
 		$this->load->library('email');
 		$this->load->library('excel');
+		$this->siteName = $_ENV['NAME'];
+		$this->email = $_ENV['EMAIL'];
 	}
 
 	// classes start
@@ -108,6 +110,8 @@ class Admin_master extends CI_Controller
 				'fullname' => $this->input->post('name'),
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
+				'siteName' => $this->siteName,
+				'email' => $this->email
 			];
 			$config = array(
 				'charset' => 'utf-8',
@@ -117,9 +121,9 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-			$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-			$this->email->subject('Your Credentials for Naman Publishing Web Support');
+			$this->email->from($this->email, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template1', $data, true));
 			$this->email->send();
 			$res = $this->AuthModel->create_user($data);
@@ -157,6 +161,8 @@ class Admin_master extends CI_Controller
 				'address' => $this->input->post('address'),
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
+				'siteName' => $this->siteName,
+				'email' => $this->email
 			];
 
 			$config = array(
@@ -167,9 +173,9 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-			$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-			$this->email->subject('Your Credentials for Naman Publishing Web Support');
+			$this->email->from($this->email, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template1', $data, true));
 			$this->email->send();
 			$res = $this->AuthModel->create_salesman($data);
@@ -185,10 +191,10 @@ class Admin_master extends CI_Controller
 	function add_contact()
 	{
 		$message = $this->input->post('message') . ' (Mobile Number: ' . $this->input->post('mobile') . ')';
-		$this->email->to('info@namanpublishing.in');
+		$this->email->to($this->email);
 		$this->email->from($this->input->post('email'), $this->input->post('name'));
-		$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-		$this->email->subject('New Contact Message from Naman Publishing Web Support');
+		$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+		$this->email->subject('New Contact Message from ' . $this->siteName . ' Web Support');
 		$this->email->message($message);
 		$res = $this->email->send();
 		if (!$res) {
@@ -702,6 +708,8 @@ class Admin_master extends CI_Controller
 			'fullname' => $ress[0]->fullname,
 			'logo' => $this->AuthModel->content_row('Logo'),
 			'mobile1' => $this->AuthModel->content_row('Mobile1'),
+			'siteName' => $this->siteName,
+			'email' => $this->email
 		];
 		$config = array(
 			'charset' => 'utf-8',
@@ -713,9 +721,9 @@ class Admin_master extends CI_Controller
 
 		$this->email->initialize($config);
 		$this->email->to($ress[0]->email);
-		$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-		$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-		$this->email->subject('Your Credentials for Naman Publishing Web Support');
+		$this->email->from($this->email, $this->siteName);
+		$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+		$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 		$this->email->message($this->load->view('web/cemail_template', $data, true));
 		$this->email->send();
 		if (!$res) {
@@ -2119,75 +2127,6 @@ class Admin_master extends CI_Controller
 			$this->message('success', 'Email ID is Avilable.');
 		}
 	}
-	/*
-   
-    function add_student() {
-        $check = $this->WebModel->validate_email($this->input->post('email'));
-
-        if (!empty($check)) {
-            $this->message('error', 'Email ID in already Use.');
-        } else {
-			
-			$teacher_code = $this->input->post('stu_teacher_id');
-			$check_tu = $this->WebModel->validate_student($teacher_code);
-			if (empty($check_tu)) {
-            $this->message('error', 'Invalid Teacher Code');
-			} else {
-
-                $teacher_book = $check_tu['subject'];
-                
-            $res = $this->db->insert('web_user', [
-                'fullname' => $this->input->post('name'),
-                'mobile' => $this->input->post('mobile'),
-                'email' => $this->input->post('email'),
-                'pin' => $this->input->post('pin'),
-                'address' => $this->input->post('address'),
-                'stu_teacher_id' => $this->input->post('stu_teacher_id'),
-                'city' => $this->input->post('city'),
-                'state' => $this->input->post('state'),
-                'classes' => $this->input->post('class'),
-                'board_name' => $this->input->post('board'),
-                'school_name' => $this->input->post('school_name'),
-                'subject' => $teacher_book,
-                'user_type' => 'Student',
-                'status' => 1,
-                'password' => $this->input->post('password')
-            ]);
-            $data = [
-                'user' => $this->input->post('email'),
-                'password' => $this->input->post('password'),
-                'fullname' => $this->input->post('name')
-            ];
-            $config = array(
-                'charset' => 'utf-8',
-                'wordwrap' => TRUE,
-                'mailtype' => 'html'
-            );
-
-
-
-            $this->email->initialize($config);
-            $this->email->to($this->input->post('email'));
-            $this->email->from('info@touchpadwebsupport.com', 'Naman Publishing');
-            $this->email->cc('mayank@epochstudio.net, nidhi.gupta@orangeeducation.in, info@orangeeducation.in');
-            $this->email->subject('Thank you for registering with Naman Publishing Web Support');
-            $this->email->message($this->load->view('web/email_template', $data, true));
-            $this->email->send();
-            if (!$res) {
-                $this->message('error', $this->error);
-            } else {
-                $username = $this->input->post('email');
-                $password = $this->input->post('password');
-                $rest = $this->AuthModel->validate_web($username, $password);
-                if ($rest) {
-                    $this->message('success', 'You are Successfully registerd with us, Please Check your registerd email for your account credentials...');
-                }
-            }
-        }
-    
-      }
-    }
-    */
 
 	function add_student_custom()
 	{
@@ -2240,6 +2179,8 @@ class Admin_master extends CI_Controller
 					'fullname' => $this->input->post('name'),
 					'logo' => $this->AuthModel->content_row('Logo'),
 					'mobile1' => $this->AuthModel->content_row('Mobile1'),
+					'siteName' => $this->siteName,
+					'email' => $this->email
 				];
 				$config = array(
 					'charset' => 'utf-8',
@@ -2251,9 +2192,9 @@ class Admin_master extends CI_Controller
 
 				$this->email->initialize($config);
 				$this->email->to($this->input->post('email'));
-				$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-				$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-				$this->email->subject('Thank you for registering with Naman Publishing Web Support');
+				$this->email->from($this->email, $this->siteName);
+				$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+				$this->email->subject('Thank you for registering with ' . $this->siteName . ' Web Support');
 				$this->email->message($this->load->view('web/email_template', $data, true));
 				$this->email->send();
 				if (!$res) {
@@ -2382,6 +2323,8 @@ class Admin_master extends CI_Controller
 				'fullname' => $this->input->post('name'),
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
+				'siteName' => $this->siteName,
+				'email' => $this->email
 			];
 			$config = array(
 				'charset' => 'utf-8',
@@ -2391,9 +2334,9 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-			$this->email->cc('mayank@epochstudio.net, info@namanpublishing.in');
-			$this->email->subject('Your Credentials for Naman Publishing Web Support');
+			$this->email->from($this->email, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template', $data, true));
 			$this->email->send();
 			if (!$res) {
@@ -2870,6 +2813,8 @@ class Admin_master extends CI_Controller
 			$data = [
 				'email' => $email,
 				'password' => $res[0]->password,
+				'siteName' => $this->siteName,
+				'email' => $this->email
 			];
 			$config = array(
 				'charset' => 'utf-8',
@@ -2881,8 +2826,8 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from('info@namanpublishing.in', 'Naman Publishing');
-			$this->email->subject('Your Password for Naman Publishing Web Support');
+			$this->email->from($this->email, $this->siteName);
+			$this->email->subject('Your Password for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template2', $data, true));
 			$this->email->send();
 			$this->message('success', 'Your Password Sent on your registerd email, Please check your email inbox. Thank You....');

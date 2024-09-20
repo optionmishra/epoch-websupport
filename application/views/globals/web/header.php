@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Naman Publishing</title>
+	<title><?= $siteName ?></title>
 	<base href="<?= base_url() ?>">
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -228,7 +228,7 @@
 					<div class="mobile-menu d-block d-lg-none">
 						<div class="logo">
 							<a href="<?= base_url(); ?>">
-								<img src="assets/img/<?php echo $logo['file_name'] ?>" alt="Naman Publishing">
+								<img src="assets/img/<?php echo $logo['file_name'] ?>" alt="<?= $siteName ?>">
 							</a>
 						</div>
 						<a class="minicart-trigger" href="#">

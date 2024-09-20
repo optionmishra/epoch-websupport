@@ -38,9 +38,9 @@
 									<p>You may now log onto this site to get your login credentials please contact publisher, call us:<?php echo $mobile1['value']; ?>.</p>
 									<div style="background-color:#ddd;height:1px;width:100%"> </div>
 									<br>
-									<em style="font-style:italic;font-size:12px;color:#aaa">Mail From: <a href="mailto:info@namanpublishing.in" target="_blank">info@namanpublishing.in</a> </em>
+									<em style="font-style:italic;font-size:12px;color:#aaa">Mail From: <a href="mailto:<?= $email ?>" target="_blank"><?= $email ?></a> </em>
 									<div style="border-top:1px solid #ddd;text-align:center"> <br>
-										<a href="#m_106582725290803236_m_-6920465394801571479_" style="font-size:11px">© <?= date('Y') ?> <a href="mailto:info@namanpublishing.in" target="_blank"><a href="info@namanpublishing.in" target="_blank">Naman Publishing</a> All rights reserved.</a> <br><span class="HOEnZb">
+										<a href="#m_106582725290803236_m_-6920465394801571479_" style="font-size:11px">© <?= date('Y') ?> <a href="mailto:<?= $email ?>" target="_blank"><a href="<?= $email ?>" target="_blank"><?= $siteName ?></a> All rights reserved.</a> <br><span class="HOEnZb">
 												<font color="#888888">
 													<br>
 												</font>

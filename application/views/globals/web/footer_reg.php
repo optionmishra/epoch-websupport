@@ -111,12 +111,12 @@
 				<div class="col-sm-12 col-md-4 footer-pdg">
 					<ul class="footer-links text-center nw-footer-list">
 						<li>
-							<h3 style="color: white;">Naman Publishing</h3>
+							<h3 style="color: white;"><?= $siteName ?></h3>
 						</li>
 						<li style="color:#eee;"><?php echo $address[0]->value ?><br>
 							<i class="fa fa-envelope"></i> <?php echo $email1[0]->value  ?> &nbsp&nbsp; <i class="fa fa-phone"></i> <?php echo $mobile1[0]->value ?>
 						</li>
-						<li style="color:#eee;margin-top:3px;font-size:11px;margin-bottom:3px;">Copyright &copy; <?= date('Y') ?> All rights reserved Naman Publishing</li>
+						<li style="color:#eee;margin-top:3px;font-size:11px;margin-bottom:3px;">Copyright &copy; <?= date('Y') ?> All rights reserved <?= $siteName ?></li>
 					</ul>
 				</div>
 				<div class="col-sm-12 col-md-4 footer-pdg">

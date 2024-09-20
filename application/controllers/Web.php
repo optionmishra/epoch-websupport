@@ -21,7 +21,7 @@ class Web extends CI_Controller
 		$this->load->model('AuthModel');
 		$this->load->library('upload');
 		$this->load->model('WebModel');
-		$this->siteName = 'Naman Publishing';
+		$this->siteName = $_ENV['NAME'];
 		//Ckeditor's configuration
 	}
 

@@ -2,8 +2,8 @@
  	<div class="container">
  		<div class="row justify-content-between">
  			<div class="d-flex justify-content-center mb-5 d-flex align-items-center">
- 				<img src="assets/img/<?php echo $logo['file_name']; ?>" alt="Naman Publishing">
- 				<!-- <h3 class="ml-3 font-weight-bold">Naman Publishing</h3> -->
+ 				<img src="assets/img/<?php echo $logo['file_name']; ?>" alt="<?= $siteName ?>">
+ 				<!-- <h3 class="ml-3 font-weight-bold"><?= $siteName ?></h3> -->
  			</div>
  			<div class="d-flex row">
  				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 lgn-frm-p">

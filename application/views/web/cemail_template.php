@@ -35,10 +35,10 @@
 									<div style="background-color:#ddd;height:1px;width:100%"> </div>
 									<br>
 									Hello: <?= $fullname ?>
-									<p>Congratulations on becoming a subscriber of Naman Publishing! <strong>Your account is now Active!</strong>
+									<p>Congratulations on becoming a subscriber of <?= $siteName ?>! <strong>Your account is now Active!</strong>
 										<br>
 										<br>
-										You may now log in to access our wonderful features. Visit <a href="<?= base_url() ?>" target="_blank">Naman Publishing</a> and then enter the username and password.
+										You may now log in to access our wonderful features. Visit <a href="<?= base_url() ?>" target="_blank"><?= $siteName ?></a> and then enter the username and password.
 									</p>
 									<br>
 									<strong> Your Login Details:</strong><br>
@@ -49,9 +49,9 @@
 									<br>
 									<div style="background-color:#ddd;height:1px;width:100%"> </div>
 									<br>
-									<em style="font-style:italic;font-size:12px;color:#aaa">Mail From: <a href="mailto:info@namanpublishing.in" target="_blank">info@namanpublishing.in</a> </em>
+									<em style="font-style:italic;font-size:12px;color:#aaa">Mail From: <a href="mailto:<?= $email ?>" target="_blank"><?= $email ?></a> </em>
 									<div style="border-top:1px solid #ddd;text-align:center"> <br>
-										<a href="#m_106582725290803236_m_-6920465394801571479_" style="font-size:11px">© <?= date('Y') ?> <a href="mailto:info@namanpublishing.in" target="_blank"><a href="<?= base_url() ?>" target="_blank">Naman Publishing</a> All rights reserved.</a> <br><span class="HOEnZb">
+										<a href="#m_106582725290803236_m_-6920465394801571479_" style="font-size:11px">© <?= date('Y') ?> <a href="mailto:<?= $email ?>" target="_blank"><a href="<?= base_url() ?>" target="_blank"><?= $siteName ?></a> All rights reserved.</a> <br><span class="HOEnZb">
 												<font color="#888888">
 													<br>
 												</font>
