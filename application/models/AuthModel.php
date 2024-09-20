@@ -1932,6 +1932,7 @@ class AuthModel extends CI_Model
 		// echo '<pre>', var_dump($classesArr), '</pre>';
 		// exit;
 		$this->db->or_where_in('id', $classesArr);
+		$this->db->order_by('class_position', 'ASC');
 		$res = $this->db->get('classes')->result();
 		return $res;
 	}

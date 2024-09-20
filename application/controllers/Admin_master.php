@@ -2963,6 +2963,7 @@ class Admin_master extends CI_Controller
 			$classesArr = array_unique($classesArr);
 		}
 		$this->db->or_where_in('id', $classesArr);
+		$this->db->order_by('class_position', 'ASC');
 		$classes = $this->db->get('classes')->result();
 		return $this->output
 			->set_content_type('application/json')
