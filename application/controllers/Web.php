@@ -130,7 +130,6 @@ class Web extends CI_Controller
 		// exit();
 
 		if ($this->session->flashdata('login_type') == 'auto') {
-			$this->session->unset_userdata('login_type');
 			$this->load->view('globals/web/header_auto', $data);
 		} else {
 			$this->load->view('globals/web/header', $data);
