@@ -24,14 +24,17 @@ date_default_timezone_set('Asia/Kolkata');
   | a PHP script and you can easily do that on your own.
   |
  */
-switch ($_SERVER['HTTP_HOST']) {
-  case 'localhost':
-    $config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'];
-    break;
-  default:
-    $config['base_url'] = 'https://' . $_SERVER['HTTP_HOST'];
-    break;
-}
+
+// switch ($_SERVER['HTTP_HOST']) {
+//   case 'localhost':
+//     $config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . $_ENV['BASE_URL'];
+//     break;
+//   default:
+//     $config['base_url'] = 'https://' . $_SERVER['HTTP_HOST'];
+//     break;
+// }
+
+$config['base_url'] = $_ENV['PROTOCOL'] . '://' . $_SERVER['HTTP_HOST'] . $_ENV['BASE_URL'];
 
 /*
   |--------------------------------------------------------------------------
