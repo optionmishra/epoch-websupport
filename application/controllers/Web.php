@@ -129,7 +129,12 @@ class Web extends CI_Controller
 		// echo '<pre>', var_dump($data['selectable_books']), '</pre>';
 		// exit();
 
-		$this->load->view('globals/web/header', $data);
+		if ($this->session->flashdata('login_type') == 'auto') {
+			$this->session->unset_userdata('login_type');
+			$this->load->view('globals/web/header_auto', $data);
+		} else {
+			$this->load->view('globals/web/header', $data);
+		}
 		$this->load->view('web/dashboard', $data);
 		$this->load->view('globals/web/footer', $data);
 	}
@@ -915,5 +920,22 @@ class Web extends CI_Controller
 		$this->load->view('globals/web/header', $data);
 		$this->load->view('web/teacher_edit_student_profile', $data);
 		$this->load->view('globals/web/footer', $data);
+	}
+
+
+	public function auto_login()
+	{
+
+		$username = 'mayank@epochstudio.net';
+		$password = 'german2012';
+		$res = $this->AuthModel->validate_web($username, $password);
+		if (!$res) {
+			$status = $this->session->userdata('status');
+			$this->session->set_flashdata('error', 'Sorry! Email or Password is incorrect');
+			redirect();
+		} else {
+			$this->session->set_flashdata('login_type', 'auto');
+			header("location:" . base_url() . 'dashboard');
+		}
 	}
 }
