@@ -114,6 +114,7 @@ class AuthModel extends CI_Model
 		$class_id = explode(',', $id);
 		$fst_class = $class_id[0];
 		$this->db->where('id', $fst_class);
+		$this->db->order_by('class_position', 'ASC');
 		$res = $this->db->get('classes')->result();
 		return $res;
 	}
@@ -339,56 +340,46 @@ class AuthModel extends CI_Model
 
 	function validate_web($username, $password)
 	{
+		$publication = $this->publicationx()[0];
 
-		$publication = $this->AuthModel->publicationx();
-		// $category = $this->AuthModel->categoryx();
-		$admin = $this->db->query("SELECT * FROM web_user WHERE email = ? AND password = ? AND status = ? LIMIT 1", [$username, $password, '1']);
-		// $admin = $this->db->query("SELECT * FROM web_user WHERE email = ? AND password = ? LIMIT 1", [$username, $password]);
-		$adm = $admin->result();
-		$sid = explode(',', $adm[0]->subject)[0];
-		#mod
-		$selected_book = $this->AuthModel->selectable_books($sid, $adm[0]->classes)[0];
-		$category = $this->AuthModel->get_categories($selected_book->id);
-		// var_dump($category);
-		// exit;
-		$class = $this->AuthModel->get_class($adm[0]->classes);
-		$main_subject = explode(',', $adm[0]->subject)[0];
-		####
-		if ($admin->num_rows() == 1) {
+		$this->db->where('email', $username);
+		$this->db->where('password', $password);
+		$this->db->where('status', '1');
+		$user = $this->db->get('web_user')->row();
+
+		$sid = explode(',', $user->subject)[0];
+		$selected_book = $this->selectable_books($sid, $user->classes)[0];
+		$category = $this->get_categories($selected_book->id)[0];
+		$class = $this->get_class($user->classes);
+		$main_subject = explode(',', $user->subject)[0];
+
+		if ($user) {
 			$this->session->set_userdata('username', $username);
-			$this->session->set_userdata('user_id', $adm[0]->id);
+			$this->session->set_userdata('user_id', $user->id);
 			$this->session->set_userdata('password', $password);
-			$this->session->set_userdata('type', $adm[0]->user_type);
-			if ($adm[0]->user_type == 'Student') {
-				$this->session->set_userdata('publication', $publication[0]->id);
-				$this->session->set_userdata('classes', $adm[0]->classes);
+			$this->session->set_userdata('type', $user->user_type);
+			$this->session->set_userdata('publication', $publication->id);
+			$this->session->set_userdata('board_name', $user->board_name);
+			$this->session->set_userdata('category', $category->id);
+			$this->session->set_userdata('category_name', $category->name);
+			// $this->session->set_userdata('school_name', $user->school_name);
+			// $this->session->set_userdata('status', $user->status);
+			if ($user->user_type == 'Student') {
+				$this->session->set_userdata('classes', $user->classes);
 				$this->session->set_userdata('class_name', $class->name);
-				$this->session->set_userdata('section', $adm[0]->class_section);
-				$this->session->set_userdata('status', $adm->status);
-				$this->session->set_userdata('stu_teacher_code', $adm[0]->stu_teacher_id);
-				$this->session->set_userdata('main_subject', $adm[0]->subject);
-				$this->session->set_userdata('board_name', $adm[0]->board_name);
-				$this->session->set_userdata('publication_name', $publication[0]->name);
-				$this->session->set_userdata('category', $category[0]->id);
-				$this->session->set_userdata('category_name', $category[0]->name);
-				$this->session->set_userdata('school_name', $category[0]->school_name);
-			} elseif ($adm[0]->user_type == 'Teacher') {
-				$this->session->set_userdata('publication', $publication[0]->id);
-				$this->session->set_userdata('teacher_classess', $adm[0]->classes);
-				$this->session->set_userdata('teacher_code', $adm[0]->teacher_code);
-				$this->session->set_userdata('status', $adm->status);
+				$this->session->set_userdata('section', $user->class_section);
+				$this->session->set_userdata('stu_teacher_code', $user->stu_teacher_id);
+				$this->session->set_userdata('main_subject', $user->subject);
+				$this->session->set_userdata('publication_name', $publication->name);
+			} elseif ($user->user_type == 'Teacher') {
+				$this->session->set_userdata('teacher_classess', $user->classes);
+				$this->session->set_userdata('teacher_code', $user->teacher_code);
 				$this->session->set_userdata('main_subject', $main_subject);
-				$this->session->set_userdata('board_name', $adm[0]->board_name);
-				$this->session->set_userdata('publication_name', $publication[0]->name);
-				$this->session->set_userdata('category', $category[0]->id);
-				$this->session->set_userdata('category_name', $category[0]->name);
-				$this->session->set_userdata('school_name', $category[0]->school_name);
-				$classes = $this->AuthModel->classesx();
-				$this->session->set_userdata('classes', $classes[0]->id);
-				$this->session->set_userdata('class_name', $classes[0]->name);
-				#mod
+				$this->session->set_userdata('publication_name', $publication->name);
+				$classes = $this->classesx()[0];
+				$this->session->set_userdata('classes', $classes->id);
+				$this->session->set_userdata('class_name', $classes->name);
 				$this->session->set_userdata('selected_book', $selected_book->id);
-				####
 			}
 			return true;
 		}
