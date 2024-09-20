@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * CodeIgniter
@@ -64,10 +65,14 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'developm
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
  */
+
+$envFile = '.env';
+
 switch (ENVIRONMENT) {
 	case 'development':
-		error_reporting(0);
+		error_reporting(1);
 		ini_set('display_errors', 1);
+		$envFile = '.env.development';
 		break;
 
 	case 'testing':
@@ -83,8 +88,13 @@ switch (ENVIRONMENT) {
 	default:
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 		echo 'The application environment is not set correctly.';
-		exit(1); // EXIT_ERROR
+		break;
 }
+
+
+// Load the appropriate .env file
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, $envFile);
+$dotenv->load();
 
 /*
  *---------------------------------------------------------------
