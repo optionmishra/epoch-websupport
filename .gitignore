@@ -6,7 +6,7 @@ composer.lock
 
 # Ignore the .env file (since it contains sensitive information)
 .env
-.env.*
+.env.development
 
 # Ignore application logs
 /application/logs/*
