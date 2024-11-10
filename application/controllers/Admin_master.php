@@ -25,7 +25,7 @@ class Admin_master extends CI_Controller
 		$this->load->library('email');
 		$this->load->library('excel');
 		$this->siteName = $_ENV['NAME'];
-		$this->email = $_ENV['EMAIL'];
+		$this->siteEmail = $_ENV['EMAIL'];
 	}
 
 	// classes start
@@ -111,7 +111,7 @@ class Admin_master extends CI_Controller
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
 				'siteName' => $this->siteName,
-				'email' => $this->email
+				'email' => $this->siteEmail
 			];
 			$config = array(
 				'charset' => 'utf-8',
@@ -121,8 +121,8 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from($this->email, $this->siteName);
-			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->from($this->siteEmail, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template1', $data, true));
 			$this->email->send();
@@ -162,7 +162,7 @@ class Admin_master extends CI_Controller
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
 				'siteName' => $this->siteName,
-				'email' => $this->email
+				'email' => $this->siteEmail
 			];
 
 			$config = array(
@@ -173,8 +173,8 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from($this->email, $this->siteName);
-			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->from($this->siteEmail, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template1', $data, true));
 			$this->email->send();
@@ -191,9 +191,9 @@ class Admin_master extends CI_Controller
 	function add_contact()
 	{
 		$message = $this->input->post('message') . ' (Mobile Number: ' . $this->input->post('mobile') . ')';
-		$this->email->to($this->email);
+		$this->email->to($this->siteEmail);
 		$this->email->from($this->input->post('email'), $this->input->post('name'));
-		$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+		$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 		$this->email->subject('New Contact Message from ' . $this->siteName . ' Web Support');
 		$this->email->message($message);
 		$res = $this->email->send();
@@ -709,7 +709,7 @@ class Admin_master extends CI_Controller
 			'logo' => $this->AuthModel->content_row('Logo'),
 			'mobile1' => $this->AuthModel->content_row('Mobile1'),
 			'siteName' => $this->siteName,
-			'email' => $this->email
+			'email' => $this->siteEmail
 		];
 		$config = array(
 			'charset' => 'utf-8',
@@ -721,8 +721,8 @@ class Admin_master extends CI_Controller
 
 		$this->email->initialize($config);
 		$this->email->to($ress[0]->email);
-		$this->email->from($this->email, $this->siteName);
-		$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+		$this->email->from($this->siteEmail, $this->siteName);
+		$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 		$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 		$this->email->message($this->load->view('web/cemail_template', $data, true));
 		$this->email->send();
@@ -939,12 +939,30 @@ class Admin_master extends CI_Controller
 		$this->message('success', '', $res);
 	}
 
+
 	function add_category()
 	{
-		if ($this->permission->is_allow('New Category')) {
+		if ($this->permission->is_allow('new_category')) {
+			// icon file upload
+			$file_name = $this->input->post('name') . '_' . date('ymd-hisa');
+			$config['upload_path'] = 'assets/cat_icons';
+			$config['allowed_types'] = 'png|jpg';
+			$config['max_size'] = 2048;
+			$config['file_name'] = $file_name;
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('icon')) {
+				$error = array('error' => $this->upload->display_errors());
+				$this->message('error', $error['error']);
+			} else {
+				$upload_data = array('upload_data' => $this->upload->data());
+			}
+			// 
 			$data = [
 				'name' => $this->input->post('name'),
 				'allow' => $this->input->post('allow'),
+				// 'color' => $this->input->post('color'),
+				'icon' => $upload_data["upload_data"]["file_name"],
 			];
 			$res = $this->AuthModel->create_category($data);
 			if (!$res) {
@@ -958,11 +976,28 @@ class Admin_master extends CI_Controller
 
 	function update_category()
 	{
-		if ($this->permission->is_allow('Update Category')) {
+		if ($this->permission->is_allow('update_category')) {
 			$id = $this->input->post('id');
+			// icon file upload
+			$file_name = $this->input->post('name') . '_' . date('ymd-hisa');
+			$config['upload_path'] = 'assets/cat_icons';
+			$config['allowed_types'] = 'png|jpg';
+			$config['max_size'] = 2048;
+			$config['file_name'] = $file_name;
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('icon')) {
+				$error = array('error' => $this->upload->display_errors());
+				$this->message('error', $error['error']);
+			} else {
+				$upload_data = array('upload_data' => $this->upload->data());
+			}
+			// 
 			$details = [
 				'name' => $this->input->post('name'),
 				'allow' => $this->input->post('allow'),
+				// 'color' => $this->input->post('color'),
+				'icon' => $upload_data["upload_data"]["file_name"],
 			];
 			$res = $this->AuthModel->update_category($details, $id);
 			if (!$res) {
@@ -2180,7 +2215,7 @@ class Admin_master extends CI_Controller
 					'logo' => $this->AuthModel->content_row('Logo'),
 					'mobile1' => $this->AuthModel->content_row('Mobile1'),
 					'siteName' => $this->siteName,
-					'email' => $this->email
+					'email' => $this->siteEmail
 				];
 				$config = array(
 					'charset' => 'utf-8',
@@ -2192,8 +2227,8 @@ class Admin_master extends CI_Controller
 
 				$this->email->initialize($config);
 				$this->email->to($this->input->post('email'));
-				$this->email->from($this->email, $this->siteName);
-				$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+				$this->email->from($this->siteEmail, $this->siteName);
+				$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 				$this->email->subject('Thank you for registering with ' . $this->siteName . ' Web Support');
 				$this->email->message($this->load->view('web/email_template', $data, true));
 				$this->email->send();
@@ -2324,7 +2359,7 @@ class Admin_master extends CI_Controller
 				'logo' => $this->AuthModel->content_row('Logo'),
 				'mobile1' => $this->AuthModel->content_row('Mobile1'),
 				'siteName' => $this->siteName,
-				'email' => $this->email
+				'email' => $this->siteEmail
 			];
 			$config = array(
 				'charset' => 'utf-8',
@@ -2334,8 +2369,8 @@ class Admin_master extends CI_Controller
 
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from($this->email, $this->siteName);
-			$this->email->cc('mayank@epochstudio.net, ' . $this->email);
+			$this->email->from($this->siteEmail, $this->siteName);
+			$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
 			$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template', $data, true));
 			$this->email->send();
@@ -2371,7 +2406,7 @@ class Admin_master extends CI_Controller
 
 		$this->session->set_userdata('board', $selectedBoard);
 		$this->session->set_userdata('publication', $selectedPublication);
-		$this->session->set_userdata('publication_name', $this->session->userdata('publication_name'));
+		// $this->session->set_userdata('publication_name', $this->session->userdata('publication_name'));
 		$this->session->set_userdata('classes', $selectedClasses);
 		$this->session->set_userdata('class_name', $this->AuthModel->get_class($selectedClasses)->name);
 		$this->session->set_userdata('main_subject', $selectedMainSubject);
@@ -2410,7 +2445,7 @@ class Admin_master extends CI_Controller
 		$this->session->set_userdata('publication', $this->input->post('select_publication'));
 		//$this->session->set_userdata('board_name', $board[0]->name);
 		//$this->session->set_userdata('msubjectname', $msubsubject[0]->name);
-		$this->session->set_userdata('publication_name', $this->session->userdata('publication_name'));
+		// $this->session->set_userdata('publication_name', $this->session->userdata('publication_name'));
 		$this->session->set_userdata('classes', $this->input->post('select_classes'));
 		$this->session->set_userdata('msubject', $this->input->post('select_msubject'));
 		//$this->session->set_userdata('subject', $this->input->post('select_subject'));
@@ -2444,23 +2479,57 @@ class Admin_master extends CI_Controller
 		// $res = $this->AuthModel->default_product();
 		// $this->message('success', 'Items Find', $res);
 		// $postData = $this->input->post();
-		$board = $this->input->post('board');
+		// $board = $this->input->post('board');
 		$publication = $this->input->post('publication');
-		$classes = $this->input->post('classes');
 		$subject = $this->input->post('subject');
-		$type = $this->input->post('type');
+		$classes = $this->input->post('classes');
+		$book = $this->input->post('book');
+		$type = $this->input->post('category');
 		// var_dump($board, $publication, $classes, $subject, $type);
-		$this->db->where('board', $board);
+
+
+		$this->session->set_userdata('publication', $publication);
+		$this->session->set_userdata('classes', $classes);
+		$this->session->set_userdata('class_name', $this->AuthModel->get_class($classes)->name);
+		$this->session->set_userdata('main_subject', $subject);
+		// $this->session->set_userdata('msubject', $subject);
+		$this->session->set_userdata('selected_book', $book);
+
+		$selectableCategories = $this->AuthModel->get_categories($book);
+		$currentCategoryId = $type;
+		$currentCategoryFound = false;
+
+		foreach ($selectableCategories as $category) {
+			if ($category->id == $currentCategoryId) {
+				$currentCategoryFound = true;
+				$this->session->set_userdata('category', $currentCategoryId);
+				$this->session->set_userdata('category_name', $category->name);
+				break;
+			}
+		}
+
+		if (!$currentCategoryFound) {
+			$defaultCategory = reset($selectableCategories);
+			$this->session->set_userdata('category', $defaultCategory->id);
+			$this->session->set_userdata('category_name', $defaultCategory->name);
+		}
+
+		// $this->db->where('board', $board);
 		$this->db->where('publication', $publication);
 		$this->db->where('classes', $classes);
-		$this->db->where('subject', $subject);
+		$this->db->where('subject', $book);
 		$this->db->where('type', $type);
 		$res = $this->db->get('websupport')->result();
+		$data = [$res];
+
+		if (!$currentCategoryFound) {
+			$data = [$res, $selectableCategories];
+		}
 		// var_dump($res);
 		return $this->output
 			->set_content_type('application/json')
 			->set_status_header(200)
-			->set_output(json_encode($res));
+			->set_output(json_encode($data));
 	}
 	// end
 	function get_sub()
@@ -2667,43 +2736,43 @@ class Admin_master extends CI_Controller
 			$row .= '<td><div class="d-flex flex-column justify-content-center">';
 			if ($result->obj_1 && $result->obj_1 != 'N/A') {
 				$row .= '<div class="my-1"><span>Objective Test 1</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '11' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_1;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '11' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_1;
 				$row .= '</span></div>';
 			} else if ($result->obj_1 == 'N/A') {
 				$row .=
 					'<div class="my-1"><span>Objective Test 1</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			}
 			if ($result->obj_2 && $result->obj_2 != 'N/A') {
 				$row .= '<div class="my-1"><span>Objective Test 2</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '12' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_2;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '12' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_2;
 				$row
 					.= '</span></div>';
 			} else if ($result->obj_2 == 'N/A') {
 				$row .=
 					'<div class="my-1"><span>Objective Test 2</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			}
 
 			if ($result->obj_3 && $result->obj_3 != 'N/A') {
 				$row .= '<div class="my-1"><span>Objective Test 3</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '13' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_3;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '13' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_3;
 				$row .= '</span></div>';
 			} else if ($result->obj_3 == 'N/A') {
 				$row .= '<div class="my-1"><span>Objective Test 3</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			}
 			if ($result->obj_4 && $result->obj_4 != 'N/A') {
 				$row .= '<div class="my-1"><span>Objective Test 4</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '14' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_4;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_objective_paper/' . $result->student_id . '/' . '14' . '" target="_blank">View</a><span class="gray-box">' . $result->obj_4;
 				$row .= '</span></div>';
 			} else if ($result->obj_4 == 'N/A') {
 				$row .=
 					'<div class="my-1"><span>Objective Test 4</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			}
 			$row .= '</div></td>';
@@ -2726,31 +2795,31 @@ class Admin_master extends CI_Controller
 			$row .= '<td><div class="d-flex flex-column justify-content-center">';
 			if ($result->sub_1 && $result->sub_1 != 'N/A' && $result->sub_1 != 'Submitted') {
 				$row .= '<div class="my-1"><span>Subjective Test 1</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '21' . '" target="_blank">View</a><span class="gray-box">' . $result->sub_1;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '21' . '" target="_blank">View</a><span class="gray-box">' . $result->sub_1;
 				$row .= '</span></div>';
 				// web/view_subjective_paper/' . $value['student_id'] . '/' . $test_assign_id . '/21"
 			} else if ($result->sub_1 == 'N/A') {
 				$row .= '<div class="my-1"><span>Subjective Test 1</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			} else if ($result->sub_1 == 'Submitted') {
 				$row .= '<div class="my-1"><span>Subjective Test 1</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '21' . '" target="_blank">Evaluate</a>';
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '21' . '" target="_blank">Evaluate</a>';
 				$row .= '</div>';
 			}
 			if ($result->sub_2 && $result->sub_2 != 'N/A' && $result->sub_2 != 'Submitted') {
 				$row .= '<div class="my-1"><span>Subjective Test 2</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/ view_subjective_paper/' . $result->student_id . '/' . '22' . '" target="_blank">View</a><span class="gray-box">' . $result->sub_2;
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/ view_subjective_paper/' . $result->student_id . '/' . '22' . '" target="_blank">View</a><span class="gray-box">' . $result->sub_2;
 				$row
 					.= '</span></div>';
 			} else if ($result->sub_2 == 'N/A') {
 				$row .=
 					'<div class="my-1"><span>Subjective Test 2</span>';
-				$row .= '<span class="btn btn-sm btn-danger mx-2" title="Test Not Attempted">N/A</span>';
+				$row .= '<span class="mx-2 btn btn-sm btn-danger" title="Test Not Attempted">N/A</span>';
 				$row .= '</span></div>';
 			} else if ($result->sub_2 == 'Submitted') {
 				$row .= '<div class="my-1"><span>Subjective Test 2</span>';
-				$row .= '<a class="btn btn-sm btn-success mx-2" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '22' . '" target="_blank">Evaluate</a>';
+				$row .= '<a class="mx-2 btn btn-sm btn-success" href="' . base_url() . 'web/view_subjective_paper/' . $result->student_id . '/' . '22' . '" target="_blank">Evaluate</a>';
 				$row .= '</div>';
 			}
 			$row .= '</div></td>';
@@ -2814,19 +2883,18 @@ class Admin_master extends CI_Controller
 				'email' => $email,
 				'password' => $res[0]->password,
 				'siteName' => $this->siteName,
-				'email' => $this->email
+				'email' => $this->siteEmail
 			];
+
 			$config = array(
 				'charset' => 'utf-8',
 				'wordwrap' => TRUE,
 				'mailtype' => 'html'
 			);
 
-
-
 			$this->email->initialize($config);
 			$this->email->to($this->input->post('email'));
-			$this->email->from($this->email, $this->siteName);
+			$this->email->from($this->siteEmail, $this->siteName);
 			$this->email->subject('Your Password for ' . $this->siteName . ' Web Support');
 			$this->email->message($this->load->view('web/email_template2', $data, true));
 			$this->email->send();

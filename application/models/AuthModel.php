@@ -346,6 +346,7 @@ class AuthModel extends CI_Model
 		$this->db->where('password', $password);
 		$this->db->where('status', '1');
 		$user = $this->db->get('web_user')->row();
+		if (!$user) return false;
 
 		$sid = explode(',', $user->subject)[0];
 		$selected_book = $this->selectable_books($sid, $user->classes)[0];
@@ -1890,9 +1891,9 @@ class AuthModel extends CI_Model
 	// 	$res = $this->db->get('classes')->result();
 	// 	return $res;
 	// }
-	function selectable_classes($msubject_id, $user_id)
+	function selectable_classes($msubject_id)
 	{
-		$this->db->where('id', $user_id);
+		$this->db->where('email', $this->session->userdata('username'));
 		$user_row = $this->db->get('web_user')->row();
 		if (!$user_row->series_classes) {
 			// return user classes if user doesn't have series classes in new format
@@ -2176,5 +2177,32 @@ class AuthModel extends CI_Model
 	{
 		$res = $this->db->get('state')->result();
 		return $res;
+	}
+
+	function boardNameToId($boardName)
+	{
+		$this->db->where('name', $boardName);
+		$boardId = $this->db->get('board')->row()->id;
+		return $boardId;
+	}
+
+	function getContent($board, $publication, $subject, $class, $book, $category, $start, $limit)
+	{
+		$this->db->or_where_in(['board', [$board, '3']]);
+		$this->db->where('publication', $publication);
+		$this->db->where('msubject', $subject);
+		$this->db->where('classes', $class);
+		$this->db->where('subject', $book);
+		$this->db->where('type', $category);
+		$count = $this->db->count_all_results('websupport');
+		$this->db->or_where_in(['board', [$board, '3']]);
+		$this->db->where('publication', $publication);
+		$this->db->where('msubject', $subject);
+		$this->db->where('classes', $class);
+		$this->db->where('subject', $book);
+		$this->db->where('type', $category);
+		$this->db->limit($limit, $start);
+		$res = $this->db->get('websupport')->result();
+		return [$res, $count];
 	}
 }

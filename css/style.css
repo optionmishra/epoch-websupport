@@ -3138,11 +3138,10 @@ main.app-content {
 	border: 1px solid #000 !important;
 	vertical-align: middle;
 	background-size: 8px 10px;
-	border: 0;
+	border: 0.5rem;
 	font-size: 15px;
 	background-color: #ffffff;
-	border-radius: 0;
-	nce: none;
+	border-radius: 0.5rem;
 	-moz-appearance: none;
 	appearance: none;
 }

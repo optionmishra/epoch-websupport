@@ -2776,19 +2776,19 @@ $("#student_class").change(function () {
 	});
 });
 
-$("#checkForgot").on("aftersubmit", function (e, data) {
-	$("#pleasewait").modal("hide");
-	$(this).trigger("reset");
-	$("#forgot_passs").modal("show");
-	$(".swd").html(data.message);
-	if (data.type === "success") {
-		$("#forgot_pass").modal("hide");
-	}
-});
+// $("#checkForgot").on("aftersubmit", function (e, data) {
+// 	$("#pleasewait").modal("hide");
+// 	$(this).trigger("reset");
+// 	$("#forgot_passs").modal("show");
+// 	$(".swd").html(data.message);
+// 	if (data.type === "success") {
+// 		$("#forgot_pass").modal("hide");
+// 	}
+// });
 
-$(".forgt").on("click", function () {
-	$("#forgot_pass").modal("show");
-});
+// $(".forgt").on("click", function () {
+// 	$("#forgot_pass").modal("show");
+// });
 
 $(".sder").on("click", function () {
 	var id = $(this).attr("sid");

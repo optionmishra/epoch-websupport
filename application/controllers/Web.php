@@ -57,9 +57,9 @@ class Web extends CI_Controller
 			'classes' => $this->AuthModel->classes(),
 			'siteName' => $this->siteName
 		];
-		$this->load->view('globals/web/header_home', $data);
+		// $this->load->view('globals/web/header_home', $data);
 		$this->load->view('web/index', $data);
-		$this->load->view('globals/web/footer_home', $data);
+		$this->load->view('globals/revamp/footer', $data);
 	}
 
 	private function check_isvalidated()
@@ -121,12 +121,14 @@ class Web extends CI_Controller
 			'siteName' => $this->siteName,
 			#mod
 			'selectable_subjects' => $this->AuthModel->msubject_mod($this->WebModel->Webuser()[0]->subject),
-			'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject'), $user_id),
+			'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject')),
 			'selectable_books' => $this->AuthModel->selectable_books($this->session->userdata('main_subject'), $this->session->userdata('classes')),
 			'selectable_categories' => $this->AuthModel->get_categories($this->session->userdata('selected_book')),
 		];
 		// echo '<pre>', var_dump($this->session->userdata()), '</pre>';
-		// echo '<pre>', var_dump($data['selectable_books']), '</pre>';
+		// echo '<pre>', var_dump($data['default']), '</pre>';
+		// echo '<pre>', var_dump(empty($data['default'])), '</pre>';
+		// echo '<pre>', var_dump(isset($data['default'])), '</pre>';
 		// exit();
 
 		if ($this->session->flashdata('login_type') == 'auto') {
@@ -136,6 +138,9 @@ class Web extends CI_Controller
 		}
 		$this->load->view('web/dashboard', $data);
 		$this->load->view('globals/web/footer', $data);
+		// $this->load->view('globals/revamp/header', $data);
+		// $this->load->view('globals/revamp/footer', $data);
+		// $this->load->view('web/new-dashboard', $data);
 	}
 
 	public function profile()

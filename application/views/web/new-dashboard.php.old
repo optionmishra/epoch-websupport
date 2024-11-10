@@ -1,0 +1,44 @@
+<?php $userdata = $this->session->userdata(); ?>
+<main class="min-h-[calc(100vh-4rem)] bg-gray-100">
+  <div class="flex flex-col sm:flex-row h-full">
+
+    <?php include 'partials/dashboard_sidebar.php' ?>
+
+    <div class="w-full sm:w-4/5 bg-gray-100 sm:px-10 px-1 py-2">
+
+      <!-- Desktop View -->
+      <div role="tablist" class="tabs tabs-lifted hidden sm:grid">
+        <?php foreach ($selectable_categories as $cat): if ($cat->allow == 'Both' || $cat->allow == $userdata['type']) : ?>
+            <input
+              type="radio"
+              name="select_category"
+              value="<?= $cat->id ?>"
+              role="tab"
+              class="tab"
+              aria-label="<?= $cat->name ?>"
+              <?= $userdata['category'] == $cat->id ? 'checked = "checked"' : '' ?> />
+            <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box min-h-[calc(100vh-7rem)] p-6">
+              <?php include 'partials/dashboard_content.php' ?>
+            </div>
+        <?php endif;
+        endforeach; ?>
+      </div>
+
+      <!-- Mobile View -->
+      <div class="join join-vertical w-full sm:hidden">
+        <?php foreach ($selectable_categories as $cat): if ($cat->allow == 'Both' || $cat->allow == $userdata['type']) : ?>
+            <div class="collapse collapse-arrow join-item border-base-300 border">
+              <input type="radio" name="my-accordion-1" <?= $userdata['category'] == $cat->id ? 'checked = "checked"' : '' ?> />
+              <div class="collapse-title text-xl font-medium"><?= $cat->name ?></div>
+              <div class="collapse-content">
+                <?php include 'partials/dashboard_content.php' ?>
+              </div>
+            </div>
+        <?php endif;
+        endforeach; ?>
+      </div>
+
+    </div>
+  </div>
+</main>
+</div>
