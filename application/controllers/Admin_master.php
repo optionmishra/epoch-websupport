@@ -985,12 +985,14 @@ class Admin_master extends CI_Controller
 			$config['max_size'] = 2048;
 			$config['file_name'] = $file_name;
 
-			$this->upload->initialize($config);
-			if (!$this->upload->do_upload('icon')) {
-				$error = array('error' => $this->upload->display_errors());
-				$this->message('error', $error['error']);
-			} else {
-				$upload_data = array('upload_data' => $this->upload->data());
+			if (isset($_FILES['icon']) && $_FILES['icon']['size'] > 0) {
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('icon')) {
+					$error = array('error' => $this->upload->display_errors());
+					$this->message('error', $error['error']);
+				} else {
+					$upload_data = array('upload_data' => $this->upload->data());
+				}
 			}
 			// 
 			$details = [
@@ -1047,7 +1049,7 @@ class Admin_master extends CI_Controller
 		$i = 1;
 		foreach ($res as $key => &$value) {
 			$value->sr_no = $i;
-			$value->class = 'Class ' . $value->class;
+			$value->class = 'Class' . $value->class;
 
 			$value->action = "<a summativeQuestion_id='" . $value->id . "' class='pr-2 pointer summative-QuestionEdit' data-toggle='modal' data-target='#summative-QuestionEdit'><i class='fa fa-edit'></i></a>"
 				. "<a summativeQuestion_id='" . $value->id . "' class='pointer summativeQuestionDelete'><i class='fa fa-trash text-danger'></i></a>";
@@ -1136,7 +1138,7 @@ class Admin_master extends CI_Controller
 		$i = 1;
 		foreach ($res as $key => &$value) {
 			$value->sr_no = $i;
-			$value->class = 'Class ' . $value->class;
+			$value->class = 'Class' . $value->class;
 			$value->action = "<a objectiveQuestion_id='" . $value->id . "' class='pr-2 pointer objective-QuestionEdit' data-toggle='modal' data-target='#objective-QuestionEdit'><i class='fa fa-edit'></i></a>"
 				. "<a objectiveQuestion_id='" . $value->id . "' class='pointer objectiveQuestionDelete'><i class='fa fa-trash text-danger'></i></a>";
 			$i++;
