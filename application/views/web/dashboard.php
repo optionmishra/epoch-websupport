@@ -210,7 +210,7 @@
 												<a href="<?= base_url("tpg/public/" . $tpg->book_id . "/" . $tpg->class_id) ?>" class="p-0 m-0 digital-con" target="_blank">
 													<div class="p-0 m-0 row">
 														<div class="p-2 m-0 col-lg-12 top-con">
-															<h5><?= $tpg->name ?></h5>
+															<h5><?= $tpg->name ?> <br> Online TPG</h5>
 														</div>
 													</div>
 												</a>
