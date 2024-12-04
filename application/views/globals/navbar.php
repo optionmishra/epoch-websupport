@@ -45,6 +45,16 @@
 			<?php endforeach; ?>
 			</ul>
 		</li>
+
+		<?php if (filter_var($_ENV['ONLINE_TPG'], FILTER_VALIDATE_BOOLEAN)): ?>
+			<li class="treeview">
+				<a class="app-menu__item" href="tpg/public/admin/dashboard">
+					<i class="fa fa-book app-menu__icon" aria-hidden="true"></i>
+					<span class="app-menu__label"> Online TPG</span>
+				</a>
+			</li>
+		<?php endif; ?>
+
 		<li class="treeview"><a class="app-menu__item <?= $this->uri->segment(2) === 'content' ? 'active' : ''; ?>" href="superadmin/content"><i class="fa fa-list app-menu__icon" aria-hidden="true"></i> <span class="app-menu__label"> Web Content</span><i class="treeview-indicator"></i></a>
 		<li class="treeview">
 

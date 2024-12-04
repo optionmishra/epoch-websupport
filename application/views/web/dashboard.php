@@ -200,59 +200,66 @@
 							</tr>
 						</thead>
 						<tbody class="row" id="webSupportsTable">
-							<?php if (empty($default) && empty($online_tpgs)) { ?>
-								<p class="m-3 text-danger" style="font-size: 30px"> Coming Soon.....</p>
-							<?php } else if ($this->session->userdata('category_name') == 'Online TPG') { ?>
-								<?php foreach ($online_tpgs as $tpg) : ?>
-									<tr class="p-0 mt-1 mb-2 col-lg-3">
-										<td class="p-0 col-lg-12">
-											<div class="col-lg-12">
-												<a href="<?= base_url("tpg/public/" . $tpg->book_id . "/" . $tpg->class_id) ?>" class="p-0 m-0 digital-con" target="_blank">
-													<div class="p-0 m-0 row">
-														<div class="p-2 m-0 col-lg-12 top-con">
-															<h5><?= $tpg->name ?> <br> Online TPG</h5>
+							<?php if ($this->session->userdata('category_name') == 'Online TPG'): ?>
+								<?php if (empty($online_tpgs)): ?>
+									<p class="m-3 text-danger" style="font-size: 30px">Coming Soon...</p>
+								<?php else: ?>
+									<?php foreach ($online_tpgs as $tpg) : ?>
+										<tr class="p-0 mt-1 mb-2 col-lg-3">
+											<td class="p-0 col-lg-12">
+												<div class="col-lg-12">
+													<a href="<?= base_url("tpg/public/" . $tpg->book_id . "/" . $tpg->class_id) ?>" class="p-0 m-0 digital-con" target="_blank">
+														<div class="p-0 m-0 row">
+															<div class="p-2 m-0 col-lg-12 top-con">
+																<h5><?= $tpg->name ?> <br> Online TPG</h5>
+															</div>
 														</div>
-													</div>
-												</a>
-											</div>
-										</td>
-									</tr>
-								<?php endforeach; ?>
-							<?php } else { ?>
-								<?php foreach ($default as $def) : ?>
-									<tr class="p-0 mt-1 mb-2 col-lg-3">
-										<td class="p-0 col-lg-12">
-											<div class="col-lg-12">
-												<!-- Downloading with analytics -->
-												<a href="<?= base_url("analytics/download_websupport/$def->id") ?>" class="p-0 m-0 digital-con" target="_blank">
-													<div class="p-0 m-0 row">
-														<div class="p-2 m-0 col-lg-12 top-con">
-															<h5>Click Here! For Download</h5>
-														</div>
-														<div class="p-3 m-0 col-lg-12 middle-con">
-															<img src="<?= empty($def->book_image) ? 'assets/img/3.png' : "assets/bookicon/$def->book_image" ?>">
-														</div>
-														<div class="p-2 m-0 col-lg-12 bottom-con">
-															<h4><?= $def->title ?></h4>
-															<h6><?= $this->session->userdata('class_name') ?></h6>
-														</div>
+													</a>
+												</div>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								<?php endif; ?>
 
-													</div>
-												</a>
+							<?php else : ?>
+								<?php if (empty($default)) { ?>
+									<p class="m-3 text-danger" style="font-size: 30px">Coming Soon...</p>
+								<?php } else { ?>
+									<?php foreach ($default as $def) : ?>
+										<tr class="p-0 mt-1 mb-2 col-lg-3">
+											<td class="p-0 col-lg-12">
+												<div class="col-lg-12">
+													<!-- Downloading with analytics -->
+													<a href="<?= base_url("analytics/download_websupport/$def->id") ?>" class="p-0 m-0 digital-con" target="_blank">
+														<div class="p-0 m-0 row">
+															<div class="p-2 m-0 col-lg-12 top-con">
+																<h5>Click Here! For Download</h5>
+															</div>
+															<div class="p-3 m-0 col-lg-12 middle-con">
+																<img src="<?= empty($def->book_image) ? 'assets/img/3.png' : "assets/bookicon/$def->book_image" ?>">
+															</div>
+															<div class="p-2 m-0 col-lg-12 bottom-con">
+																<h4><?= $def->title ?></h4>
+																<h6><?= $this->session->userdata('class_name') ?></h6>
+															</div>
 
-											</div>
-											<?php if ($this->session->userdata('category_name') == 'Test Paper Generator') { ?>
-												<div class="p-2 m-auto col-lg-10" style="background: greenyellow; height: 42px; text-align: center; top: 7px; font-size: 14px;">
-
-													<a href="<?php echo base_url(); ?>query/teacher-question" target="_blank" style="color: #444;font-weight: 600;">Submit Your Question</a>
+														</div>
+													</a>
 
 												</div>
-										</td>
-									</tr>
-								<?php } ?>
-						<?php endforeach;
-							}
-						?>
+												<?php if ($this->session->userdata('category_name') == 'Test Paper Generator') { ?>
+													<div class="p-2 m-auto col-lg-10" style="background: greenyellow; height: 42px; text-align: center; top: 7px; font-size: 14px;">
+
+														<a href="<?php echo base_url(); ?>query/teacher-question" target="_blank" style="color: #444;font-weight: 600;">Submit Your Question</a>
+
+													</div>
+											</td>
+										</tr>
+									<?php } ?>
+							<?php endforeach;
+								}
+							?>
+						<?php endif; ?>
 						</tbody>
 					</table>
 				</div>
