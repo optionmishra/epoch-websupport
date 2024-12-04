@@ -950,12 +950,14 @@ class Admin_master extends CI_Controller
 			$config['max_size'] = 2048;
 			$config['file_name'] = $file_name;
 
-			$this->upload->initialize($config);
-			if (!$this->upload->do_upload('icon')) {
-				$error = array('error' => $this->upload->display_errors());
-				$this->message('error', $error['error']);
-			} else {
-				$upload_data = array('upload_data' => $this->upload->data());
+			if (isset($_FILES['icon']) && $_FILES['icon']['size'] > 0) {
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('icon')) {
+					$error = array('error' => $this->upload->display_errors());
+					$this->message('error', $error['error']);
+				} else {
+					$upload_data = array('upload_data' => $this->upload->data());
+				}
 			}
 			// 
 			$data = [
