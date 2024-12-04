@@ -2204,4 +2204,23 @@ class AuthModel extends CI_Model
 		$res = $this->db->get('websupport')->result();
 		return [$res, $count];
 	}
+
+	function online_tpg()
+	{
+		// $this->db->order_by('class_id', 'asc');
+		// $res = $this->db->get('tpg_class_books')->result();
+		// return $res;
+		$this->db->select('tpg_class_books.*, main_subject.name as subject_name, subject.name as name, series.name as series_name');
+		$this->db->from('tpg_class_books');
+		$this->db->join('subject', 'tpg_class_books.book_id = subject.id');
+		$this->db->join('main_subject', 'subject.sid = main_subject.id');
+		$this->db->join('series', 'subject.series_id = series.id');
+		$this->db->order_by('series_name', 'asc');
+		$this->db->order_by('class_id', 'asc');
+		// MOD
+		$this->db->where('subject.id', $this->session->userdata('selected_book'));
+		// MOD
+		$res = $this->db->get()->result();
+		return $res;
+	}
 }

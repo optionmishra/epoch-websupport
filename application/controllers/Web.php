@@ -124,6 +124,7 @@ class Web extends CI_Controller
 			'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject')),
 			'selectable_books' => $this->AuthModel->selectable_books($this->session->userdata('main_subject'), $this->session->userdata('classes')),
 			'selectable_categories' => $this->AuthModel->get_categories($this->session->userdata('selected_book')),
+			'online_tpgs' => $this->AuthModel->online_tpg(),
 		];
 		// echo '<pre>', var_dump($this->session->userdata()), '</pre>';
 		// echo '<pre>', var_dump($data['default']), '</pre>';
