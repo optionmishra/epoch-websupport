@@ -19,12 +19,11 @@ class AuthModel extends CI_Model
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 		$admin = $this->db->query("SELECT * FROM user WHERE username = ? AND password = ? LIMIT 1", [$username, $password]);
-		$adm = $admin->result();
+		$adm = $admin->row();
 		if ($admin->num_rows() == 1) {
 			$this->session->set_userdata('ausername', $username);
 			//$this->session->set_userdata('password', $password);
-			$this->session->set_userdata('level', $adm[0]->level);
-			$this->session->set_userdata('userType', $adm[0]->user_type);
+			$this->session->set_userdata('level', $adm->level);
 			$cur_time = date("l jS \of F Y h:i:s A");
 			//   $last_login = $this->db->query("UPDATE user SET last_login = $cur_time' WHERE username = ? AND password = ? ", [$username, $password]);
 			return true;
