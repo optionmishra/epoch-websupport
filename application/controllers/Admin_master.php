@@ -987,6 +987,13 @@ class Admin_master extends CI_Controller
 			$config['max_size'] = 2048;
 			$config['file_name'] = $file_name;
 
+
+			$details = [
+				'name' => $this->input->post('name'),
+				'allow' => $this->input->post('allow'),
+				// 'color' => $this->input->post('color'),
+			];
+
 			if (isset($_FILES['icon']) && $_FILES['icon']['size'] > 0) {
 				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('icon')) {
@@ -994,15 +1001,10 @@ class Admin_master extends CI_Controller
 					$this->message('error', $error['error']);
 				} else {
 					$upload_data = array('upload_data' => $this->upload->data());
+					$details['icon'] = $upload_data["upload_data"]["file_name"];
 				}
 			}
-			// 
-			$details = [
-				'name' => $this->input->post('name'),
-				'allow' => $this->input->post('allow'),
-				// 'color' => $this->input->post('color'),
-				'icon' => $upload_data["upload_data"]["file_name"],
-			];
+
 			$res = $this->AuthModel->update_category($details, $id);
 			if (!$res) {
 				$this->message('error', $this->AuthModel->error);
