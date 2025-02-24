@@ -57,7 +57,7 @@
 		<?php }
 		} ?>
 	</div>
-	<form id="Selform" class="p-3 smooth-submit" name="myformsearch" method="post" action="admin_master/default_product" novalidate>
+	<form id="Selform" class="p-3" name="myformsearch" method="post" action="admin_master/default_product" novalidate>
 		<div class="px-1 row justify-content-center">
 			<div class="col-lg-1">
 				<select id="select_board" class="p-0 m-0 col-lg-12 custom-select selectBoard_change" name="select_board" required="true">
