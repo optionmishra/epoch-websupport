@@ -2366,10 +2366,10 @@ function validateForm() {
 	});
 
 	// Also check the hidden field
-	const msubField = $("#msub_d");
-	if (!msubField.val()) {
-		isValid = false;
-	}
+	// const msubField = $("#msub_d");
+	// if (!msubField.val()) {
+	// 	isValid = false;
+	// }
 
 	return isValid;
 }
