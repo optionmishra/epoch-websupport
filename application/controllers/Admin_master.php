@@ -2975,27 +2975,7 @@ class Admin_master extends CI_Controller
 	// Get classes based on selected main subject
 	function getClasses($mainSubjectID)
 	{
-		// function modified for getting teacher classes of a particular main subject
-		$user_id = $this->session->userdata('user_id');
-		$this->db->where('id', $user_id);
-		$user_row = $this->db->get('web_user')->row();
-		if (!($user_row->series_classes)) {
-			// $mainSubject = $this->AuthModel->msubject($mainSubjectID);
-			// $classesArr = explode(',', $mainSubject[0]->classes);
-			// show all classes of that user
-			$classesArr = explode(',', $user_row->classes);
-		} else {
-			// return user series classes if user has series classes in new format
-			$series_classes =  unserialize($user_row->series_classes);
-			$classesArr = array();
-			foreach ($series_classes[$mainSubjectID] as $classes_array) {
-				$classesArr = array_merge($classesArr, $classes_array);
-			}
-			$classesArr = array_unique($classesArr);
-		}
-		$this->db->or_where_in('id', $classesArr);
-		$this->db->order_by('class_position', 'ASC');
-		$classes = $this->db->get('classes')->result();
+		$classes = $this->AuthModel->selectable_classes($mainSubjectID);
 		return $this->output
 			->set_content_type('application/json')
 			->set_status_header(200)

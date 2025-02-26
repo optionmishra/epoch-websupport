@@ -347,11 +347,12 @@ class AuthModel extends CI_Model
 		$user = $this->db->get('web_user')->row();
 		if (!$user) return false;
 
-		$sid = explode(',', $user->subject)[0];
-		$selected_book = $this->selectable_books($sid, $user->classes)[0];
+		$main_subject = $this->selectable_main_subjects()[0]->id;
+		$selected_class = $this->selectable_classes($main_subject)[0]->id;
+		$selected_class_name = $this->selectable_classes($main_subject)[0]->name;
+		$selected_book = $this->selectable_books($main_subject, $selected_class)[0];
 		$category = $this->get_categories($selected_book->id)[0];
 		$class = $this->get_class($user->classes);
-		$main_subject = explode(',', $user->subject)[0];
 
 		if ($user) {
 			$this->session->set_userdata('username', $username);
@@ -362,11 +363,13 @@ class AuthModel extends CI_Model
 			$this->session->set_userdata('board_name', $user->board_name);
 			$this->session->set_userdata('category', $category->id);
 			$this->session->set_userdata('category_name', $category->name);
+			$this->session->set_userdata('class_name', $selected_class_name);
 			// $this->session->set_userdata('school_name', $user->school_name);
 			// $this->session->set_userdata('status', $user->status);
 			if ($user->user_type == 'Student') {
-				$this->session->set_userdata('classes', $user->classes);
-				$this->session->set_userdata('class_name', $class->name);
+				// $this->session->set_userdata('classes', $user->classes);
+				$this->session->set_userdata('classes', $selected_class);
+				// $this->session->set_userdata('class_name', $class->name);
 				$this->session->set_userdata('section', $user->class_section);
 				$this->session->set_userdata('stu_teacher_code', $user->stu_teacher_id);
 				$this->session->set_userdata('main_subject', $user->subject);
@@ -377,8 +380,9 @@ class AuthModel extends CI_Model
 				$this->session->set_userdata('main_subject', $main_subject);
 				$this->session->set_userdata('publication_name', $publication->name);
 				$classes = $this->classesx()[0];
-				$this->session->set_userdata('classes', $classes->id);
-				$this->session->set_userdata('class_name', $classes->name);
+				// $this->session->set_userdata('classes', $classes->id);
+				$this->session->set_userdata('classes', $selected_class);
+				// $this->session->set_userdata('class_name', $classes->name);
 				$this->session->set_userdata('selected_book', $selected_book->id);
 			}
 			return true;
@@ -1881,22 +1885,34 @@ class AuthModel extends CI_Model
 
 	// Support End
 
-	#mod
-	// function selectable_classes($id)
-	// {
-	// 	$this->db->where('id', $id);
-	// 	$classesArr = explode(',', $this->db->get('main_subject')->row()->classes);
-	// 	$this->db->or_where_in('id', $classesArr);
-	// 	$res = $this->db->get('classes')->result();
-	// 	return $res;
-	// }
+	function selectable_main_subjects()
+	{
+		$user_id = $this->session->userdata('user_id');
+		$user = $this->db->where('id', $user_id)->get('web_user')->row();
+
+		if ($user->subject) {
+			$main_subject_ids = explode(',', $user->subject);
+			$main_subjects = $this->db->where_in('id', $main_subject_ids)->get('main_subject')->result();
+			return $main_subjects;
+		}
+
+		$main_subjects = $this->db->get('main_subject')->result();
+		return $main_subjects;
+	}
+
 	function selectable_classes($msubject_id)
 	{
 		$this->db->where('email', $this->session->userdata('username'));
 		$user_row = $this->db->get('web_user')->row();
 		if (!$user_row->series_classes) {
 			// return user classes if user doesn't have series classes in new format
-			$classesArr = explode(',', $user_row->classes);
+			if ($user->classes) {
+				$classesArr = explode(',', $user_row->classes);
+			} else {
+				$this->db->where('id', $msubject_id);
+				$main_subject = $this->db->get('main_subject')->row();
+				$classesArr = explode(',', $main_subject->classes);
+			}
 		} else {
 			// return user series classes if user has series classes in new format
 			$series_classes =  unserialize($user_row->series_classes);
@@ -2040,17 +2056,6 @@ class AuthModel extends CI_Model
 
 	#mod
 	// Returns complete data of teacher's series
-	function selectable_main_subjects($user_id)
-	{
-		$this->db->where('id', $user_id);
-		$user = $this->db->get('web_user')->row();
-		//subject ids of subjects that user has selected
-		$user_mainsub_id_arr = explode(',', $user->subject);
-		$this->db->or_where_in('id', $user_mainsub_id_arr);
-		$this->db->order_by('serial', 'asc');
-		$res = $this->db->get('main_subject')->result();
-		return $res;
-	}
 	// Returns teacher all subject's series
 	// Returns associative array of series as keys and subject-series as values
 	function selectable_subject_series($user_id)
