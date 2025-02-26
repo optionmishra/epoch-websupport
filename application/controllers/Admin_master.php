@@ -2281,52 +2281,9 @@ class Admin_master extends CI_Controller
 			} else {
 				$country = $this->input->post('oth_country');
 			}
-			if (empty($this->input->post('series'))) {
-				$this->session->set_flashdata('error', 'Please select at least one series! Registration Failed.');
-				redirect('' . '/teacher-registration');
-			}
-			// series - classes
-			$sub_arr = $this->input->post('series');
-			$sub_arr = array_unique($sub_arr);
-			$series_classes =  array();
-			$classes = array();
-			foreach ($sub_arr as $sub) {
-				$series_classes[$sub] = array();
-				$sub_series_arr = $this->input->post($sub . 'series');
-				// array_push($series_classes[$sub], $sub_series_arr);
-				foreach ($sub_series_arr as $sub_series) {
-					// $series_classes[$sub][$sub_series] = array();
-					$series_classes[$sub][$sub_series] = $this->input->post($sub_series . 'Classes');
-					$classes = array_merge($classes, $this->input->post($sub_series . 'Classes'));
-				}
-			}
-			// echo '<pre>', var_dump($series_classes), '</pre>';
-			// echo '<pre>', var_dump(serialize($series_classes)), '</pre>';
-			// exit();
-			$serialized_series_classes = serialize($series_classes);
-			$classes = array_unique($classes);
 
-			$subject = implode(',', $sub_arr);
-
-			//activeBooks
-			// $count = count($this->input->post('class'));
-			$count = count($classes);
-			$sub = array();
-			for ($i = 0; $i < $count; $i++) {
-				array_push($sub, '1');
-			}
-			$activeBooks = implode(',', $sub);
-			$classes = implode(',', $classes);
 			$teacher_code = $this->randomPass(10);
-			//activeBooks
-			// $count = count($this->input->post('class'));
-			// for ($i = 1; $i <= $count; $i++) {
-			// $sub[] = 1;
-			// }
-			// $activeBooks = implode(',', $sub);
-			// $teacher_code = $this->randomPass(10);
-			// $class = implode(',', $this->input->post('class'));
-			// $subject = implode(',', $this->input->post('subject'));
+
 			$res = $this->db->insert('web_user', [
 				'fullname' => $this->input->post('name'),
 				'mobile' => $this->input->post('mobile'),
@@ -2340,21 +2297,21 @@ class Admin_master extends CI_Controller
 				'country' => $country,
 				'city' => $this->input->post('city'),
 				'state' => $this->input->post('state'),
-				'addresss' => $this->input->post('addresss'),
+				// 'addresss' => $this->input->post('addresss'),
 				'board_name' => $this->input->post('board'),
-				'dob' => $this->input->post('dob'),
-				'emails' => $this->input->post('emails'),
-				'classes' => $classes,
-				'subject' => $subject,
+				// 'dob' => $this->input->post('dob'),
+				// 'emails' => $this->input->post('emails'),
+				// 'classes' => $classes,
+				// 'subject' => $subject,
 				'user_type' => 'Teacher',
 				'school_name' => $this->input->post('school_name'),
 				'password' => $this->input->post('password'),
-				'activeBooks' => $activeBooks,
-				'status' => 0,
+				// 'activeBooks' => $activeBooks,
+				'status' => 1,
 				'stu_limit' => 30,
-				'referrel_name' => $this->input->post('referrel_name'),
-				'referrel_mobile' => $this->input->post('referrel_mobile'),
-				'series_classes' => $serialized_series_classes
+				// 'referrel_name' => $this->input->post('referrel_name'),
+				// 'referrel_mobile' => $this->input->post('referrel_mobile'),
+				// 'series_classes' => $serialized_series_classes
 			]);
 
 
@@ -2381,10 +2338,10 @@ class Admin_master extends CI_Controller
 			$this->email->message($this->load->view('web/email_template', $data, true));
 			$this->email->send();
 			if (!$res) {
-				$this->session->set_flashdata('error', 'Something is wrong! Your are not regitered');
+				$this->session->set_flashdata('error', 'Something is wrong! Your are not registered');
 				redirect('' . '/teacher-registration');
 			} else {
-				$this->session->set_flashdata('success', 'You are Successfully registerd with us, Please Check your registerd email for your account credentials...');
+				$this->session->set_flashdata('success', 'You are Successfully registered with us, Please Check your registered email for your account credentials...');
 				redirect('' . '/teacher-registration');
 			}
 		}
