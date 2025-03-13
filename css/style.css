@@ -609,7 +609,7 @@ h5,
 
 h6,
 .h6 {
-	font-size: 16px;
+	font-size: 14px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -2454,10 +2454,10 @@ a.pointer:hover {
 	color: #fff;
 }
 .bottom-con h4 {
-	font-size: 16px;
+	font-size: 14px;
 }
 .top-con h5 {
-	font-size: 20px;
+	font-size: 14px;
 }
 
 .arrival__product__activation.owl-theme .owl-dots {
@@ -3126,7 +3126,7 @@ main.app-content {
 	background: #89d70061;
 }
 .middle-con img {
-	width: 100px;
+	width: 160px;
 }
 .custom-select {
 	display: inline-block;
