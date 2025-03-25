@@ -36,13 +36,7 @@
 </style>
 <main class="app-content d-flex flex-column justify-content-start">
 	<div class="app-title">
-		<ul class="m-0 app-breadcrumb breadcrumb">
-			<li class="breadcrumb-item"><?= $this->session->userdata('board_name') ?></li>
-			<li class="breadcrumb-item"><?= $this->session->userdata('publication_name') ?></li>
-			<li class="breadcrumb-item"><?= $this->session->userdata('class_name') ?></li>
-			<li class="breadcrumb-item"><?= $this->session->userdata('category_name') ?></li>
-			<input type="text" id="active" value="<?= $this->session->userdata('category') ?>" class="d-none">
-		</ul>
+
 
 		<?php
 		$userdata = $this->session->userdata();
@@ -59,15 +53,7 @@
 	</div>
 	<form id="Selform" class="p-3" name="myformsearch" method="post" action="admin_master/default_product" novalidate>
 		<div class="px-1 row justify-content-center">
-			<div class="col-lg-1">
-				<select id="select_board" class="p-0 m-0 col-lg-12 custom-select selectBoard_change" name="select_board" required="true">
-					<?php //foreach ($board as $bo): 
-					?>
-					<option value="<?= $this->session->userdata('board_name') ?>" selected><?= $this->session->userdata('board_name') ?></option>
-					<?php //endforeach; 
-					?>
-				</select>
-			</div>
+
 			<div class="col-lg-2">
 				<select id="select_publication" class="p-0 m-0 col-lg-12 custom-select" name="select_publication" required="true">
 					<?php foreach ($publication as $pub) : ?>
@@ -75,16 +61,14 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
-			<?php if ($this->session->userdata('type') == 'Teacher') { ?>
-				<div class="col-lg-2">
-					<select id="mainSubject" class="p-0 m-0 col-lg-12 custom-select" name="mainSubject" required="true">
-						<!-- <option value="">Select Subject</option> -->
-						<?php foreach ($selectable_subjects as $msub) : ?>
-							<option value="<?= $msub->id ?>" <?= $msub->id == $this->session->userdata('main_subject') ? ' selected="selected"' : ''; ?>><?= $msub->name ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
-			<?php } ?>
+			<div class="col-lg-2">
+				<select id="mainSubject" class="p-0 m-0 col-lg-12 custom-select" name="mainSubject" required="true">
+					<!-- <option value="">Select Subject</option> -->
+					<?php foreach ($selectable_subjects as $msub) : ?>
+						<option value="<?= $msub->id ?>" <?= $msub->id == $this->session->userdata('main_subject') ? ' selected="selected"' : ''; ?>><?= $msub->name ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
 			<?php if ($this->session->userdata('type') == 'Student') { ?>
 				<div class="col-lg-2">
 					<select id="select_classes" class="p-0 m-0 col-lg-12 custom-select" name="select_classes" required="true">
@@ -120,18 +104,6 @@
 						<?php endforeach; ?>
 					</select>
 				<?php } ?>
-				<?php if ($this->session->userdata('type') == 'Student') { ?>
-					<select id="select_msubject" class="p-0 m-0 col-lg-12 custom-select" name="select_msubject" required="true">
-
-
-						<?php foreach ($msubject as $cl) : ?>
-
-							<option value="<?= $cl->id ?>" selected><?= $cl->name ?></option>
-
-						<?php endforeach; ?>
-
-					</select>
-				<?php } ?>
 			</div>
 
 			<div class="col-lg-1">
@@ -156,7 +128,7 @@
 
 								if ($cat->allow == 'Both' || $cat->allow == $userdata['type']) {
 							?>
-									<li class="p-2 my-1 card col-5" id="active<?= $cat->id ?>" style="border-radius:0.5rem">
+									<li class="p-2 my-1 card col-5 <?= $this->session->userdata('category') == $cat->id ? 'active' : '' ?>" id="active<?= $cat->id ?>" style="border-radius:0.5rem">
 										<a tab_id="<?= $cat->id ?>" class="new-search"><img src="<?= base_url('assets/cat_icons/' . $cat->icon) ?>" alt=""><?= $cat->name ?></a>
 									</li>
 							<?php
@@ -177,7 +149,7 @@
 
 								if ($cat->allow == 'Both' or $cat->allow == $userdata['type']) {
 							?>
-									<li class="p-2 my-1 card col-5" id="active<?= $cat->id ?>" style="border-radius:0.5rem">
+									<li class="p-2 my-1 card col-5 <?= $this->session->userdata('category') == $cat->id ? 'active' : '' ?>" id="active<?= $cat->id ?>" style="border-radius:0.5rem">
 										<a tab_id="<?= $cat->id ?>" class="new-search"><img src="<?= base_url('assets/cat_icons/' . $cat->icon) ?>" alt=""><?= $cat->name ?></a>
 									</li>
 							<?php

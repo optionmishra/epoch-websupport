@@ -71,8 +71,8 @@ class Web extends CI_Controller
 
 	public function logout()
 	{
-		$this->session->unset_userdata('username');
-		header("location:" . base_url());
+		$this->session->sess_destroy();
+		return redirect("/");
 	}
 
 	public function process()
@@ -120,7 +120,7 @@ class Web extends CI_Controller
 			'user' => $this->WebModel->Webuser(),
 			'siteName' => $this->siteName,
 			#mod
-			'selectable_subjects' => $this->AuthModel->msubject_mod($this->WebModel->Webuser()[0]->subject),
+			'selectable_subjects' => $this->AuthModel->msubject_mod(),
 			'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject')),
 			'selectable_books' => $this->AuthModel->selectable_books($this->session->userdata('main_subject'), $this->session->userdata('classes')),
 			'selectable_categories' => $this->AuthModel->get_categories($this->session->userdata('selected_book')),

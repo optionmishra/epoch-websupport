@@ -2390,6 +2390,109 @@ class Admin_master extends CI_Controller
 		}
 	}
 
+	function simpleStudentRegistration()
+	{
+		$email = $this->input->post('email');
+		$password = $this->input->post('password');
+		$check = $this->WebModel->validate_email($email);
+		if (!empty($check)) {
+			$this->session->set_flashdata('error', 'Email ID is already in Use.');
+			return redirect(base_url('student-registration'));
+		}
+
+		$res = $this->db->insert('web_user', [
+			'fullname' => $this->input->post('name'),
+			'mobile' => $this->input->post('mobile'),
+			'email' => $email,
+			'password' => $this->input->post('password'),
+			'classes' => $this->input->post('class'),
+			'status' => 1,
+			'user_type' => 'Student',
+		]);
+
+		$data = [
+			'user' => $email,
+			'password' => $password,
+			'fullname' => $this->input->post('name'),
+			'logo' => $this->AuthModel->content_row('Logo'),
+			'mobile1' => $this->AuthModel->content_row('Mobile1'),
+			'siteName' => $this->siteName,
+			'email' => $this->siteEmail
+		];
+
+		$this->sendRegistrationEmail($data);
+
+		if (!$res) {
+			$this->session->set_flashdata('error', 'Something is wrong! Your are not registerd');
+			return redirect(base_url('student-registration'));
+		} else {
+			$login = $this->AuthModel->validate_web($email, $password);
+			if ($login) return redirect(base_url('dashboard'));
+			$this->session->set_flashdata('error', 'Something went wrong!');
+			return redirect(base_url('student-registration'));
+		}
+	}
+
+
+	function simpleTeacherRegistration()
+	{
+		$email = $this->input->post('email');
+		$password = $this->input->post('password');
+		$check = $this->WebModel->validate_email($email);
+		if (!empty($check)) {
+			$this->session->set_flashdata('error', 'Email ID is already in Use.');
+			return redirect(base_url('/teacher-registration'));
+		}
+		$res = $this->db->insert('web_user', [
+			'fullname' => $this->input->post('name'),
+			'mobile' => $this->input->post('mobile'),
+			'email' => $email,
+			'password' => $this->input->post('password'),
+			'status' => 1,
+			'user_type' => 'Teacher',
+		]);
+
+		$data = [
+			'user' => $email,
+			'password' => $password,
+			'fullname' => $this->input->post('name'),
+			'logo' => $this->AuthModel->content_row('Logo'),
+			'mobile1' => $this->AuthModel->content_row('Mobile1'),
+			'siteName' => $this->siteName,
+			'email' => $this->siteEmail
+		];
+
+		$this->sendRegistrationEmail($data);
+
+		if (!$res) {
+			$this->session->set_flashdata('error', 'Something is wrong! Your are not registerd');
+			redirect('' . '/teacher-registration');
+		} else {
+			$login = $this->AuthModel->validate_web($email, $password);
+			if ($login) return redirect(base_url('dashboard'));
+			$this->session->set_flashdata('error', 'Something went wrong!');
+			return redirect(base_url('teacher-registration'));
+		}
+	}
+
+	function sendRegistrationEmail($data)
+	{
+		$config = array(
+			'charset' => 'utf-8',
+			'wordwrap' => TRUE,
+			'mailtype' => 'html'
+		);
+
+		$this->email->initialize($config);
+		$this->email->to($email);
+		$this->email->from($this->siteEmail, $this->siteName);
+		$this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
+		$this->email->subject('Your Credentials for ' . $this->siteName . ' Web Support');
+		$this->email->message($this->load->view('web/email_template', $data, true));
+		$this->email->send();
+	}
+
+
 	public function process()
 	{
 		$username = $this->input->post('username');
@@ -2408,7 +2511,7 @@ class Admin_master extends CI_Controller
 		$selectedPublication = $this->input->post('select_publication');
 		$selectedClasses = $this->input->post('select_classes');
 		$selectedMainSubject = $this->input->post('mainSubject');
-		$selectedBook = $this->input->post('select_msubject');
+		$selectedBook = $this->input->post('select_msubject') ? $this->input->post('select_msubject') : $this->AuthModel->selectable_books($selectedMainSubject, $selectedClasses)[0]->id;
 
 		$this->session->set_userdata('board', $selectedBoard);
 		$this->session->set_userdata('publication', $selectedPublication);
@@ -3036,7 +3139,7 @@ class Admin_master extends CI_Controller
 			}
 			$classesArr = array_unique($classesArr);
 		}
-		$this->db->or_where_in('id', $classesArr);
+		if ($classes_array) $this->db->or_where_in('id', $classesArr);
 		$this->db->order_by('class_position', 'ASC');
 		$classes = $this->db->get('classes')->result();
 		return $this->output

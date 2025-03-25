@@ -347,11 +347,10 @@ class AuthModel extends CI_Model
 		$user = $this->db->get('web_user')->row();
 		if (!$user) return false;
 
-		$sid = explode(',', $user->subject)[0];
-		$selected_book = $this->selectable_books($sid, $user->classes)[0];
-		$category = $this->get_categories($selected_book->id)[0];
-		$class = $this->get_class($user->classes);
-		$main_subject = explode(',', $user->subject)[0];
+		$main_subject = $user->subject ? explode(',', $user->subject)[0] : $this->msubject_mod()[0]->id;
+		$selected_class = $this->selectable_classes($main_subject)[0];
+		$selected_book = $this->selectable_books($main_subject, $selected_class->id)[0];
+		$selected_category = $this->get_categories($selected_book->id)[0];
 
 		if ($user) {
 			$this->session->set_userdata('username', $username);
@@ -360,25 +359,21 @@ class AuthModel extends CI_Model
 			$this->session->set_userdata('type', $user->user_type);
 			$this->session->set_userdata('publication', $publication->id);
 			$this->session->set_userdata('board_name', $user->board_name);
-			$this->session->set_userdata('category', $category->id);
-			$this->session->set_userdata('category_name', $category->name);
+			$this->session->set_userdata('category', $selected_category->id);
+			$this->session->set_userdata('category_name', $selected_category->name);
+			$this->session->set_userdata('main_subject', $main_subject);
+			$this->session->set_userdata('classes', $selected_class->id);
+			$this->session->set_userdata('class_name', $selected_class->name);
 			// $this->session->set_userdata('school_name', $user->school_name);
 			// $this->session->set_userdata('status', $user->status);
 			if ($user->user_type == 'Student') {
-				$this->session->set_userdata('classes', $user->classes);
-				$this->session->set_userdata('class_name', $class->name);
 				$this->session->set_userdata('section', $user->class_section);
 				$this->session->set_userdata('stu_teacher_code', $user->stu_teacher_id);
-				$this->session->set_userdata('main_subject', $user->subject);
 				$this->session->set_userdata('publication_name', $publication->name);
 			} elseif ($user->user_type == 'Teacher') {
 				$this->session->set_userdata('teacher_classess', $user->classes);
 				$this->session->set_userdata('teacher_code', $user->teacher_code);
-				$this->session->set_userdata('main_subject', $main_subject);
 				$this->session->set_userdata('publication_name', $publication->name);
-				$classes = $this->classesx()[0];
-				$this->session->set_userdata('classes', $classes->id);
-				$this->session->set_userdata('class_name', $classes->name);
 				$this->session->set_userdata('selected_book', $selected_book->id);
 			}
 			return true;
@@ -1087,11 +1082,13 @@ class AuthModel extends CI_Model
 		return $res;
 	}
 	// above function modified for to get list of subjects a teacher has taken
-	function msubject_mod($id)
+	function msubject_mod($id = null)
 	{
-		$sub_ids = explode(',', $id);
+		if (!empty($id)) {
+			$sub_ids = explode(',', $id);
+			$this->db->or_where_in('id', $sub_ids);
+		}
 		$this->db->order_by('serial', 'asc');
-		$this->db->or_where_in('id', $sub_ids);
 		$res = $this->db->get('main_subject')->result();
 		return $res;
 	}
@@ -1740,7 +1737,7 @@ class AuthModel extends CI_Model
 		} else {
 			$board = array('3');
 		}
-		$this->db->or_where_in('board', $board);
+		// $this->db->or_where_in('board', $board);
 		$this->db->where('publication', $this->session->userdata('publication'));
 		$this->db->where('classes', $this->session->userdata('classes'));
 		$this->db->where('msubject', $this->session->userdata('main_subject'));
@@ -1748,7 +1745,7 @@ class AuthModel extends CI_Model
 		$this->db->where('subject', $this->session->userdata('selected_book'));
 		$query = $this->db->get('websupport')->result();
 
-		//echo $this->db->last_query();
+		// echo $this->db->last_query();
 		return $query;
 	}
 
@@ -1895,34 +1892,20 @@ class AuthModel extends CI_Model
 		$this->db->where('email', $this->session->userdata('username'));
 		$user_row = $this->db->get('web_user')->row();
 		if (!$user_row->series_classes) {
-			// return user classes if user doesn't have series classes in new format
-			$classesArr = explode(',', $user_row->classes);
+			// $classesArr = explode(',', $user_row->classes);
+			$this->db->where('id', $msubject_id);
+			$mSub = $this->db->get('main_subject')->row();
+			$classesArr = explode(',', $mSub->classes);
 		} else {
-			// return user series classes if user has series classes in new format
 			$series_classes =  unserialize($user_row->series_classes);
-			// echo '<pre>', var_dump($series_classes), '</pre><br>';
-			// exit;
 
 			$classesArr = array();
 			foreach ($series_classes[$msubject_id] as $classes_array) {
-				// echo '<pre>', var_dump($classes_array), '</pre><br>';
-				// exit;
 				$classesArr = array_merge($classesArr, $classes_array);
 			}
 			$classesArr = array_unique($classesArr);
 		}
-		// $classesArr = explode(',', $this->db->get('main_subject')->row()->classes);
-		// $this->db->or_where_in('id', $classesArr);
-		// $res = $this->db->get('classes')->result();
-		// return $res;
-		// } else {
-		// 	// return all classes of selected subject
-		// 	$this->db->where('id', $msubject_id);
-		// 	$classesArr = explode(',', $this->db->get('main_subject')->row()->classes);
-		// }
-		// echo '<pre>', var_dump($classesArr), '</pre>';
-		// exit;
-		$this->db->or_where_in('id', $classesArr);
+		if ($classesArr) $this->db->or_where_in('id', $classesArr);
 		$this->db->order_by('class_position', 'ASC');
 		$res = $this->db->get('classes')->result();
 		return $res;
