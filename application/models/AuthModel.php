@@ -351,7 +351,7 @@ class AuthModel extends CI_Model
 		$selected_class = $this->selectable_classes($main_subject)[0]->id;
 		$selected_class_name = $this->selectable_classes($main_subject)[0]->name;
 		$selected_book = $this->selectable_books($main_subject, $selected_class)[0];
-		$category = $this->get_categories($selected_book->id)[0];
+		$category = $this->get_categories($selected_book->id, $username)[0];
 		$class = $this->get_class($user->classes);
 
 		if ($user) {
@@ -1968,11 +1968,24 @@ class AuthModel extends CI_Model
 		return $res;
 	}
 
-	function get_categories($id)
+	function get_categories($id, $username = null)
 	{
 		$this->db->where('id', $id);
 		$cat = $this->db->get('subject')->row()->categories;
-		$this->db->or_where_in('id', explode(',', $cat));
+
+		// Get user data - assuming it's available globally or passed as a parameter
+		// If not globally available, you might need to add it as a parameter to this function
+		$userdata = $this->session->userdata(); // Adjust this based on how you store user data
+
+		if (isset($userdata['username']) && $userdata['username'] == 'bookorama.customercare@gmail.com' || $username == 'bookorama.customercare@gmail.com') {
+			// For bookorama user: Get category IDs, then filter to only include 'Flip Book'
+			$this->db->where_in('id', explode(',', $cat));
+			$this->db->where('name', 'Flip Book');
+		} else {
+			// For all other users: Get categories as before
+			$this->db->where_in('id', explode(',', $cat));
+		}
+
 		// $this->db->or_where_in('allow', ['Both', 'Teacher']);
 		// $this->db->order_by('orderb', 'asc');
 		$res = $this->db->get('category')->result();
