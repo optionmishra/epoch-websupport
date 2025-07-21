@@ -64,7 +64,7 @@ class Admin_master extends CI_Controller
 		}
 	}
 
-	// User start 
+	// User start
 	function users()
 	{
 		$res = $this->AuthModel->user();
@@ -444,7 +444,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End User
-	// User start 
+	// User start
 	function conts()
 	{
 		$res = $this->AuthModel->cont();
@@ -527,7 +527,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Content
-	// Permission start 
+	// Permission start
 	function permissions()
 	{
 		$res = $this->AuthModel->permission();
@@ -578,7 +578,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Permission
-	// State start 
+	// State start
 	function states()
 	{
 		$res = $this->AuthModel->stated();
@@ -631,7 +631,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End state
-	// Web User start 
+	// Web User start
 	function webu()
 	{
 		$res = $this->AuthModel->webu();
@@ -769,7 +769,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Web Support User
-	// Board start 
+	// Board start
 
 	// start cities
 	function cities()
@@ -848,7 +848,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Board
-	// Publication start 
+	// Publication start
 	function publications()
 	{
 		$res = $this->AuthModel->publication();
@@ -923,7 +923,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Publication
-	// Category start 
+	// Category start
 	function categorys()
 	{
 		$res = $this->AuthModel->category();
@@ -946,7 +946,7 @@ class Admin_master extends CI_Controller
 			// icon file upload
 			$file_name = $this->input->post('name') . '_' . date('ymd-hisa');
 			$config['upload_path'] = 'assets/cat_icons';
-			$config['allowed_types'] = 'png|jpg';
+			$config['allowed_types'] = 'png|jpg|jpeg';
 			$config['max_size'] = 2048;
 			$config['file_name'] = $file_name;
 
@@ -959,7 +959,7 @@ class Admin_master extends CI_Controller
 					$upload_data = array('upload_data' => $this->upload->data());
 				}
 			}
-			// 
+			//
 			$data = [
 				'name' => $this->input->post('name'),
 				'allow' => $this->input->post('allow'),
@@ -1232,7 +1232,7 @@ class Admin_master extends CI_Controller
 
 
 
-	// Main Subject start 
+	// Main Subject start
 	function msubjects()
 	{
 		$res = $this->AuthModel->msubject();
@@ -1315,7 +1315,7 @@ class Admin_master extends CI_Controller
 	}
 
 	// End Main Subject
-	// Subject start 
+	// Subject start
 	function subjects()
 	{
 		$res = $this->AuthModel->subjectr();
@@ -1673,7 +1673,7 @@ class Admin_master extends CI_Controller
 					];
 				}
 				$res = $this->AuthModel->paper_submision($data);
-				// 
+				//
 				$obtained_marks += (int)$data['ans_marks'];
 				$total_marks += $objective_question->marks;
 			}
@@ -1878,7 +1878,7 @@ class Admin_master extends CI_Controller
 
 	// class Section End
 
-	// Classes start 
+	// Classes start
 	function classess()
 	{
 		$res = $this->AuthModel->classes();
@@ -2558,7 +2558,7 @@ class Admin_master extends CI_Controller
 					<input type="checkbox" class="form-control-custom ss" id="student_subject_';
 			$dd .= $sub->id;
 
-			$dd .= '" name="subject[]" value="' . $sub->id . '"> 
+			$dd .= '" name="subject[]" value="' . $sub->id . '">
 					<label class="form-check-label" for="student_subject_';
 			$dd .= $sub->id;
 			$dd .= '">';
@@ -2627,7 +2627,7 @@ class Admin_master extends CI_Controller
 			$dd .= ' class="form-control-custom ss" id="student_subject_';
 			$dd .= $sub->id;
 
-			$dd .= '" name="subject[]" value="' . $sub->id . '"> 
+			$dd .= '" name="subject[]" value="' . $sub->id . '">
 					<label class="form-check-label" for="student_subject_';
 			$dd .= $sub->id;
 			$dd .= '">';
@@ -2662,7 +2662,7 @@ class Admin_master extends CI_Controller
 			$dd .= ' class="form-control-custom ss" id="student_subject_';
 			$dd .= $sub->id;
 
-			$dd .= '" name="subject[]" value="' . $sub->id . '"> 
+			$dd .= '" name="subject[]" value="' . $sub->id . '">
 					<label class="form-check-label" for="student_subject_';
 			$dd .= $sub->id;
 			$dd .= '">';
@@ -3073,7 +3073,7 @@ class Admin_master extends CI_Controller
 
 	function upload_questions()
 	{
-		$file_name = date('ymd-hisa'); /// $this->WebModel->Webuser()[0]->teacher_code . '_' . 
+		$file_name = date('ymd-hisa'); /// $this->WebModel->Webuser()[0]->teacher_code . '_' .
 		$config['upload_path'] = 'assets/question_files';
 		$config['allowed_types'] = 'csv';
 		$config['max_size'] = 10240;
