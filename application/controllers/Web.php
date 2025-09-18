@@ -937,10 +937,42 @@ class Web extends CI_Controller
 		if (!$res) {
 			$status = $this->session->userdata('status');
 			$this->session->set_flashdata('error', 'Sorry! Email or Password is incorrect');
-			redirect();
+			return redirect();
 		} else {
 			$this->session->set_flashdata('login_type', 'auto');
-			header("location:" . base_url() . 'dashboard');
+			return header("location:" . base_url() . 'dashboard');
 		}
+	}
+
+	public function online_tpg(){
+			$data = [
+				'title' => 'Panel Home',
+				'page' => 'Home',
+				'msg' => $msg,
+				'logo' => $this->AuthModel->content_row('Logo'),
+				'logo1' => $this->AuthModel->content_row('Logo_index'),
+				'footer_logo' => $this->AuthModel->content_row('Logo Footer 2'),
+				'mobile1' => $this->AuthModel->content('Mobile1'),
+				'mobile2' => $this->AuthModel->content('Mobile2'),
+				'email1' => $this->AuthModel->content('Email1'),
+				'email2' => $this->AuthModel->content('Email2'),
+				'address' => $this->AuthModel->content('Address'),
+				// 'address_row' => $this->AuthModel->content_row('Address'),
+				'copyright' => $this->AuthModel->content('Copyright'),
+				'count' => $this->AuthModel->state(),
+				'subject' => $this->AuthModel->subject(),
+				'msubject' => $this->AuthModel->msubject(),
+				'classes' => $this->AuthModel->classes(),
+				'siteName' => $this->siteName,
+				#mod
+				'online_tpg_books' => $this->AuthModel->online_tpg(),
+			];
+			// $this->load->view('globals/web/header_home', $data);
+			// $this->load->view('web/index', $data);
+			// $this->load->view('globals/revamp/footer', $data);
+
+			$this->load->view('globals/web/header_tpg', $data);
+			$this->load->view('web/online_tpg', $data);
+			$this->load->view('globals/web/footer_home', $data);
 	}
 }
