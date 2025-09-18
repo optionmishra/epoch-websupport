@@ -12,8 +12,6 @@
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/layout-style.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/custom_tpg.css">
-    <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css1/font-awesome.min.css"/>-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/fonts.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -144,6 +142,11 @@
             background: url('assets/img/hero-bg.jpg') no-repeat fixed center;
             background-size: cover;
         } */
+        .wrapper {
+          padding: 0rem 3rem 3rem 3rem;
+          min-height: 100%;
+          height: unset;
+        }
     </style>
 
 </head>
