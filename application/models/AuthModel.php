@@ -528,7 +528,7 @@ class AuthModel extends CI_Model
 		}
 	}
 
-	// User Start  
+	// User Start
 
 	function user($id = null)
 	{
@@ -913,7 +913,7 @@ class AuthModel extends CI_Model
 
 	// state End
 
-	// Web User Start  
+	// Web User Start
 
 	function webu($id = null)
 	{
@@ -1948,7 +1948,7 @@ class AuthModel extends CI_Model
 		$this->db->where(['sid' => $sid, 'class' => $class_ID]);
 		$res = $this->db->get('subject')->result();
 		// $res = explode(',', $this->db->get('main_subject')->row()->classes);
-		// 
+		//
 		return $res;
 	}
 
@@ -2222,5 +2222,18 @@ class AuthModel extends CI_Model
 		// MOD
 		$res = $this->db->get()->result();
 		return $res;
+	}
+
+	function online_tpg_index()
+	{
+    	$this->db->select('tpg_class_books.*, main_subject.name as subject_name, subject.name as name, series.name as series_name');
+    	$this->db->from('tpg_class_books');
+    	$this->db->join('subject', 'tpg_class_books.book_id = subject.id');
+    	$this->db->join('main_subject', 'subject.sid = main_subject.id');
+    	$this->db->join('series', 'subject.series_id = series.id');
+    	$this->db->order_by('series_name', 'asc');
+    	$this->db->order_by('class_id', 'asc');
+    	$res = $this->db->get()->result();
+    	return $res;
 	}
 }

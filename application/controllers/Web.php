@@ -965,7 +965,7 @@ class Web extends CI_Controller
 				'classes' => $this->AuthModel->classes(),
 				'siteName' => $this->siteName,
 				#mod
-				'online_tpg_books' => $this->AuthModel->online_tpg(),
+				'online_tpg_books' => $this->AuthModel->online_tpg_index(),
 			];
 			// $this->load->view('globals/web/header_home', $data);
 			// $this->load->view('web/index', $data);
