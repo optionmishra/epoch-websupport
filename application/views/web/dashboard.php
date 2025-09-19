@@ -62,11 +62,11 @@
 			<div class="col-lg-1">
 				<select id="select_board" class="p-0 m-0 col-lg-12 custom-select selectBoard_change" name="select_board"
 						required="true">
-					<?php //foreach ($board as $bo): 
+					<?php //foreach ($board as $bo):
 					?>
 					<option value="<?= $this->session->userdata('board_name') ?>"
 							selected><?= $this->session->userdata('board_name') ?></option>
-					<?php //endforeach; 
+					<?php //endforeach;
 					?>
 				</select>
 			</div>
@@ -78,7 +78,6 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
-			<?php if ($this->session->userdata('type') == 'Teacher') { ?>
 				<div class="col-lg-2">
 					<select id="mainSubject" class="p-0 m-0 col-lg-12 custom-select" name="mainSubject" required="true">
 						<!-- <option value="">Select Subject</option> -->
@@ -88,22 +87,6 @@
 						<?php endforeach; ?>
 					</select>
 				</div>
-			<?php } ?>
-			<?php if ($this->session->userdata('type') == 'Student') { ?>
-				<div class="col-lg-2">
-					<select id="select_classes" class="p-0 m-0 col-lg-12 custom-select" name="select_classes"
-							required="true">
-
-						<?php foreach ($selectable_classes as $class) : ?>
-							<?php if ($class->id == $this->session->userdata('classes')) : ?>
-								<option value="<?= $class->id ?>" selected="selected"><?= $class->name ?></option>
-							<?php endif; ?>
-						<?php endforeach; ?>
-
-					</select>
-				</div>
-			<?php } ?>
-			<?php if ($this->session->userdata('type') == 'Teacher') { ?>
 				<div class="col-lg-2">
 					<select id="select_classes" class="p-0 m-0 col-lg-12 custom-select teacherClasses"
 							name="select_classes" required="true">
@@ -114,12 +97,10 @@
 					</select>
 				</div>
 
-			<?php } ?>
 
 			<input type="text" class="d-none" value="<?= $this->session->userdata('msubject') ?>" id="msub_d"
 				   required="true"/>
 			<div class="col-lg-3">
-				<?php if ($this->session->userdata('type') == 'Teacher') { ?>
 					<select id="select_msubject" class="p-0 m-0 col-lg-12 custom-select teacherMsubject"
 							name="select_msubject" required="true">
 						<?php foreach ($selectable_books as $book) : ?>
@@ -129,20 +110,6 @@
 
 						<?php endforeach; ?>
 					</select>
-				<?php } ?>
-				<?php if ($this->session->userdata('type') == 'Student') { ?>
-					<select id="select_msubject" class="p-0 m-0 col-lg-12 custom-select" name="select_msubject"
-							required="true">
-
-
-						<?php foreach ($msubject as $cl) : ?>
-
-							<option value="<?= $cl->id ?>" selected><?= $cl->name ?></option>
-
-						<?php endforeach; ?>
-
-					</select>
-				<?php } ?>
 			</div>
 
 			<div class="col-lg-1">
@@ -315,20 +282,20 @@
                                     <div class="p-3 m-0 col-lg-12 middle-con">
                                         <img src="assets/img/download2.png">
                                     </div>
-                                    <div class="p-2 m-0 col-lg-12 bottom-con"> 
-                                        <h4><?= $def->title ?></h4> 
+                                    <div class="p-2 m-0 col-lg-12 bottom-con">
+                                        <h4><?= $def->title ?></h4>
                                         <h6>Class <?= $def->classes ?></h6>
                                     </div>
-									
-                                </div> 
+
+                                </div>
                             </a>
-							
+
                         </div>
 						<?php if ($this->session->userdata('category_name') == 'Test Paper Generator') { ?>
 						<div class="p-2 m-0 col-lg-2" style="background: greenyellow; height: 42px; text-align: center; top: 7px; font-size: 14px;">
-						
+
 						<a href="<?php echo base_url(); ?>query/teacher-question" target="_blank" style="color: #444;font-weight: 600;">Submit Your Question</a>
-						
+
 						</div>
 						<?php } ?>
                     <?php endforeach;
