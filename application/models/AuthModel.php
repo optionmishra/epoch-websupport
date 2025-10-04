@@ -2079,12 +2079,8 @@ class AuthModel extends CI_Model
 
             // Check if there are series classes defined for the given main subject
             if (isset($series_classes_data[$msubject_id]) && is_array($series_classes_data[$msubject_id])) {
-                foreach ($series_classes_data[$msubject_id] as $series_entry) {
-                    // Each $series_entry is expected to be an array like [series_id, [class_id1, class_id2, ...]]
-                    // We need the array of class IDs, which is expected at index 1.
-                    if (is_array($series_entry) && isset($series_entry[1]) && is_array($series_entry[1])) {
-                        $classesArr = array_merge($classesArr, $series_entry[1]);
-                    }
+                foreach ($series_classes_data[$msubject_id] as $classes_array) {
+                        $classesArr = array_merge($classesArr, $classes_array);
                 }
                 $classesArr = array_unique($classesArr);
             }
