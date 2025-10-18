@@ -69,10 +69,16 @@ class Web extends CI_Controller
 		}
 	}
 
-	public function logout()
+	/**
+		* Logs out the current user by destroying the session and redirecting to the base URL.
+		*
+		* @return void
+		*/
+	public function logout(): void
 	{
-		$this->session->unset_userdata('username');
+		$this->session->sess_destroy(); // Destroy the entire session for a complete logout
 		header("location:" . base_url());
+		exit(); // It's good practice to exit after a header redirect
 	}
 
 	public function process()
@@ -127,7 +133,7 @@ class Web extends CI_Controller
 			'online_tpgs' => $this->AuthModel->online_tpg(),
 		];
 		// echo '<pre>', var_dump($this->session->userdata()), '</pre>';
-		// echo '<pre>', var_dump($data['default']), '</pre>';
+		// echo '<pre>', var_dump($data['selectable_books'][0]->id), '</pre>';
 		// echo '<pre>', var_dump(empty($data['default'])), '</pre>';
 		// echo '<pre>', var_dump(isset($data['default'])), '</pre>';
 		// exit();
