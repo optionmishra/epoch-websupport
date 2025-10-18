@@ -10,28 +10,28 @@
     </div>
     <div class="row">
         <div class="col-lg-12 p-4">
-            <div class="card" style="width: 1786px;">
+            <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12 p-2">
-                            <div class="table-responsive">							
-							</div>
+                            <div class="table-responsive">
                                 <table class="table w-100 table-bordered webuTables">
                                     <thead>
                                          <tr>
                                             <th>#</th>
                                             <th>Full Name</th>
-                                            <th>Mobile</th> 
+                                            <th>Mobile</th>
 											<th>Email</th>
 											<th>Password</th>
                                             <th>Pin Code</th>
-                                            <th>Address</th> 
+                                            <th>Address</th>
                                             <th>State</th>
                                             <th>City</th>
                                             <th>Class</th>
+                                            <th>Subjects</th>
                                             <th>Teacher Code</th>
                                             <th>Board</th>
-											<th>Subscribed Board</th>   										
+											<th>Subscribed Board</th>
                                             <th>Date Registered</th>
                                             <th>Status</th>
                                             <th>Action</th>
@@ -97,7 +97,20 @@
                                     <input type="text" class="form-control" id="webu_city" name="city">
                                 </div>
                             </div>
-                            
+                            <div class="col-lg-12 p-2">
+                                <div class="form-group">
+                                    <label for="webu_subjects">Subjects</label>
+                                    <div class="form-check webu-subjects">
+                                    <?php foreach($subjects as $subject): ?>
+                                        <input class="form-check-input" type="checkbox" name="subject[]" value="<?php echo $subject->id; ?>" id="webu_subject_<?php echo $subject->id; ?>">
+                                        <label class="form-check-label" for="webu_subject_<?php echo $subject->id; ?>">
+                                            <?php echo $subject->name; ?>
+                                        </label><br>
+                                    <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer col-lg-12">
                             <button  class="btn btn-danger float-right" data-dismiss="modal">Cancel</button>
@@ -108,7 +121,3 @@
             </div>
         </div>
 </main>
-
-
-
-

@@ -632,18 +632,20 @@ class Admin_master extends CI_Controller
 
 	// End state
 	// Web User start
-	function webu()
+	public function webu()
 	{
 		$res = $this->AuthModel->webu();
 		$i = 1;
 		foreach ($res as $key => &$value) {
 			$value->sr_no = $i;
 			if ($value->status == '1') {
-				$active = "Active";
+				$active = 'Active';
 			} else {
-				$active = "Inactive";
+				$active = 'Inactive';
 			}
-
+			$subject_data = $this->AuthModel->msubject_mod($value->subject);
+			$subject_names = array_column($subject_data, 'name');
+			$value->subjects = implode(',', $subject_names);
 			$value->status = $active;
 			$value->action = "<a webu_id='" . $value->id . "' class='pr-2 pointer edit-webu' data-toggle='modal' data-target='#edit-webu'><i class='fa fa-edit'></i></a>"
 				. "<a webu_id='" . $value->id . "' title='Block' class='pr-2 pointer status_webu'><i class='fa fa-times text-danger'></i></a>"
@@ -732,7 +734,7 @@ class Admin_master extends CI_Controller
 		$this->message('success', 'User UnBlock Successfully....');
 	}
 
-	function update_webu()
+	public function update_webu()
 	{
 		if ($this->permission->is_allow('Update Web Support User')) {
 			$id = $this->input->post('id');
@@ -742,10 +744,11 @@ class Admin_master extends CI_Controller
 				'mobile' => $this->input->post('mobile'),
 				'email' => $this->input->post('email'),
 				'address' => $this->input->post('address'),
-				'city' => $this->input->post('city')
+				'city' => $this->input->post('city'),
+				'subject' => implode(',', $this->input->post('subject')),
 			];
 			$res = $this->AuthModel->update_webu($details, $id);
-			if (!$res) {
+			if (! $res) {
 				$this->message('error', $this->AuthModel->error);
 			}
 			$this->message('success', $this->input->post('name') . ' User Update Successfully....');
@@ -2173,15 +2176,15 @@ class Admin_master extends CI_Controller
 	{
 		$check = $this->WebModel->validate_email($this->input->post('email'));
 
-		if (!empty($check)) {
-			$this->session->set_flashdata('error', 'Email ID in already Use.');
+		if (! empty($check)) {
+			$this->session->set_flashdata('error', 'Email ID already in use.');
 			redirect('' . '/student-registration');
 		} else {
 
 			$teacher_code = $this->input->post('stu_teacher_id');
 			$check_tu = $this->WebModel->validate_student_mod($teacher_code);
 			if (empty($check_tu)) {
-				$this->session->set_flashdata('error', 'Teacher Code is Not Valid!!');
+				$this->session->set_flashdata('error', 'Invalid Teacher Code!');
 				redirect('' . '/student-registration');
 			} elseif ($check_tu === 'limit_exhausted') {
 				$this->session->set_flashdata('error', 'Teacher Code has reached its limit!!');
