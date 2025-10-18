@@ -1,10 +1,12 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+if (! defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 class DataTableModel extends CI_Model
 {
-
-    function __construct()
+    public function __construct()
     {
         // Set table name
         $this->table = 'websupport_downloads_tracking';
@@ -27,6 +29,7 @@ class DataTableModel extends CI_Model
             $this->db->limit($postData['length'], $postData['start']);
         }
         $query = $this->db->get();
+
         return $query->result();
     }
 
@@ -47,6 +50,7 @@ class DataTableModel extends CI_Model
     public function countAll()
     {
         $this->db->from($this->table);
+
         return $this->db->count_all_results();
     }
 
@@ -59,6 +63,7 @@ class DataTableModel extends CI_Model
     {
         $this->_get_datatables_query($postData);
         $query = $this->db->get();
+
         return $query->num_rows();
     }
 
@@ -67,8 +72,7 @@ class DataTableModel extends CI_Model
      * @param $_POST filter data based on the posted parameters
      */
 
-
-    function recently_downloaded()
+    public function recently_downloaded()
     {
         $this->db->select(['title', 'email', 'fullname']);
         $this->db->select('websupport.subject as websupport_subject');
@@ -77,7 +81,7 @@ class DataTableModel extends CI_Model
         $this->db->join('web_user', 'web_user.id = websupport_downloads_tracking.user_id');
     }
 
-    function category_wise_download_data($cat_id)
+    public function category_wise_download_data($cat_id)
     {
         $this->db->select(['title', 'email', 'fullname', 'type', 'websupport_id']);
         $this->db->select('COUNT(websupport_id) as downloads');
@@ -109,7 +113,7 @@ class DataTableModel extends CI_Model
         }
 
         $i = 0;
-        // loop searchable columns 
+        // loop searchable columns
         foreach ($this->column_search as $item) {
             // if datatable send POST for search
             if ($postData['search']['value']) {
@@ -133,7 +137,7 @@ class DataTableModel extends CI_Model
 
         if (isset($postData['order'])) {
             $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
-        } else if (isset($this->order)) {
+        } elseif (isset($this->order)) {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }

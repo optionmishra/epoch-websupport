@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   | -------------------------------------------------------------------
@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | conversion used by the Text helper
   |
  */
-$foreign_characters = array(
+$foreign_characters = [
     '/ä|æ|ǽ/' => 'ae',
     '/ö|œ/' => 'oe',
     '/ü/' => 'ue',
@@ -100,5 +100,5 @@ $foreign_characters = array(
     '/Ю/' => 'Yu',
     '/ю/' => 'yu',
     '/Я/' => 'Ya',
-    '/я/' => 'ya'
-);
+    '/я/' => 'ya',
+];

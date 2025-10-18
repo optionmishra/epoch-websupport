@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   | -------------------------------------------------------------------
@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | mobile device data. The array keys are used to identify the device
   | and the array values are used to set the actual name of the item.
  */
-$platforms = array(
+$platforms = [
     'windows nt 10.0' => 'Windows 10',
     'windows nt 6.3' => 'Windows 8.1',
     'windows nt 6.2' => 'Windows 8',
@@ -53,13 +53,12 @@ $platforms = array(
     'openbsd' => 'OpenBSD',
     'gnu' => 'GNU/Linux',
     'unix' => 'Unknown Unix OS',
-    'symbian' => 'Symbian OS'
-);
-
+    'symbian' => 'Symbian OS',
+];
 
 // The order of this array should NOT be changed. Many browsers return
 // multiple browser types so we want to identify the sub-type first.
-$browsers = array(
+$browsers = [
     'OPR' => 'Opera',
     'Flock' => 'Flock',
     'Edge' => 'Spartan',
@@ -88,25 +87,25 @@ $browsers = array(
     'amaya' => 'Amaya',
     'IBrowse' => 'IBrowse',
     'Maxthon' => 'Maxthon',
-    'Ubuntu' => 'Ubuntu Web Browser'
-);
+    'Ubuntu' => 'Ubuntu Web Browser',
+];
 
-$mobiles = array(
+$mobiles = [
     // legacy array, old values commented out
     'mobileexplorer' => 'Mobile Explorer',
-//  'openwave'			=> 'Open Wave',
-//	'opera mini'		=> 'Opera Mini',
-//	'operamini'			=> 'Opera Mini',
-//	'elaine'			=> 'Palm',
+    //  'openwave'			=> 'Open Wave',
+    //	'opera mini'		=> 'Opera Mini',
+    //	'operamini'			=> 'Opera Mini',
+    //	'elaine'			=> 'Palm',
     'palmsource' => 'Palm',
-//	'digital paths'		=> 'Palm',
-//	'avantgo'			=> 'Avantgo',
-//	'xiino'				=> 'Xiino',
+    //	'digital paths'		=> 'Palm',
+    //	'avantgo'			=> 'Avantgo',
+    //	'xiino'				=> 'Xiino',
     'palmscape' => 'Palmscape',
-//	'nokia'				=> 'Nokia',
-//	'ericsson'			=> 'Ericsson',
-//	'blackberry'		=> 'BlackBerry',
-//	'motorola'			=> 'Motorola'
+    //	'nokia'				=> 'Nokia',
+    //	'ericsson'			=> 'Ericsson',
+    //	'blackberry'		=> 'BlackBerry',
+    //	'motorola'			=> 'Motorola'
     // Phones and Manufacturers
     'motorola' => 'Motorola',
     'nokia' => 'Nokia',
@@ -183,11 +182,11 @@ $mobiles = array(
     'up.link' => 'Generic Mobile',
     'up.browser' => 'Generic Mobile',
     'smartphone' => 'Generic Mobile',
-    'cellphone' => 'Generic Mobile'
-);
+    'cellphone' => 'Generic Mobile',
+];
 
 // There are hundreds of bots but these are the most common.
-$robots = array(
+$robots = [
     'googlebot' => 'Googlebot',
     'msnbot' => 'MSNBot',
     'baiduspider' => 'Baiduspider',
@@ -206,5 +205,5 @@ $robots = array(
     'curious george' => 'Curious George',
     'ia_archiver' => 'Alexa Crawler',
     'MJ12bot' => 'Majestic-12',
-    'Uptimebot' => 'Uptimebot'
-);
+    'Uptimebot' => 'Uptimebot',
+];
