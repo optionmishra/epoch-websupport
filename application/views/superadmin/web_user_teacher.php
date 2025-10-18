@@ -25,6 +25,7 @@
                                             <th>Mobile</th>
                                             <th>Email</th>
                                             <th>Password</th>
+                                            <th>Teacher Code</th>
                                             <th>Student Limit</th>
                                             <th>Pin Code</th>
                                             <th>Address (School)</th>
@@ -40,7 +41,6 @@
                                             <th>Book</th>
                                             <th>Classes</th>
                                             <th>Date Registered</th>
-
                                         </tr>
                                     </thead>
                                 </table>

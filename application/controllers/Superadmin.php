@@ -366,6 +366,7 @@ class Superadmin extends CI_Controller
 				'row' => $this->AuthModel->user_profile(),
 				'cat' => $this->AuthModel->category(),
 				'permissions' => $this->AuthModel->permission(),
+				'subjects' => $this->AuthModel->msubject(),
 				'siteName' => $this->siteName
 			];
 			$this->load->view('globals/header', $data);
