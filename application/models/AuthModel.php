@@ -2158,8 +2158,8 @@ class AuthModel extends CI_Model
             $this->db->where_in('id', $category_ids);
         }
 
-        $this->db->or_where_in('allow', ['Both', $this->session->userdata('type')]);
-        // $this->db->order_by('orderb', 'asc');
+        $this->db->where_in('allow', ['Both', $this->session->userdata('type')]);
+        $this->db->order_by('orderb', 'asc');
         $res = $this->db->get('category')->result();
 
         return $res;
