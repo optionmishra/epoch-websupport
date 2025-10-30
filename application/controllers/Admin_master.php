@@ -50,6 +50,11 @@ class Admin_master extends CI_Controller
 
     private function upload_file($file_name, $path, $field_name)
     {
+        // Check if upload directory exists, create if it doesn't
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
         $config['upload_path'] = $path;
         $config['allowed_types'] = 'gif|jpg|png|jpeg|mp4|3gp|flv|svg|webp|wmv|ico|xlsx|doc|docx|pdf|zip|rar|ini|csv';
         $config['max_size'] = 0;
@@ -945,7 +950,14 @@ class Admin_master extends CI_Controller
         if ($this->permission->is_allow('new_category')) {
             // icon file upload
             $file_name = $this->input->post('name').'_'.date('ymd-hisa');
-            $config['upload_path'] = 'assets/cat_icons';
+            $path = 'assets/cat_icons';
+
+            // Check if upload directory exists, create if it doesn't
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            $config['upload_path'] = $path;
             $config['allowed_types'] = 'png|jpg|jpeg';
             $config['max_size'] = 2048;
             $config['file_name'] = $file_name;
@@ -982,7 +994,14 @@ class Admin_master extends CI_Controller
             $id = $this->input->post('id');
             // icon file upload
             $file_name = $this->input->post('name').'_'.date('ymd-hisa');
-            $config['upload_path'] = 'assets/cat_icons';
+            $path = 'assets/cat_icons';
+
+            // Check if upload directory exists, create if it doesn't
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            $config['upload_path'] = $path;
             $config['allowed_types'] = 'png|jpg';
             $config['max_size'] = 2048;
             $config['file_name'] = $file_name;
@@ -3128,7 +3147,14 @@ class Admin_master extends CI_Controller
     public function upload_questions()
     {
         $file_name = date('ymd-hisa'); // / $this->WebModel->Webuser()[0]->teacher_code . '_' .
-        $config['upload_path'] = 'assets/question_files';
+        $path = 'assets/question_files';
+
+        // Check if upload directory exists, create if it doesn't
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
+        $config['upload_path'] = $path;
         $config['allowed_types'] = 'csv';
         $config['max_size'] = 10240;
         $config['file_name'] = $file_name;
