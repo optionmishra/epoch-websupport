@@ -35,6 +35,8 @@ date_default_timezone_set('Asia/Kolkata');
 // }
 
 $config['base_url'] = $_ENV['PROTOCOL'].'://'.$_SERVER['HTTP_HOST'].$_ENV['BASE_URL'];
+$config['ONLINE_TPG'] = filter_var($_ENV['ONLINE_TPG'], FILTER_VALIDATE_BOOLEAN);
+$config['SIMPLE_REG'] = filter_var($_ENV['SIMPLE_REG'], FILTER_VALIDATE_BOOLEAN);
 
 /*
   |--------------------------------------------------------------------------
