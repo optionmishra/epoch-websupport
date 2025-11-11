@@ -4,26 +4,11 @@ if (! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Web extends CI_Controller
+require_once APPPATH.'controllers/BaseController.php';
+
+class Web extends BaseController
 {
     public $error;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->database();
-        $this->load->helper('url');
-        $this->load->helper('string');
-        $this->load->library('session');
-        $this->load->library('form_validation');
-        $this->load->library('Permission');
-        $this->load->helper('form');
-        $this->load->model('AuthModel');
-        $this->load->library('upload');
-        $this->load->model('WebModel');
-        $this->siteName = $_ENV['NAME'];
-        // Ckeditor's configuration
-    }
 
     public function message($type, $msg, $data = null)
     {
@@ -299,7 +284,13 @@ class Web extends CI_Controller
         ];
 
         $this->load->view('globals/web/header_reg', $data);
-        $this->load->view('web/student_registration', $data);
+
+        if ($this->config->item('SIMPLE_REG')) {
+            $this->load->view('web/simple_student_registration', $data);
+        } else {
+            $this->load->view('web/student_registration', $data);
+        }
+
         $this->load->view('globals/web/footer_reg', $data);
     }
 
@@ -326,7 +317,13 @@ class Web extends CI_Controller
         ];
 
         $this->load->view('globals/web/header_reg', $data);
-        $this->load->view('web/teacher_registration', $data);
+
+        if ($this->config->item('SIMPLE_REG')) {
+            $this->load->view('web/simple_teacher_registration', $data);
+        } else {
+            $this->load->view('web/teacher_registration', $data);
+        }
+
         $this->load->view('globals/web/footer_reg', $data);
     }
 
