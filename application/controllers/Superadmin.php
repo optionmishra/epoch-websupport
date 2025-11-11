@@ -4,21 +4,10 @@ if (! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Superadmin extends CI_Controller
-{
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->database();
-        $this->load->helper('url');
-        $this->load->library('session');
-        $this->load->library('form_validation');
-        $this->load->helper('form');
-        $this->load->model('AuthModel');
-        $this->siteName = 'SyManSys Project Management System';
-        // Ckeditor's configuration
-    }
+require_once APPPATH.'controllers/BaseController.php';
 
+class Superadmin extends BaseController
+{
     public function per_denied($msg)
     {
         $this->data['message'] = $msg;
