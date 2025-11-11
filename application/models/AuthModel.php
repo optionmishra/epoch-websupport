@@ -14,6 +14,14 @@ class AuthModel extends CI_Model
         $this->load->model('WebModel');
     }
 
+    private function dd($data)
+    {
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>';
+        exit();
+    }
+
     public function validate()
     {
         $username = $this->input->post('username');
@@ -1187,7 +1195,9 @@ class AuthModel extends CI_Model
     {
         $sub_ids = explode(',', $id);
         $this->db->order_by('serial', 'asc');
-        $this->db->or_where_in('id', $sub_ids);
+        if (count($sub_ids) > 0 && ! empty($sub_ids[0])) {
+            $this->db->or_where_in('id', $sub_ids);
+        }
         $res = $this->db->get('main_subject')->result();
 
         return $res;
@@ -2080,7 +2090,7 @@ class AuthModel extends CI_Model
             // Check if there are series classes defined for the given main subject
             if (isset($series_classes_data[$msubject_id]) && is_array($series_classes_data[$msubject_id])) {
                 foreach ($series_classes_data[$msubject_id] as $classes_array) {
-                        $classesArr = array_merge($classesArr, $classes_array);
+                    $classesArr = array_merge($classesArr, $classes_array);
                 }
                 $classesArr = array_unique($classesArr);
             }
@@ -2088,7 +2098,9 @@ class AuthModel extends CI_Model
 
         // If no class IDs were found, return an empty array to prevent issues with `where_in`.
         if (empty($classesArr)) {
-            return [];
+            $this->db->order_by('class_position', 'ASC');
+
+            return $this->db->get('classes')->result();
         }
 
         $this->db->where_in('id', $classesArr);
@@ -2112,8 +2124,36 @@ class AuthModel extends CI_Model
             }
             $this->db->where_in('series_id', $user_series_arr);
         }
-        $this->db->where(['sid' => $sid, 'class' => $class_ID]);
+        // First, attempt to fetch data with the sid and class_ID conditions
+        $initial_query_had_specific_where = false;
+        if (! empty($sid) && ! empty($class_ID)) {
+            $this->db->where(['sid' => $sid, 'class' => $class_ID]);
+            $initial_query_had_specific_where = true;
+        }
         $res = $this->db->get('subject')->result();
+
+        if (empty($res) && $initial_query_had_specific_where) {
+            $this->db->where('class', $class_ID);
+            $initial_query_had_specific_where = true;
+        }
+        $res = $this->db->get('subject')->result();
+
+        // If no results were found and specific WHERE conditions were applied in the first attempt,
+        // re-fetch data without those specific conditions.
+        if (empty($res) && $initial_query_had_specific_where) {
+            // The previous $this->db->get('subject')->result() call would have cleared
+            // all WHERE clauses, including the `where_in('series_id', $user_series_arr)`
+            // that might have been applied before this <rewrite_this> block.
+            // Therefore, we need to re-apply it here if it was meant to be present.
+
+            // The $user_series_arr variable should already be populated from the code above this rewrite block
+            // if boolval($user_row?->series_classes) was true.
+            if (isset($user_series_arr) && ! empty($user_series_arr)) {
+                $this->db->where_in('series_id', $user_series_arr);
+            }
+            // Now, get the results from the 'subject' table with only the re-applied series_id condition (or no conditions if series_id was not applicable).
+            $res = $this->db->get('subject')->result();
+        }
 
         return $res;
     }
