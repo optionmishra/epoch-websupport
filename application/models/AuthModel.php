@@ -395,20 +395,18 @@ class AuthModel extends CI_Model
         $this->session->set_userdata('password', $password);
         $this->session->set_userdata('type', $user->user_type);
 
-        $main_subject = $this->selectable_main_subjects()[0]->id;
-        $selected_class = $this->selectable_classes($main_subject)[0]->id;
-        $selected_class_name = $this->selectable_classes($main_subject)[0]->name;
-        $selected_book = $this->selectable_books($main_subject, $selected_class)[0];
+        [$main_subject, $selected_class] = $this->validateDefSelection();
+
+        $selected_book = $this->selectable_books($main_subject, $selected_class->id)[0];
         $category = $this->get_categories($selected_book->id, $username)[0];
-        $class = $this->get_class($user->classes);
 
         $this->session->set_userdata('publication', $publication->id);
         $this->session->set_userdata('board_name', $user->board_name);
         $this->session->set_userdata('category', $category->id);
         $this->session->set_userdata('category_name', $category->name);
-        $this->session->set_userdata('class_name', $selected_class_name);
+        $this->session->set_userdata('class_name', $selected_class->name);
         $this->session->set_userdata('main_subject', $main_subject);
-        $this->session->set_userdata('classes', $selected_class);
+        $this->session->set_userdata('classes', $selected_class->id);
         $this->session->set_userdata('publication_name', $publication->name);
         $this->session->set_userdata('selected_book', $selected_book->id);
         switch ($user->user_type) {
@@ -2124,36 +2122,8 @@ class AuthModel extends CI_Model
             }
             $this->db->where_in('series_id', $user_series_arr);
         }
-        // First, attempt to fetch data with the sid and class_ID conditions
-        $initial_query_had_specific_where = false;
-        if (! empty($sid) && ! empty($class_ID)) {
-            $this->db->where(['sid' => $sid, 'class' => $class_ID]);
-            $initial_query_had_specific_where = true;
-        }
+        $this->db->where(['sid' => $sid, 'class' => $class_ID]);
         $res = $this->db->get('subject')->result();
-
-        if (empty($res) && $initial_query_had_specific_where) {
-            $this->db->where('class', $class_ID);
-            $initial_query_had_specific_where = true;
-        }
-        $res = $this->db->get('subject')->result();
-
-        // If no results were found and specific WHERE conditions were applied in the first attempt,
-        // re-fetch data without those specific conditions.
-        if (empty($res) && $initial_query_had_specific_where) {
-            // The previous $this->db->get('subject')->result() call would have cleared
-            // all WHERE clauses, including the `where_in('series_id', $user_series_arr)`
-            // that might have been applied before this <rewrite_this> block.
-            // Therefore, we need to re-apply it here if it was meant to be present.
-
-            // The $user_series_arr variable should already be populated from the code above this rewrite block
-            // if boolval($user_row?->series_classes) was true.
-            if (isset($user_series_arr) && ! empty($user_series_arr)) {
-                $this->db->where_in('series_id', $user_series_arr);
-            }
-            // Now, get the results from the 'subject' table with only the re-applied series_id condition (or no conditions if series_id was not applicable).
-            $res = $this->db->get('subject')->result();
-        }
 
         return $res;
     }
@@ -2482,5 +2452,26 @@ class AuthModel extends CI_Model
         $res = $this->db->get()->result();
 
         return $res;
+    }
+
+    public function validateDefSelection()
+    {
+        $sId = $this->selectable_main_subjects()[0]->id;
+        $selected_class = $this->selectable_classes($sId)[0];
+
+        $this->db->where(['sid' => $sId, 'class' => $selected_class->id]);
+        $row = $this->db->get('subject')->num_rows() > 0;
+        if ($row) {
+            return [$sId, $selected_class];
+        }
+
+        $row = $this->db->select('sid, class')->get('subject')->row();
+        $selected_class = $this->db
+            ->where('id', $row->class)
+            ->select('id', 'name')
+            ->get('classes')
+            ->row();
+
+        return [$row->sid, $selected_class];
     }
 }
