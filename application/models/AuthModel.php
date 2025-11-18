@@ -2437,7 +2437,7 @@ class AuthModel extends CI_Model
         $this->db->order_by('series_name', 'asc');
         $this->db->order_by('class_id', 'asc');
         // MOD
-        $this->db->where('subject.id', $this->session->userdata('selected_book'));
+        // $this->db->where('subject.id', $this->session->userdata('selected_book'));
         // MOD
         $res = $this->db->get()->result();
 
