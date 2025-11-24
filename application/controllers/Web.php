@@ -139,7 +139,7 @@ class Web extends CI_Controller
         } else {
             $this->load->view('globals/web/header', $data);
         }
-        $this->load->view('web/dashboard', $data);
+        $this->load->view('web/dashboard/index', $data);
         $this->load->view('globals/web/footer', $data);
         // $this->load->view('globals/revamp/header', $data);
         // $this->load->view('globals/revamp/footer', $data);
