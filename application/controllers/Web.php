@@ -122,7 +122,7 @@ class Web extends CI_Controller
             'user' => $this->WebModel->Webuser(),
             'siteName' => $this->siteName,
             // mod
-            'selectable_subjects' => $this->AuthModel->msubject_mod($this->WebModel->Webuser()[0]->subject),
+            'selectable_subjects' => $this->AuthModel->msubject_mod($this->WebModel->Webuser()->subject),
             'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject')),
             'selectable_books' => $this->AuthModel->selectable_books($this->session->userdata('main_subject'), $this->session->userdata('classes')),
             'selectable_categories' => $this->AuthModel->get_categories($this->session->userdata('selected_book')),
@@ -137,10 +137,10 @@ class Web extends CI_Controller
         if ($this->session->flashdata('login_type') == 'auto') {
             $this->load->view('globals/web/header_auto', $data);
         } else {
-            $this->load->view('globals/web/header', $data);
+            $this->load->view('web/dashboard/header', $data);
         }
         $this->load->view('web/dashboard/index', $data);
-        $this->load->view('globals/web/footer', $data);
+        $this->load->view('web/dashboard/footer', $data);
         // $this->load->view('globals/revamp/header', $data);
         // $this->load->view('globals/revamp/footer', $data);
         // $this->load->view('web/new-dashboard', $data);

@@ -69,7 +69,7 @@ class WebModel extends CI_Model
         if (! empty($username)) {
             $this->db->where('email', $username);
         }
-        $result = $this->db->get('web_user')->result();
+        $result = $this->db->get('web_user')->row();
         if (! $result) {
             $this->error = $this->db->error();
 

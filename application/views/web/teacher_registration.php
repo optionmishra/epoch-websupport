@@ -176,9 +176,9 @@
 								<label for="country_type">Country *</label>
 								<select class="form-control" name="country_type" id="country_type" required="true" placeholder="">
 									<option value="">--Select country--</option>
-									<?php foreach ($country as $couy) : ?>
+									<?php foreach ($country as $couy) { ?>
 										<option value="<?= $couy->id ?>"><?= $couy->name ?></option>
-									<?php endforeach; ?>
+									<?php } ?>
 								</select>
 
 							</div>
@@ -245,12 +245,12 @@
 								<label for="session_slot1">Board *</label>
 								<select class="form-control" name="board" id="board" required="true" placeholder="">
 									<option value="">Select</option>
-									<!-- <?php # foreach ($board as $cou) : 
-											?> -->
+									<!-- <?php // foreach ($board as $cou) :
+                                            ?> -->
 									<option value="<?= $board[0]->name ?>"><?= $board[0]->name ?></option>
 									<option value="<?= $board[1]->name ?>"><?= $board[1]->name ?></option>
-									<!-- <?php # endforeach; 
-											?> -->
+									<!-- <?php // endforeach;
+                                            ?> -->
 								</select>
 							</div>
 						</div>

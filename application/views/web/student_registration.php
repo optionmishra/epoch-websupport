@@ -113,9 +113,9 @@
 								<!-- <label for="student_state">State *</label> -->
 								<select class="form-control" name="state" id="state" required="true" placeholder="State *">
 									<option value="">--Select State--</option>
-									<?php foreach ($state as $value) : ?>
+									<?php foreach ($state as $value) { ?>
 										<option value="<?= $value['id']; ?>"><?= $value['name']; ?></option>
-									<?php endforeach; ?>
+									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -133,9 +133,9 @@
 								<!-- <label for="student_class">Class *</label> -->
 								<select class="form-control get_section" name="class" id="stu_class" required="true" placeholder="Class *">
 									<option value="">--Select Class--</option>
-									<?php foreach ($classes as $class) : ?>
+									<?php foreach ($classes as $class) { ?>
 										<option value="<?= $class->id ?>"><?= $class->name ?></option>
-									<?php endforeach; ?>
+									<?php } ?>
 								</select>
 							</div>
 						</div>

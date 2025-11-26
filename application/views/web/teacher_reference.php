@@ -11,15 +11,15 @@
 							<label>Board</label>
 							<select class="form-control" id="board_teach" name="board">
 							<option>Select</option>
-							<?php foreach($board as $bo) {?>
-							<option value="<?php echo $bo->id; ?>"><?php echo$bo->name;?></option> 
+							<?php foreach ($board as $bo) {?>
+							<option value="<?php echo $bo->id; ?>"><?php echo $bo->name; ?></option> 
 							<?php }?>
 							</select>
 						</div> 
 						<div class="col-md-6">
 							<label>Publication</label>
 							<select class="form-control" id="publication" name="publication">
-							<?php foreach($publication as $pub) {?>
+							<?php foreach ($publication as $pub) {?>
 							<option value="<?php echo $pub->id; ?>"><?php echo $pub->name; ?></option>
 							<?php }?>
 							</select>
@@ -31,7 +31,7 @@
 							<label>Class</label>
 							<select class="form-control" id="class" name="class">
 							<option>Select</option>
-							<?php foreach($classes as $cl) {?>
+							<?php foreach ($classes as $cl) {?>
 							<option value="<?php echo $cl->id; ?>"><?php echo $cl->name; ?></option>
 							<?php }?>
 							</select>
@@ -42,7 +42,7 @@
 							<select class="form-control" id="book_sub" name="book">
 							<option>Select</option>
 							<!--<?php // foreach($msubject as $cl) {?>
-							<option value="<?php //echo $cl->id; ?>"><?php //echo $cl->name;  ?></option>
+							<option value="<?php // echo $cl->id;?>"><?php // echo $cl->name;?></option>
 							<?php // }?>-->
 							</select>
 						</div>

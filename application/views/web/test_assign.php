@@ -215,7 +215,7 @@
 						<strong>Success!</strong> <?php echo $this->session->flashdata('success'); ?>
 					</div>
 					<?php $this->session->unset_userdata('success'); ?>
-				<?php } else if ($this->session->flashdata('error')) {  ?>
+				<?php } elseif ($this->session->flashdata('error')) {  ?>
 
 					<div class="alert alert-danger">
 						<a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -234,9 +234,9 @@
 										<h6 class="sp-text-subhdg">Select Class</h6>
 										<select class="form-control w-100" name="class_name" id="class_name" placeholder="Select Class" required>
 											<option value="">Select</option>
-											<?php foreach ($classes as $class) : ?>
+											<?php foreach ($classes as $class) { ?>
 												<option value="<?= $class->classes ?>"><?= $class->classes ?></option>
-											<?php endforeach; ?>
+											<?php } ?>
 										</select>
 									</div>
 									<div class="col-lg-2">
@@ -244,8 +244,8 @@
 										<select class="form-control w-100" name="section_name" id="section_name" placeholder="Select Section" required>
 											<option value="">Select</option>
 											<?php /* foreach ($classes as $class) : ?>
-												<option value="<?= $class->classes ?>"><?= $class->classes ?></option>
-											<?php  endforeach; */ ?>
+                                                <option value="<?= $class->classes ?>"><?= $class->classes ?></option>
+                                            <?php  endforeach; */ ?>
 										</select>
 									</div>
 									<div class="col-lg-2">
@@ -258,10 +258,10 @@
 										<h6 class="sp-text-subhdg">Date Between</h6>
 										<div class="row">
 											<div class="col-lg-6">
-												<input type="date" class="form-control" placeholder="Start" min="<?= date("Y-m-d"); ?>" name="start_date" id="StartDate" required />
+												<input type="date" class="form-control" placeholder="Start" min="<?= date('Y-m-d'); ?>" name="start_date" id="StartDate" required />
 											</div>
 											<div class="col-lg-6">
-												<input type="date" class="form-control" placeholder="End" min="<?= date("Y-m-d"); ?>" name="end_date" id="EndDate" required />
+												<input type="date" class="form-control" placeholder="End" min="<?= date('Y-m-d'); ?>" name="end_date" id="EndDate" required />
 											</div>
 										</div>
 									</div>
@@ -327,39 +327,39 @@
 										<tr>
 											<td>Class <?= $value->class_name, $class_section_array[$value->section_name] ?></td>
 											<td>
-												<?php switch ($value->paper_mode):
-													case '11': ?>
+												<?php switch ($value->paper_mode) {
+												    case '11': ?>
 														Objective Test 1
 														<?php break; ?>
 													<?php
-													case '12': ?>
+												    case '12': ?>
 														Objective Test 2
 														<?php break; ?>
 													<?php
-													case '13': ?>
+												    case '13': ?>
 														Objective Test 3
 														<?php break; ?>
 													<?php
-													case '14': ?>
+												    case '14': ?>
 														Objective Test 4
 														<?php break; ?>
 													<?php
-													case '21': ?>
+												    case '21': ?>
 														Subjective Test 1
 														<?php break; ?>
 													<?php
-													case '22': ?>
+												    case '22': ?>
 														Subjective Test 2
 														<?php break; ?>
-												<?php endswitch; ?>
+												<?php } ?>
 											</td>
 											<td><?= $value->date_start ?></td>
 											<td><?= $value->date_end ?></td>
 											<td>
 												<?php if ($value->status == '1') { ?>
-													<a href="<?= base_url('admin_master/add_assigntest_inactive?assigntest=' . $value->id . '') ?>"><input data-toggleId="<?= $value->id ?>" type="checkbox" data-toggle="switchbutton" checked data-onlabel="Active" data-offlabel="Inactive" data-onstyle="success" data-offstyle="danger" data-size="sm"></a>&nbsp;&nbsp;
+													<a href="<?= base_url('admin_master/add_assigntest_inactive?assigntest='.$value->id.'') ?>"><input data-toggleId="<?= $value->id ?>" type="checkbox" data-toggle="switchbutton" checked data-onlabel="Active" data-offlabel="Inactive" data-onstyle="success" data-offstyle="danger" data-size="sm"></a>&nbsp;&nbsp;
 												<?php } else { ?>
-													<a href="<?= base_url('admin_master/add_assigntest_active?assigntest=' . $value->id . '') ?>"><input data-toggleId="<?= $value->id ?>" type="checkbox" data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Inactive" data-onstyle="success" data-offstyle="danger" data-size="sm"></a>&nbsp;&nbsp;
+													<a href="<?= base_url('admin_master/add_assigntest_active?assigntest='.$value->id.'') ?>"><input data-toggleId="<?= $value->id ?>" type="checkbox" data-toggle="switchbutton" data-onlabel="Active" data-offlabel="Inactive" data-onstyle="success" data-offstyle="danger" data-size="sm"></a>&nbsp;&nbsp;
 												<?php } ?>
 												<a deletepaperassign_id="<?php echo $value->id; ?>" class="btn btn-sm btn-outline-danger paperassigndelete" style="font-size:13px;">Delete</a>
 												<!-- <a class="btn btn-sm btn-primary" href="">Preview Paper</a> -->
@@ -415,7 +415,7 @@
 			$('#paper_type').html('<option value="">Select</option>');
 			if (class_id) {
 				// Section
-				fetch('<?= base_url() . 'admin_master/get_section_name/' ?>' + class_id)
+				fetch('<?= base_url().'admin_master/get_section_name/' ?>' + class_id)
 					.then(response => response.json())
 					.then(data => {
 						// put them in selection
@@ -424,7 +424,7 @@
 						});
 					});
 				// Paper Set
-				fetch('<?= base_url() . 'admin_master/get_paper_set/' ?>' + class_id + '/<?= $this->session->userdata('main_subject') ?>')
+				fetch('<?= base_url().'admin_master/get_paper_set/' ?>' + class_id + '/<?= $this->session->userdata('main_subject') ?>')
 					.then(response => response.json())
 					.then(data => {
 						// put them in selection

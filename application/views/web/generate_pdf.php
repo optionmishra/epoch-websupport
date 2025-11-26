@@ -1,29 +1,28 @@
-<?php 
+<?php
+
 ob_start();
 // Include library
-//require_once('../libraries/tcpdf/tcpdf.php');
+// require_once('../libraries/tcpdf/tcpdf.php');
 $this->load->library('Pdf');
 
-//make TCPDF object
+// make TCPDF object
 $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
 
-//remove header and footer
+// remove header and footer
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 
-//$pdf->SetTitle('Title');
+// $pdf->SetTitle('Title');
 
-
-//add page
+// add page
 $pdf->Addpage();
 
-
 $pdf->SetFont('Helvetica', '', 14);
-//$pdf->Cell(190,10,"Student Result",0,0,'C');
+// $pdf->Cell(190,10,"Student Result",0,0,'C');
 
 $pdf->SetFont('Helvetica', '', 9);
 
-$html = <<<EOF
+$html = <<<'EOF'
 <!-- EXAMPLE OF CSS STYLE -->
 <style>
     h1 {
@@ -108,12 +107,9 @@ $html = <<<EOF
 </div>
 EOF;
 
-
-$pdf->WriteHTMLCell(192,3,'9','',$html,0);
+$pdf->WriteHTMLCell(192, 3, '9', '', $html, 0);
 
 ob_end_clean();
-//output
-//$pdf->Output('Paper.pdf', 'D');
+// output
+// $pdf->Output('Paper.pdf', 'D');
 $pdf->Output();
-
-?>

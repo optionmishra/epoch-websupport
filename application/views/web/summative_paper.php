@@ -120,16 +120,16 @@
 				<h4 class="sp-sub-heading"><?= $paper_set->name ?></h4>
 				<h6 class="sp-sub-heading">(<?= $paper_set->description ?>)</h6>
 				<?php foreach ($subjective as $val) {
-					$max_marks += $val->marks;
+				    $max_marks += $val->marks;
 				} ?>
 				<p class="sp-ttl">Max Marks: <?= $max_marks ?></p>
 				<div class="paper-ection" id="parentId">
 					<form method="post" action="<?= base_url('admin_master/paper_submision') ?>" onSubmit="return msgshow()" id="ppr_frm">
 						<input type="hidden" name="created_date" value="<?= $created_date ?>">
 						<?php
-						$a = 1;
-						$i = 0;
-						foreach ($subjective as $val) { ?>
+				        $a = 1;
+	    $i = 0;
+	    foreach ($subjective as $val) { ?>
 							<input type="hidden" name="paper_type" value="<?= $paper_mode ?>">
 							<input type="hidden" name="assignid" value="<?php echo $assignid; ?>">
 							<input type="hidden" name="marks[]" value="<?php echo $val->marks; ?>">
@@ -141,9 +141,9 @@
 								<textarea name="answer<?php echo $i; ?>" class="form-control w-80" rows="3"></textarea>
 							</div>
 						<?php
-							$a++;
-							$i++;
-						} ?>
+	        $a++;
+	        $i++;
+	    } ?>
 
 						</ul>
 						<input type="submit" name="submit" value="Submit" class="btn-success">
@@ -193,10 +193,10 @@
 	<?php } else { ?>
 		<?php redirect(base_url('web/student_panel')) ?>
 
-		<!-- <h3 style="color: red;text-align: center;"><?php # echo $msg 
-														?></h3>
-		<a href="<? # base_url('dashboard') 
-					?>" style="float: inline-end;text-align: center;">Back to home</a> -->
+		<!-- <h3 style="color: red;text-align: center;"><?php // echo $msg
+	                                    ?></h3>
+		<a href="<?php // base_url('dashboard')
+                    ?>" style="float: inline-end;text-align: center;">Back to home</a> -->
 	<?php } ?>
 </body>
 

@@ -193,10 +193,10 @@
 									<select class="form-control w-100" name="teacher_panel_class" id="teacher_panel_class">
 										<option>Select</option>
 										<?php /* foreach ($classes as $class) : ?>
-											<option value="<?= $class->classes ?>">
-												<?= $class->classes ?>
-											</option>
-										<?php endforeach; */ ?>
+                                            <option value="<?= $class->classes ?>">
+                                                <?= $class->classes ?>
+                                            </option>
+                                        <?php endforeach; */ ?>
 									</select>
 								</div>
 								<div class="col-lg-3">
@@ -241,7 +241,7 @@
 												</thead>
 												<tbody>
 													<?php $a = 1;
-													foreach ($student as $value) { ?>
+			foreach ($student as $value) { ?>
 														<tr>
 															<td style="width:50px;">
 																<?php echo $a; ?>
@@ -264,7 +264,7 @@
 															</td>
 														</tr>
 													<?php $a++;
-													} ?>
+			} ?>
 												</tbody>
 											</table>
 										</div>

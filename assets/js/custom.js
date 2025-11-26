@@ -159,59 +159,6 @@ $(".salesmanTables").on("click", ".delete_salesman", function () {
 
 // End Sales
 
-$(".home-side").on("click", ".new-search", function () {
-  var id = $(this).attr("tab_id");
-  $("#pleasewait").modal("show");
-  $.ajax({
-    url: base_url + "admin_master/change_product",
-    type: "post",
-    dataType: "json",
-    data: { id: id },
-    success: function (data) {
-      if (data.type === "success") {
-        location.reload(); // #StopReload
-        $("#pleasewait").modal("hide");
-      } else if (data.type === "error") {
-        $("#pleasewait").modal("hide");
-      }
-    },
-    error: function (data) {
-      console.log("unable to send request..");
-    },
-  });
-  // let board = $("#select_board").find(":selected").val();
-  // board = board = "CBSE" ? "1" : "6";
-  // const publication = $("#select_publication").find(":selected").val();
-  // const classes = $("#select_classes").find(":selected").val();
-  // const subject = $("#select_msubject").find(":selected").val();
-  // const type = id;
-  // $.ajax({
-  //   url: base_url + "admin_master/change_product2",
-  //   type: "post",
-  //   dataType: "json",
-  //   data: {
-  //     board: board,
-  //     publication: publication,
-  //     classes: classes,
-  //     subject: subject,
-  //     type: type,
-  //   },
-  //   success: function (data) {
-  //     if (data.type === "success") {
-  //       // location.reload();
-  //       $("#pleasewait").modal("hide");
-  //       // console.log(data);
-  //       $("#webSupportsTable").html(data);
-  //     } else if (data.type === "error") {
-  //       $("#pleasewait").modal("hide");
-  //     }
-  //   },
-  //   error: function (data) {
-  //     console.log("unable to send request..");
-  //   },
-  // });
-});
-
 $("#updateUserPro").on("aftersubmit", function (e, data) {
   $("#pleasewait").modal("hide");
   toastr[data.type](data.message);
@@ -3085,3 +3032,24 @@ $(document).ready(function () {
     $(this).find("form").trigger("reset");
   });
 });
+
+function changeProduct(id) {
+  $("#pleasewait").modal("show");
+  $.ajax({
+    url: base_url + "admin_master/change_product",
+    type: "post",
+    dataType: "json",
+    data: { id: id },
+    success: function (data) {
+      if (data.type === "success") {
+        location.reload(); // #StopReload
+        $("#pleasewait").modal("hide");
+      } else if (data.type === "error") {
+        $("#pleasewait").modal("hide");
+      }
+    },
+    error: function (data) {
+      console.log("unable to send request..");
+    },
+  });
+}

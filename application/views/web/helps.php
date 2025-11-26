@@ -4,7 +4,7 @@
 				<div class="row mt-2">
 				
 					<!-- Start Single Gallery -->
-					<?php foreach($helps as $h): ?>
+					<?php foreach ($helps as $h) { ?>
 					<div class="col-lg-3 m-2">
 							
 							<video width="300" height="240" controls>
@@ -12,7 +12,7 @@
 							</video>
 						
 						</div>	
-						<?php endforeach; ?>
+						<?php } ?>
 					</div>	
 					</div>	
 		<!-- End Our Gallery Area -->

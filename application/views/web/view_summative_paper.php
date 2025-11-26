@@ -161,7 +161,7 @@
 			<h4 class="sp-sub-heading"><?= $paper_set->name ?></h4>
 			<h6 class="sp-sub-heading">(<?= $paper_set->description ?>)</h6>
 			<?php foreach ($summative as $val) {
-				$max_marks += $val->qus_marks;
+			    $max_marks += $val->qus_marks;
 			} ?>
 			<p class="info-subttl">Name: <?= $student->fullname ?></p>
 			<div class="mb-4 d-flex justify-content-between">
@@ -176,10 +176,10 @@
 					<input type="hidden" name="paper_mode" value="<?= $summative[0]->paper_mode; ?>">
 					<input type="hidden" name="student_id" value="<?= $summative[0]->student_id; ?>">
 					<?php
-					$a = 1;
-					$i = 0;
+			        $a = 1;
+			$i = 0;
 
-					foreach ($summative as $val) { ?>
+			foreach ($summative as $val) { ?>
 						<input type="hidden" name="paper_id[]" value="<?php echo $val->id; ?>">
 						<div class="quest-section">
 							<p class="question">Q<?php echo $a; ?>:&nbsp;<?php echo $val->name; ?></p>
@@ -189,25 +189,25 @@
 						</div>
 						<div class="row">
 							<?php /*if ($val->ques_type == 'Right') {
-								$rchecked = 'checked';
-								$number = $val->ans_marks;
-							} elseif ($val->ques_type == 'Wrong') {
-								$wchecked = 'checked';
-								$number = $val->ans_marks;
-							} else {
-								$rchecked = '';
-								$wchecked = '';
-								$number = '';
-							}
-							*/ ?>
+                                $rchecked = 'checked';
+                                $number = $val->ans_marks;
+                            } elseif ($val->ques_type == 'Wrong') {
+                                $wchecked = 'checked';
+                                $number = $val->ans_marks;
+                            } else {
+                                $rchecked = '';
+                                $wchecked = '';
+                                $number = '';
+                            }
+                            */ ?>
 							<!-- <div class="col-md-3 col-sm-6 col-6">
 								<label class="radio-inline">
-									<input <? # $val->ques_type ? 'disabled' : ''; 
-											?> type="radio" name="type<?php echo $i; ?>" value="Right" <?php echo $rchecked; ?>> Right
+									<input <?php // $val->ques_type ? 'disabled' : '';
+			                        ?> type="radio" name="type<?php echo $i; ?>" value="Right" <?php echo $rchecked; ?>> Right
 								</label>&nbsp; &nbsp; &nbsp;
 								<label class="radio-inline">
-									<input <? # $val->ques_type ? 'disabled' : ''; 
-											?> type="radio" name="type<?php echo $i; ?>" value="Wrong" <?php echo $wchecked; ?>> Wrong
+									<input <?php // $val->ques_type ? 'disabled' : '';
+			                        ?> type="radio" name="type<?php echo $i; ?>" value="Wrong" <?php echo $wchecked; ?>> Wrong
 								</label>
 							</div> -->
 							<div class="col-md-4 col-sm-6 col-6 d-flex">
@@ -216,16 +216,16 @@
 							<!-- <div class="col-md-5"></div> -->
 						</div>
 					<?php
-						$a++;
-						$i++;
-						$total_marks_obtained += $val->ans_marks;
-						$total_marks += $val->qus_marks;
-					} ?>
+			    $a++;
+			    $i++;
+			    $total_marks_obtained += $val->ans_marks;
+			    $total_marks += $val->qus_marks;
+			} ?>
 
 					<?php if ($val->teacher_remarks == 'checked') { ?>
 						<div class="mt-4">
 							<!-- <h3 style="color:green;">Paper Already Checked</h3> -->
-							<h3 style="color:green;">Total Marks Obtained: <?= $total_marks_obtained . '/' . $total_marks ?></h3>
+							<h3 style="color:green;">Total Marks Obtained: <?= $total_marks_obtained.'/'.$total_marks ?></h3>
 							<span class="btn btn-primary btn-print" onclick="window.print();">Print</span>
 						</div>
 					<?php } else { ?>

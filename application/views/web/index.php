@@ -26,7 +26,7 @@
 						class="flex flex-col items-center w-full bg-white rounded-lg sm:w-1/2 sm:rounded-r-none 2xl:py-16">
 						<div
 							class="flex justify-center p-2 my-5 mb-10 bg-white rounded-md w-80 sm:w-96">
-							<img src="<?= base_url("assets/img/" . $logo['file_name']) ?>" alt="logo" />
+							<img src="<?= base_url('assets/img/'.$logo['file_name']) ?>" alt="logo" />
 						</div>
 						<div class="text-center">
 							<h1 class="text-2xl font-semibold text-primary">
@@ -91,12 +91,12 @@
 									</div>
 								</div>
 
-								<?php if ($this->session->flashdata('error')) : ?>
+								<?php if ($this->session->flashdata('error')) { ?>
 									<div class="flex justify-center py-2 mb-5 ">
 										<strong class="text-red-600"><?= $this->session->flashdata('error'); ?></strong>
 									</div>
 									<?php $this->session->unset_userdata('error'); ?>
-								<?php endif; ?>
+								<?php } ?>
 
 								<div class="flex flex-col gap-3 mb-5">
 									<button type="submit" class="text-white bg-[#491820] hover:bg-accent focus:ring-4 focus:ring-accent font-semibold rounded-md py-2 px-4 focus:outline-none transition-colors duration-300 ease-in-out">Log In</button>

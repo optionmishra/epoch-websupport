@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 .tab:is(input[type="radio"]) {
-	width: max-content !important;
+  width: max-content !important;
+}
+
+.custom-select {
+  @apply rounded-lg border-2 border-[#2E3092] bg-white px-2 py-1 outline-2 outline-[#2E3092];
 }

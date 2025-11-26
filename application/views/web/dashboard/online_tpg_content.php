@@ -1,7 +1,7 @@
-<?php if (empty($online_tpgs)): ?>
+<?php if (empty($online_tpgs)) { ?>
     <p class="m-3 text-danger" style="font-size: 30px">Coming Soon...</p>
-<?php else: ?>
-    <?php foreach ($online_tpgs as $tpg): ?>
+<?php } else { ?>
+    <?php foreach ($online_tpgs as $tpg) { ?>
         <tr class="p-0 mt-1 mb-2 col-lg-3">
             <td class="p-0 col-lg-12">
                 <div class="col-lg-12">
@@ -15,5 +15,5 @@
                 </div>
             </td>
         </tr>
-    <?php endforeach; ?>
-<?php endif; ?>
+    <?php } ?>
+<?php } ?>

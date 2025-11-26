@@ -50,21 +50,17 @@
 						<div class="col-sm-4 col-md-2 col-lg-9 order-3 order-lg-2">
 							<div class="mainmenu__wrap">
 								<nav class="mainmenu__nav">
-									<?php
-									if ($this->session->userdata('username')) {
-										foreach ($user as $us) :
-									?>
+									<?php if ($this->session->userdata('username')): ?>
 											<ul class="mainmenu">
 												<li class="active"><a href="dashboard">Dashboard</a></li>
 												<li class=""><a href="logout">Logout</a></li>
 												<li class=""><a href="profile">Profile</a></li>
 												<li><a href="profile" class="spe-us">
-														<img src="assets/img/<?= $us->dp ?>" alt="logo images">
-														Hi, <b class="ss-pp"><?= $us->fullname ?></b></a>
+														<img src="assets/img/<?= $user->dp ?>" alt="logo images">
+														Hi, <b class="ss-pp"><?= $user->fullname ?></b></a>
 												</li>
 											</ul>
-									<?php endforeach;
-									} ?>
+									<?php endif;?>
 								</nav>
 							</div>
 						</div>

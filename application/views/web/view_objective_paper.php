@@ -165,7 +165,7 @@
 			<h6 class="sp-sub-heading">(<?= $paper_set->description ?>)</h6>
 			<!-- <h4 class="sp-sub-heading">Objective Paper</h4> -->
 			<?php foreach ($objective as $val) {
-				$max_marks += $val->qus_marks;
+			    $max_marks += $val->qus_marks;
 			} ?>
 			<p class="info-subttl">Name: <?= $student->fullname ?></p>
 			<div class="mb-4 d-flex justify-content-between">
@@ -176,9 +176,9 @@
 			<div class="paper-ection">
 				<form method="post" action="<?= base_url('admin_master/teacher_check_paper_summ') ?>" id="ppr_frm">
 					<?php
-					$a = 1;
-					$i = 0;
-					foreach ($objective as $val) { ?>
+			        $a = 1;
+	$i = 0;
+	foreach ($objective as $val) { ?>
 						<input type="hidden" name="paper_id[]" value="<?php echo $val->id; ?>">
 						<div class="quest-section">
 							<p class="question">Q<?php echo $a; ?>:&nbsp;<?php echo $val->name; ?></p>
@@ -196,20 +196,20 @@
 
 							<div class="row">
 								<?php /*
-						<?php if($val->ques_type == 'Right'){
-							$rchecked = 'checked';
-						}elseif($val->ques_type == 'Wrong'){
-							$wchecked = 'checked';
-						}else{
-							$rchecked = '';
-							$wchecked = '';
-						}
-						 ?>
-						<div class="col-md-3 col-sm-6 col-6">
-							<label class="radio-inline"><input type="radio" name="type<?php echo $i;?>" value="Right" <?php echo $rchecked; ?>> Right</label>&nbsp; &nbsp; &nbsp;
-							<label class="radio-inline"><input type="radio" name="type<?php echo $i;?>" value="Wrong" <?php echo $wchecked; ?>> Wrong</label> 	
-						</div>
-						*/ ?>
+                        <?php if($val->ques_type == 'Right'){
+                            $rchecked = 'checked';
+                        }elseif($val->ques_type == 'Wrong'){
+                            $wchecked = 'checked';
+                        }else{
+                            $rchecked = '';
+                            $wchecked = '';
+                        }
+                         ?>
+                        <div class="col-md-3 col-sm-6 col-6">
+                            <label class="radio-inline"><input type="radio" name="type<?php echo $i;?>" value="Right" <?php echo $rchecked; ?>> Right</label>&nbsp; &nbsp; &nbsp;
+                            <label class="radio-inline"><input type="radio" name="type<?php echo $i;?>" value="Wrong" <?php echo $wchecked; ?>> Wrong</label>
+                        </div>
+                        */ ?>
 								<div class="col-md-3 col-sm-6 col-6">
 									Obtained Marks: <input disabled type="number" class="form-control mrk_get p-2" require value="<?= $val->ans_marks ?>" readonly name="teacher_marks[]" min="0" max="<?= $val->qus_marks ?>" />
 								</div>
@@ -219,19 +219,19 @@
 						</div>
 
 					<?php
-						$a++;
-						$i++;
-						$total_marks_obtained += $val->ans_marks;
-						$total_marks += $val->qus_marks;
-					} ?>
-					<h3 style="color:green;">Total Marks Obtained: <?= $total_marks_obtained . '/' . $total_marks ?></h3>
+	    $a++;
+	    $i++;
+	    $total_marks_obtained += $val->ans_marks;
+	    $total_marks += $val->qus_marks;
+	} ?>
+					<h3 style="color:green;">Total Marks Obtained: <?= $total_marks_obtained.'/'.$total_marks ?></h3>
 					<span class="btn btn-primary btn-print" onclick="window.print()">Print</span>
 					<a href="<?= base_url('web/dashboard') ?>" class="btn btn-primary btn-print">Return to Dashboard</a>
 					<?php /* if ($val->ques_type) { ?>
-						<!-- <h3 style="color:green;">Papper Allready Checked</h3> -->
-					<?php } else { ?>
-						<input type="submit" name="submit" value="Submit" class="btn btn-success">
-					<?php } */ ?>
+                        <!-- <h3 style="color:green;">Papper Allready Checked</h3> -->
+                    <?php } else { ?>
+                        <input type="submit" name="submit" value="Submit" class="btn btn-success">
+                    <?php } */ ?>
 				</form>
 			</div>
 		</div>

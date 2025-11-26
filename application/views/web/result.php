@@ -202,11 +202,11 @@
                                 <div class="col-lg-3 m-2">
                                     <select class="form-control w-100" name="teacher_panel_class" id="teacher_panel_class">
                                         <option>Select Class</option>
-                                        <?php foreach ($classes as $class) : ?>
+                                        <?php foreach ($classes as $class) { ?>
                                             <option value="<?= $class->classes ?>">
                                                 <?= $class->classes ?>
                                             </option>
-                                        <?php endforeach; ?>
+                                        <?php } ?>
                                     </select>
                                 </div>
 
@@ -274,7 +274,7 @@
             if (result.value) {
                 let stu_row = "#stu_" + stu_id;
                 $(stu_row).remove();
-                fetch("<?= base_url() . 'admin_master/delete_student_result/' ?>" + stu_id);
+                fetch("<?= base_url().'admin_master/delete_student_result/' ?>" + stu_id);
             }
         });
     });

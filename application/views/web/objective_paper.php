@@ -118,7 +118,7 @@
 				<h4 class="sp-sub-heading"><?= $paper_set->name ?></h4>
 				<h6 class="sp-sub-heading">(<?= $paper_set->description ?>)</h6>
 				<?php foreach ($objective as $val) {
-					$max_marks += $val->marks;
+				    $max_marks += $val->marks;
 				} ?>
 				<p class="sp-ttl">Max Marks: <?= $max_marks ?></p>
 				<div class="paper-ection" id="parentId">
@@ -127,9 +127,9 @@
 						<input type="hidden" name="created_date" value="<?= $created_date ?>">
 						<?php
 
-						$a = 1;
-						$i = 0;
-						foreach ($objective as $val) { ?>
+				        $a = 1;
+	    $i = 0;
+	    foreach ($objective as $val) { ?>
 							<input type="hidden" name="paper_type" value="<?= $paper_mode ?>">
 							<input type="hidden" name="assignid" value="<?php echo $assignid; ?>">
 							<input type="hidden" name="marks[]" value="<?php echo $val->marks; ?>">
@@ -145,9 +145,9 @@
 								</ul>
 							</div>
 						<?php
-							$a++;
-							$i++;
-						} ?>
+	        $a++;
+	        $i++;
+	    } ?>
 						<input type="submit" name="submit" value="Submit" class="btn btn-success">
 					</form>
 

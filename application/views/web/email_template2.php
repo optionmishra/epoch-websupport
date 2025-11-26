@@ -25,7 +25,7 @@
 							<tr>
 								<td class="m_106582725290803236m_-6920465394801571479container-padding" bgcolor="#ffffff" style="background-color:#ffffff;padding-left:30px;padding-right:30px;font-size:14px;line-height:9px;font-family:Helvetica,sans-serif;color:#333">
 									<div style="border-top:0px solid #ddd;text-align:center"><br>
-										<img src="<?php echo base_url() . 'assets/img/' ?><?php echo $logo['file_name']; ?>" width="252" class="CToWUd"> <br>
+										<img src="<?php echo base_url().'assets/img/' ?><?php echo $logo['file_name']; ?>" width="252" class="CToWUd"> <br>
 										<br>
 									</div>
 								</td>

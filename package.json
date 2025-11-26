@@ -1,17 +1,22 @@
 {
-	"name": "websupport",
-	"version": "1.0.0",
-	"main": "index.js",
-	"scripts": {
-		"dev": "npx tailwindcss -i ./src/input.css -o assets/revamp/css/style.css --watch",
-		"build": "npx tailwindcss -i ./src/input.css -o assets/revamp/css/style.css  --minify"
-	},
-	"keywords": [],
-	"author": "Vikalp Mishra",
-	"license": "ISC",
-	"description": "",
-	"devDependencies": {
-		"daisyui": "^4.12.13",
-		"tailwindcss": "^3.4.13"
-	}
+  "name": "websupport",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o assets/revamp/css/style.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o assets/revamp/css/style.css  --minify"
+  },
+  "keywords": [],
+  "author": "Vikalp Mishra",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "daisyui": "^4.12.13",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "tailwindcss": "^3.4.13"
+  },
+  "dependencies": {
+    "simple-datatables": "^10.2.0"
+  }
 }

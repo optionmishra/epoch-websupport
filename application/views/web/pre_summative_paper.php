@@ -125,9 +125,9 @@
 			<p class="sp-ttl">Max Marks - 100</p>
 			<div class="paper-ection">
 				<?php
-				$a = 1;
-				$i = 0;
-				foreach ($summative as $val) { ?>
+                $a = 1;
+						$i = 0;
+						foreach ($summative as $val) { ?>
 					<input type="hidden" name="paper_type" value="Summative">
 					<input type="hidden" name="marks[]" value="<?php echo $val->marks; ?>">
 					<input type="hidden" name="question[]" value="<?php echo $val->id; ?>">
@@ -136,9 +136,9 @@
 						<span class="mrk"><?php echo $val->marks; ?></span>
 					</div>
 				<?php
-					$a++;
-					$i++;
-				} ?>
+						    $a++;
+						    $i++;
+						} ?>
 
 				</ul>
 			</div>
