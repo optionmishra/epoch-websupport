@@ -148,7 +148,7 @@
 					</div>
 
 					<div class="navbar-header d-flex align-items-center">
-						<img src="<?php echo base_url(); ?>assets/img/<?php echo $logo1['file_name']; ?>" alt="<?= $siteName ?>">
+						<img src="<?php echo base_url(); ?>assets/img/<?php echo $logo['file_name']; ?>" alt="<?= $siteName ?>">
 					</div>
 
 					<div id="navbarCollapse" class="navbar-collapse justify-content-start collapse">

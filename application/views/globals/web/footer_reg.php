@@ -122,7 +122,7 @@
 				<div class="col-sm-12 col-md-4 footer-pdg">
 					<ul class="footer-links text-right ft-lst">
 						<li class="li-list-nw">
-							<img style="background-color: white; border: 8px solid white; border-radius:5px" class="nw-ft-img" src="assets/img/<?php echo $footer_logo['file_name']; ?>">
+							<img style="background-color: white; border: 8px solid white; border-radius:5px" class="nw-ft-img" src="assets/img/<?php echo $logo['file_name']; ?>">
 						</li>
 						<li class="li-list-nw">
 							<ul class="footer-align mb-2">
@@ -193,8 +193,8 @@
 				// dataType: 'json',
 				success: function(response) {
 					$('#stu_section_name').html(response);
-					//var len = response.length;	
-					//alert(len);		
+					//var len = response.length;
+					//alert(len);
 				}
 			});
 		});
@@ -210,8 +210,8 @@
 		// 		// dataType: 'json',
 		// 		success: function(response) {
 		// 			$('#ser_section').html(response);
-		// 			//var len = response.length;	
-		// 			//alert(len);		
+		// 			//var len = response.length;
+		// 			//alert(len);
 		// 		}
 		// 	});
 		// });

@@ -13,7 +13,7 @@ class DataTableModel extends CI_Model
         // Set orderable column fields
         // $this->column_order = array(null, 'title', 'email', 'downloaded_at');
         // Set searchable column fields
-        // $this->column_search = array('title', 'email');
+        $this->column_search = array('title', 'email');
         // Set default order
         // $this->order = array('downloaded_at' => 'desc');
     }
