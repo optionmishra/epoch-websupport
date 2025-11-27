@@ -33,8 +33,7 @@
 								Welcome to <?= $siteName ?>
 							</h1>
 							<small class="font-semibold text-accent">
-								Your gateway to seamless web support starts
-								here!
+							    Enter the World of AI
 							</small>
 						</div>
 						<div class="w-2/3 my-10 2xl:w-1/2">
