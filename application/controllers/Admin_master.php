@@ -126,7 +126,7 @@ class Admin_master extends CI_Controller
                 'mailtype' => 'html',
             ];
 
-            $this->email->initialize($config);
+            // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
             $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
@@ -177,7 +177,7 @@ class Admin_master extends CI_Controller
                 'mailtype' => 'html',
             ];
 
-            $this->email->initialize($config);
+            // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
             $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
@@ -726,7 +726,7 @@ class Admin_master extends CI_Controller
             'mailtype' => 'html',
         ];
 
-        $this->email->initialize($config);
+        // $this->email->initialize($config);
         $this->email->to($ress[0]->email);
         $this->email->from($this->siteEmail, $this->siteName);
         $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
@@ -2344,7 +2344,7 @@ class Admin_master extends CI_Controller
                 'mailtype' => 'html',
             ];
 
-            $this->email->initialize($config);
+            // $this->email->initialize($config);
             $this->email->to($email);
             $this->email->from($this->siteEmail, $this->siteName);
             $this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
@@ -2485,7 +2485,7 @@ class Admin_master extends CI_Controller
                 'mailtype' => 'html',
             ];
 
-            $this->email->initialize($config);
+            // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
             $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
@@ -3013,8 +3013,20 @@ class Admin_master extends CI_Controller
                 'mailtype' => 'html',
             ];
 
-            $this->email->initialize($config);
-            $this->email->to($this->input->post('email'));
+            // Grab raw JSON
+            $json = $this->input->raw_input_stream;
+            $data = json_decode($json, true);
+
+            // Now fetch email
+            $recipient = isset($data['email']) ? trim($data['email']) : '';
+
+            if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+                die("Invalid email: " . htmlspecialchars($recipient));
+            }
+
+
+            // $this->email->initialize($config);
+            $this->email->to($recipient);
             $this->email->from($this->siteEmail, $this->siteName);
             $this->email->subject('Your Password for '.$this->siteName.' Web Support');
             $this->email->message($this->load->view('web/email_template2', $data, true));
