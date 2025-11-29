@@ -2178,83 +2178,186 @@ class Admin_master extends CI_Controller
         }
     }
 
+    // public function add_student_custom()
+    // {
+    //     $check = $this->WebModel->validate_email($this->input->post('email'));
+
+    //     if (! empty($check)) {
+    //         $this->session->set_flashdata('error', 'Email ID already in use.');
+    //         redirect(''.'/student-registration');
+    //     } else {
+
+    //         $teacher_code = $this->input->post('stu_teacher_id');
+    //         $check_tu = $this->WebModel->validate_student_mod($teacher_code);
+    //         if (empty($check_tu)) {
+    //             $this->session->set_flashdata('error', 'Invalid Teacher Code!');
+    //             redirect(''.'/student-registration');
+    //         } elseif ($check_tu === 'limit_exhausted') {
+    //             $this->session->set_flashdata('error', 'Teacher Code has reached its limit!!');
+    //             redirect(''.'/student-registration');
+    //         } else {
+
+    //             $teacher_book = $check_tu['subject'];
+    //             $board = $check_tu['board_name'];
+    //             $start_session = $check_tu['session_start'];
+    //             $end_session = $check_tu['session_end'];
+
+    //             $res = $this->db->insert('web_user', [
+    //                 'fullname' => $this->input->post('name'),
+    //                 'mobile' => $this->input->post('mobile'),
+    //                 'email' => $this->input->post('email'),
+    //                 'pin' => $this->input->post('pin'),
+    //                 'session_start' => $start_session,
+    //                 'session_end' => $end_session,
+    //                 'address' => $this->input->post('address'),
+    //                 'stu_teacher_id' => $this->input->post('stu_teacher_id'),
+    //                 'city' => $this->input->post('city'),
+    //                 'state' => $this->input->post('state'),
+    //                 'classes' => $this->input->post('class'),
+    //                 'class_section' => $this->input->post('class_section_name'),
+    //                 'board_name' => $board,
+    //                 'school_name' => $this->input->post('school_name'),
+    //                 'subject' => $teacher_book,
+    //                 'user_type' => 'Student',
+    //                 'status' => 1,
+    //                 'activeBooks' => 1,
+    //                 'password' => $this->input->post('password'),
+    //             ]);
+    //             $data = [
+    //                 'user' => $this->input->post('email'),
+    //                 'password' => $this->input->post('password'),
+    //                 'fullname' => $this->input->post('name'),
+    //                 'logo' => $this->AuthModel->content_row('Logo'),
+    //                 'mobile1' => $this->AuthModel->content_row('Mobile1'),
+    //                 'siteName' => $this->siteName,
+    //                 'email' => $this->siteEmail,
+    //             ];
+    //             $config = [
+    //                 'charset' => 'utf-8',
+    //                 'wordwrap' => true,
+    //                 'mailtype' => 'html',
+    //             ];
+
+    //             $this->email->initialize($config);
+    //             $this->email->to($this->input->post('email'));
+    //             $this->email->from($this->siteEmail, $this->siteName);
+    //             $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+    //             $this->email->subject('Thank you for registering with '.$this->siteName.' Web Support');
+    //             $this->email->message($this->load->view('web/email_template', $data, true));
+    //             $this->email->send();
+    //             if (! $res) {
+    //                 $this->session->set_flashdata('error', 'Email ID in already Use.');
+    //                 redirect(''.'/student-registration');
+    //             } else {
+
+    //                 $this->session->set_flashdata('success', 'You are Successfully registerd with us, Please Check your registerd email for your account credentials...');
+    //                 redirect(''.'/student-registration');
+    //             }
+    //         }
+    //     }
+    // }
+
     public function add_student_custom()
     {
-        $check = $this->WebModel->validate_email($this->input->post('email'));
+        $email = $this->input->post('email');
+        $teacher_code = $this->input->post('stu_teacher_id');
 
-        if (! empty($check)) {
-            $this->session->set_flashdata('error', 'Email ID already in use.');
-            redirect(''.'/student-registration');
-        } else {
+        // Check if email already exists
+        $existing_user = $this->WebModel->validate_email($email);
 
-            $teacher_code = $this->input->post('stu_teacher_id');
-            $check_tu = $this->WebModel->validate_student_mod($teacher_code);
+        // Validate teacher code
+        $check_tu = $this->WebModel->validate_student_mod($teacher_code);
+        $teacher_book = null;
+        $board = null;
+        $start_session = null;
+        $end_session = null;
+        $final_teacher_code = $teacher_code;
+        $status = 0;
+
+        if (empty($check_tu) || $check_tu === 'limit_exhausted') {
+            // Invalid teacher code or limit exhausted - set to null
+            $final_teacher_code = null;
+
             if (empty($check_tu)) {
-                $this->session->set_flashdata('error', 'Invalid Teacher Code!');
-                redirect(''.'/student-registration');
-            } elseif ($check_tu === 'limit_exhausted') {
-                $this->session->set_flashdata('error', 'Teacher Code has reached its limit!!');
-                redirect(''.'/student-registration');
+                $this->session->set_flashdata('error', 'Invalid Teacher Code! Registration completed without teacher code.');
             } else {
-
-                $teacher_book = $check_tu['subject'];
-                $board = $check_tu['board_name'];
-                $start_session = $check_tu['session_start'];
-                $end_session = $check_tu['session_end'];
-
-                $res = $this->db->insert('web_user', [
-                    'fullname' => $this->input->post('name'),
-                    'mobile' => $this->input->post('mobile'),
-                    'email' => $this->input->post('email'),
-                    'pin' => $this->input->post('pin'),
-                    'session_start' => $start_session,
-                    'session_end' => $end_session,
-                    'address' => $this->input->post('address'),
-                    'stu_teacher_id' => $this->input->post('stu_teacher_id'),
-                    'city' => $this->input->post('city'),
-                    'state' => $this->input->post('state'),
-                    'classes' => $this->input->post('class'),
-                    'class_section' => $this->input->post('class_section_name'),
-                    'board_name' => $board,
-                    'school_name' => $this->input->post('school_name'),
-                    'subject' => $teacher_book,
-                    'user_type' => 'Student',
-                    'status' => 1,
-                    'activeBooks' => 1,
-                    'password' => $this->input->post('password'),
-                ]);
-                $data = [
-                    'user' => $this->input->post('email'),
-                    'password' => $this->input->post('password'),
-                    'fullname' => $this->input->post('name'),
-                    'logo' => $this->AuthModel->content_row('Logo'),
-                    'mobile1' => $this->AuthModel->content_row('Mobile1'),
-                    'siteName' => $this->siteName,
-                    'email' => $this->siteEmail,
-                ];
-                $config = [
-                    'charset' => 'utf-8',
-                    'wordwrap' => true,
-                    'mailtype' => 'html',
-                ];
-
-                $this->email->initialize($config);
-                $this->email->to($this->input->post('email'));
-                $this->email->from($this->siteEmail, $this->siteName);
-                $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
-                $this->email->subject('Thank you for registering with '.$this->siteName.' Web Support');
-                $this->email->message($this->load->view('web/email_template', $data, true));
-                $this->email->send();
-                if (! $res) {
-                    $this->session->set_flashdata('error', 'Email ID in already Use.');
-                    redirect(''.'/student-registration');
-                } else {
-
-                    $this->session->set_flashdata('success', 'You are Successfully registerd with us, Please Check your registerd email for your account credentials...');
-                    redirect(''.'/student-registration');
-                }
+                $this->session->set_flashdata('error', 'Teacher Code has reached its limit! Registration completed without teacher code.');
             }
+        } else {
+            // Valid teacher code - get the details
+            $teacher_book = $check_tu['subject'];
+            $board = $check_tu['board_name'];
+            $start_session = $check_tu['session_start'];
+            $end_session = $check_tu['session_end'];
+            $status = 1;
         }
+
+        // Prepare data array
+        $user_data = [
+            'fullname' => $this->input->post('name'),
+            'mobile' => $this->input->post('mobile'),
+            'email' => $email,
+            'pin' => $this->input->post('pin'),
+            'session_start' => $start_session,
+            'session_end' => $end_session,
+            'address' => $this->input->post('address'),
+            'stu_teacher_id' => $final_teacher_code,
+            'city' => $this->input->post('city'),
+            'state' => $this->input->post('state'),
+            'classes' => $this->input->post('class'),
+            'class_section' => $this->input->post('class_section_name'),
+            'board_name' => $board,
+            'school_name' => $this->input->post('school_name'),
+            'subject' => $teacher_book,
+            'user_type' => 'Student',
+            'status' => $status,
+            'activeBooks' => 1,
+            'password' => $this->input->post('password'),
+        ];
+
+        if (!empty($existing_user)) {
+            // Update existing record
+            $this->db->where('email', $email);
+            $res = $this->db->update('web_user', $user_data);
+            $success_message = 'Your registration has been updated successfully. Please check your registered email for your account credentials.';
+        } else {
+            // Insert new record
+            $res = $this->db->insert('web_user', $user_data);
+            $success_message = 'You are successfully registered with us. Please check your registered email for your account credentials.';
+        }
+
+        if ($res) {
+            // Send email
+            $data = [
+                'user' => $email,
+                'password' => $this->input->post('password'),
+                'fullname' => $this->input->post('name'),
+                'logo' => $this->AuthModel->content_row('Logo'),
+                'mobile1' => $this->AuthModel->content_row('Mobile1'),
+                'siteName' => $this->siteName,
+                'email' => $this->siteEmail,
+            ];
+
+            $config = [
+                'charset' => 'utf-8',
+                'wordwrap' => true,
+                'mailtype' => 'html',
+            ];
+
+            $this->email->initialize($config);
+            $this->email->to($email);
+            $this->email->from($this->siteEmail, $this->siteName);
+            $this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
+            $this->email->subject('Thank you for registering with ' . $this->siteName . ' Web Support');
+            $this->email->message($this->load->view('web/email_template', $data, true));
+            $this->email->send();
+
+            $this->session->set_flashdata('success', $success_message);
+        } else {
+            $this->session->set_flashdata('error', 'An error occurred during registration. Please try again.');
+        }
+
+        redirect('/student-registration');
     }
 
     public function add_teacher_custom()
@@ -2264,10 +2367,13 @@ class Admin_master extends CI_Controller
             $this->session->set_flashdata('error', 'Email ID is already in Use.');
             redirect(''.'/teacher-registration');
         } else {
+            // Calculate the session start and end dates based on the input month.
+            // The session starts on the 1st of the selected month in the current year
+            // and ends on the last day of the preceding month in the next year.
             $month = $this->input->post('session_start');
 
             $courrentYr = date('Y');
-            $pastYr = date('Y') + 1;
+            $pastYr = date('Y') + 3; // Extended to 3 years
 
             if ($month == '1') {
                 $pastMonth = 12;
@@ -2324,7 +2430,7 @@ class Admin_master extends CI_Controller
             }
             $activeBooks = implode(',', $sub);
             $classes = implode(',', $classes);
-            $teacher_code = $this->randomPass(10);
+            $teacher_code = 'NEWAGE'. $this->randomPass(6);
             // activeBooks
             // $count = count($this->input->post('class'));
             // for ($i = 1; $i <= $count; $i++) {

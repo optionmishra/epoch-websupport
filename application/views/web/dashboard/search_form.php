@@ -1,5 +1,5 @@
-<form id="Selform" name="myformsearch" method="post" action="admin_master/default_product" novalidate>
-    <div class="flex flex-wrap my-5 items-center gap-4 text-gray-800 justify-center">
+<form class="bg-[#C8C7FF] py-8 mb-5" id="Selform" name="myformsearch" method="post" action="admin_master/default_product" novalidate>
+    <div class="flex flex-wrap items-center gap-4 text-gray-800 justify-center">
         <div>
             <select id="select_board" class="custom-select selectBoard_change" name="select_board" required>
                 <option value="<?= $this->session->userdata('board_name') ?>" selected>

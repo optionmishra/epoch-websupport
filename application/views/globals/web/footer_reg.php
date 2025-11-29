@@ -413,6 +413,71 @@
 		// });
 	</script>
 </section>
+
+<!-- Bootstrap Modal for Flash Messages -->
+<div class="modal fade" id="flashModal" tabindex="-1" role="dialog" aria-labelledby="flashModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="flashModalHeader">
+                <h5 class="modal-title" id="flashModalLabel">Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="flashModalBody">
+                <!-- Flash message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showFlashModal(title, message, type) {
+    const modalHeader = document.getElementById('flashModalHeader');
+    const modalTitle = document.getElementById('flashModalLabel');
+    const modalBody = document.getElementById('flashModalBody');
+
+    // Set title and message
+    modalTitle.textContent = title;
+    modalBody.innerHTML = message;
+
+    // Remove previous color classes
+    modalHeader.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'text-white');
+
+    // Add appropriate color based on type
+    switch(type) {
+        case 'success':
+            modalHeader.classList.add('bg-success', 'text-white');
+            break;
+        case 'error':
+            modalHeader.classList.add('bg-danger', 'text-white');
+            break;
+        case 'warning':
+            modalHeader.classList.add('bg-warning');
+            break;
+        case 'info':
+            modalHeader.classList.add('bg-info', 'text-white');
+            break;
+    }
+
+    $('#flashModal').modal('show');
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if ($this->session->flashdata('success')): ?>
+    showFlashModal('Success', '<?= $this->session->flashdata('success') ?>', 'success');
+    <?php $this->session->unset_userdata('success'); ?>
+    <?php elseif ($this->session->flashdata('error')): ?>
+    showFlashModal('Error', '<?= $this->session->flashdata('error') ?>', 'error');
+    <?php $this->session->unset_userdata('error'); ?>
+    <?php endif; ?>
+});
+</script>
 </body>
 
 </html>
