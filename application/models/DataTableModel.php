@@ -83,16 +83,16 @@ class DataTableModel extends CI_Model
 
     public function category_wise_download_data($cat_id)
     {
-        $this->db->select(['title', 'email', 'fullname', 'type', 'websupport_id']);
+        $this->db->select('websupport_id');
         $this->db->select('COUNT(websupport_id) as downloads');
-        $this->db->select('websupport.subject as websupport_subject');
-
-        $this->db->select('websupport_downloads_tracking.date as downloaded_at');
-        $this->db->select('classes.name as class_name');
-        $this->db->select('main_subject.name as subject_name');
-
-        $this->db->order_by('downloaded_at', 'desc');
-        // $this->db->from('websupport_downloads_tracking');
+        $this->db->select('MAX(title) as title');
+        $this->db->select('MAX(email) as email');
+        $this->db->select('MAX(fullname) as fullname');
+        $this->db->select('MAX(type) as type');
+        $this->db->select('MAX(websupport.subject) as websupport_subject');
+        $this->db->select('MAX(websupport_downloads_tracking.date) as downloaded_at');
+        $this->db->select('MAX(classes.name) as class_name');
+        $this->db->select('MAX(main_subject.name) as subject_name');
 
         $this->db->join('websupport', 'websupport.id = websupport_downloads_tracking.websupport_id');
         $this->db->join('web_user', 'web_user.id = websupport_downloads_tracking.user_id');
@@ -101,6 +101,7 @@ class DataTableModel extends CI_Model
 
         $this->db->where('type', $cat_id);
         $this->db->group_by('websupport_id');
+        $this->db->order_by('downloaded_at', 'desc');
     }
 
     private function _get_datatables_query($postData)
