@@ -13,7 +13,7 @@
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center justify-center">
             <div class="border-2 bg-white rounded-md p-1">
-                <img src="<?= base_url("assets/img/".$logo['file_name']) ?>" alt="" class="max-h-12">
+                <img src="<?= base_url('assets/img/'.$logo['file_name']) ?>" alt="" class="max-h-12">
             </div>
         </div>
         <div class="flex flex-wrap justify-center gap-4 items-center">

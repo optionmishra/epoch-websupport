@@ -129,7 +129,7 @@ class Admin_master extends CI_Controller
             // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
-            $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
             $this->email->subject('Your Credentials for '.$this->siteName.' Web Support');
             $this->email->message($this->load->view('web/email_template1', $data, true));
             $this->email->send();
@@ -180,7 +180,7 @@ class Admin_master extends CI_Controller
             // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
-            $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
             $this->email->subject('Your Credentials for '.$this->siteName.' Web Support');
             $this->email->message($this->load->view('web/email_template1', $data, true));
             $this->email->send();
@@ -199,7 +199,7 @@ class Admin_master extends CI_Controller
         $message = $this->input->post('message').' (Mobile Number: '.$this->input->post('mobile').')';
         $this->email->to($this->siteEmail);
         $this->email->from($this->input->post('email'), $this->input->post('name'));
-        $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+        $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
         $this->email->subject('New Contact Message from '.$this->siteName.' Web Support');
         $this->email->message($message);
         $res = $this->email->send();
@@ -729,7 +729,7 @@ class Admin_master extends CI_Controller
         // $this->email->initialize($config);
         $this->email->to($ress[0]->email);
         $this->email->from($this->siteEmail, $this->siteName);
-        $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+        $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
         $this->email->subject('Your Credentials for '.$this->siteName.' Web Support');
         $this->email->message($this->load->view('web/cemail_template', $data, true));
         $this->email->send();
@@ -2347,7 +2347,7 @@ class Admin_master extends CI_Controller
             // $this->email->initialize($config);
             $this->email->to($email);
             $this->email->from($this->siteEmail, $this->siteName);
-            $this->email->cc('mayank@epochstudio.net, ' . $this->siteEmail);
+            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, ' . $this->siteEmail);
             $this->email->subject('Thank you for registering with ' . $this->siteName . ' Web Support');
             $this->email->message($this->load->view('web/email_template', $data, true));
             $this->email->send();
@@ -2488,7 +2488,7 @@ class Admin_master extends CI_Controller
             // $this->email->initialize($config);
             $this->email->to($this->input->post('email'));
             $this->email->from($this->siteEmail, $this->siteName);
-            $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
             $this->email->subject('Your Credentials for '.$this->siteName.' Web Support');
             $this->email->message($this->load->view('web/email_template', $data, true));
             $this->email->send();

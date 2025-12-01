@@ -36,7 +36,7 @@ $is_test_paper_gen = ($category_name === 'Test Paper Generator');
         </div>
 
         <!-- Main Content Area -->
-        <div class="p-0 m-0 flex justify-center w-full">
+        <div class="p-0 m-0 flex justify-center w-full scroll-smooth" id="contentContainer">
             <?php if ($is_online_tpg) { ?>
                 <?php $this->load->view('web/dashboard/online_tpg_content', ['online_tpgs' => $online_tpgs]); ?>
             <?php } else { ?>

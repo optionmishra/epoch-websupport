@@ -82,5 +82,6 @@
 <script src="<?= base_url('assets/js/custom.js') ?>"></script>
 <script type="module" src="<?= base_url('assets/js/simple-datatables.js') ?>"></script>
 <script type="module" src="<?= base_url('assets/dashboard/datatable.js') ?>"></script>
+<script src="<?= base_url('assets/dashboard/script.js') ?>"></script>
 </body>
 </html>
