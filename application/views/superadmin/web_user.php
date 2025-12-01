@@ -5,7 +5,9 @@
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><?= $page ?></li>
-            <li class="breadcrumb-item"><a href="<?= base_url('superadmin/dashboard') ?>"><i class="fa fa-home fa-lg"></i> Home</a></li>
+            <li class="breadcrumb-item"><a href="<?= base_url(
+                'superadmin/dashboard',
+            ) ?>"><i class="fa fa-home fa-lg"></i> Home</a></li>
         </ul>
     </div>
     <div class="row">
@@ -21,8 +23,8 @@
                                             <th>#</th>
                                             <th>Full Name</th>
                                             <th>Mobile</th>
-											<th>Email</th>
-											<th>Password</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
                                             <th>Pin Code</th>
                                             <th>Address</th>
                                             <th>State</th>
@@ -31,7 +33,7 @@
                                             <th>Subjects</th>
                                             <th>Teacher Code</th>
                                             <th>Board</th>
-											<th>Subscribed Board</th>
+                                            <th>Subscribed Board</th>
                                             <th>Date Registered</th>
                                             <th>Status</th>
                                             <th>Action</th>
@@ -56,7 +58,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="update-webu" class="smooth-submit" method="post" action="<?= base_url('admin_master/update_webu') ?>"
+                <form id="update-webu" class="smooth-submit" method="post" action="<?= base_url(
+                    'admin_master/update_webu',
+                ) ?>"
                       <div class="form-body">
                         <div class="row m-0 p-2">
                             <div class="col-lg-6 p-2">
@@ -101,14 +105,26 @@
                                 <div class="form-group">
                                     <label for="webu_subjects">Subjects</label>
                                     <div class="form-check webu-subjects">
-                                    <?php foreach($subjects as $subject): ?>
+                                    <?php foreach ($subjects as $subject) { ?>
                                         <input class="form-check-input" type="checkbox" name="subject[]" value="<?php echo $subject->id; ?>" id="webu_subject_<?php echo $subject->id; ?>">
                                         <label class="form-check-label" for="webu_subject_<?php echo $subject->id; ?>">
                                             <?php echo $subject->name; ?>
                                         </label><br>
-                                    <?php endforeach; ?>
+                                    <?php } ?>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="p-2 col-lg-6">
+                              <div class="form-group">
+                                <label for="sessionStart">Session Start</label>
+                                <input type="date" class="form-control" id="sessionStart" name="session_start">
+                              </div>
+                            </div>
+                            <div class="p-2 col-lg-6">
+                              <div class="form-group">
+                                <label for="sessionEnd">Session End</label>
+                                <input type="date" class="form-control" id="sessionEnd" name="session_end">
+                              </div>
                             </div>
 
                         </div>

@@ -423,7 +423,7 @@ var twebuTable = $(".twebuTables").DataTable({
   ],
 });
 
-$(".webuTables").on("click", ".edit-webu", function () {
+$(".webuTables, .webuTables2").on("click", ".edit-webu", function () {
   var id = $(this).attr("webu_id");
   $.ajax({
     url: base_url + "admin_master/retrieve/web_user/id/" + id,
@@ -439,13 +439,13 @@ $(".webuTables").on("click", ".edit-webu", function () {
       $("#webu_email").val(webu.email);
       $("#webu_address").val(webu.address);
       $("#webu_city").val(webu.city);
-
+      $("#sessionStart").val(webu.session_start);
+      $("#sessionEnd").val(webu.session_end);
       let subjectsArr = webu.subject.split(",");
       $(".webu-subjects input[type='checkbox'][id^='webu_subject_']").prop(
         "checked",
         false,
       );
-
       $.each(subjectsArr, function (index, subject) {
         $(`#webu_subject_${subject.trim()}`).prop("checked", true);
       });
@@ -497,7 +497,7 @@ $("#tupdate-webu").on("aftersubmit", function (e, data) {
   }
 });
 
-$(".webuTables").on("click", ".delete_webu", function () {
+$(".webuTables, .webuTables2").on("click", ".delete_webu", function () {
   var id = $(this).attr("webu_id");
   swal({
     title: "Are you sure?",
@@ -2515,7 +2515,7 @@ $("#downloadcode").on("aftersubmit", function (e, data) {
   }
 });
 
-$(".webuTables").on("click", ".status_webu", function () {
+$(".webuTables, .webuTables2").on("click", ".status_webu", function () {
   var id = $(this).attr("webu_id");
   swal({
     title: "Are you sure?",
@@ -2547,7 +2547,7 @@ $(".webuTables").on("click", ".status_webu", function () {
     }
   });
 });
-$(".webuTables").on("click", ".statuss_webu", function () {
+$(".webuTables, .webuTables2").on("click", ".statuss_webu", function () {
   var id = $(this).attr("webu_id");
   swal({
     title: "Are you sure?",
@@ -3053,3 +3053,48 @@ function changeProduct(id) {
     },
   });
 }
+
+var webuTable = $(".webuTables2").DataTable({
+  serverSide: false,
+  ajax: base_url + "admin_master/webu2",
+  fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+    var countrych = aData["country_type"];
+    if (countrych == "Others") {
+      $("td:eq(7)", nRow).html(aData["oth_state"]);
+      $("td:eq(8)", nRow).html(aData["oth_city"]);
+    } else {
+      $("td:eq(7)", nRow).html(aData["statename"]);
+      $("td:eq(8)", nRow).html(aData["city"]);
+    }
+
+    return nRow;
+  },
+  columns: [
+    { data: "sr_no" },
+    { data: "fullname" },
+    { data: "mobile" },
+    { data: "email" },
+    { data: "password" },
+    { data: "pin" },
+    { data: "address" },
+    { data: "state" },
+    { data: "city" },
+    { data: "classes" },
+    { data: "subjects" },
+    { data: "stu_teacher_id" },
+    { data: "board_name" },
+    { data: "board_name" },
+    { data: "dated" },
+    { data: "status" },
+    { data: "action" },
+  ],
+  dom: "Bfrtip",
+  buttons: [
+    "excelHtml5",
+    {
+      extend: "pdfHtml5",
+      orientation: "landscape",
+      pageSize: "LEGAL",
+    },
+  ],
+});

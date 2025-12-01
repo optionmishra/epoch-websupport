@@ -754,4 +754,26 @@ class Superadmin extends CI_Controller
             $this->per_denied('Permission Denied');
         }
     }
+
+    public function student_registration_attempts()
+    {
+        if ($this->session->userdata('level') == 'Super Admin') {
+            $this->check_isvalidated();
+            $data = [
+                'title' => 'Students List',
+                'page' => 'Students List',
+                'row' => $this->AuthModel->user_profile(),
+                'cat' => $this->AuthModel->category(),
+                'permissions' => $this->AuthModel->permission(),
+                'subjects' => $this->AuthModel->msubject(),
+                'siteName' => $this->siteName,
+            ];
+            $this->load->view('globals/header', $data);
+            $this->AuthModel->navbar();
+            $this->load->view('superadmin/studentRegistrationAttempts', $data);
+            $this->load->view('globals/footer', $data);
+        } else {
+            return redirect('/');
+        }
+    }
 }

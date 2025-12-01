@@ -48,7 +48,7 @@
             <li class="breadcrumb-item"><a href="<?= base_url('superadmin/dashboard') ?>"><i class="fa fa-home fa-lg"></i> Home</a></li>
         </ul>
     </div>
-    <?php foreach ($info as $infor) : ?>
+    <?php foreach ($info as $infor) { ?>
         <form id="update-teacher" class="smooth-submit" method="post" action="<?= base_url('admin_master/update_webteacher') ?>">
             <div class="form-body">
                 <div class="row m-0 p-2">
@@ -96,6 +96,19 @@
                         </div>
                     </div>
 
+                      <div class="col-lg-6 p-2">
+                        <div class="form-group">
+                          <label for="sessionStart">Session Start</label>
+                          <input type="date" class="form-control" value="<?= $infor->session_start?>" id="sessionStart" name="session_start">
+                        </div>
+                      </div>
+                      <div class="col-lg-6 p-2">
+                        <div class="form-group">
+                          <label for="sessionEnd">Session End</label>
+                          <input type="date" class="form-control" value="<?= $infor->session_end?>" id="sessionEnd" name="session_end">
+                        </div>
+                      </div>
+
                     <?php /*<div class="col-lg-12 p-2">
                         <div class="form-group">
                             <label>Series *</label>
@@ -133,14 +146,14 @@
                     <div class="col-lg-12 p-2">
                         <select class="form-control series-select" id="series">
                             <option value="" disabled selected>+ Add more series</option>
-                            <?php foreach ($all_series_of_selected_board as $series) : ?>
+                            <?php foreach ($all_series_of_selected_board as $series) { ?>
                                 <!-- show not selected options only -->
-                                <?php # if (!in_array($series->id, $teacher_series_arr)) : 
+                                <?php // if (!in_array($series->id, $teacher_series_arr)) :
                                 ?>
                                 <option value="<?= $series->id ?>"><?= $series->name ?></option>
-                                <?php # endif; 
+                                <?php // endif;
                                 ?>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </select>
                     </div>
                     <?php /* foreach ($teacher_series_details as $teacher_series) : ?>
@@ -170,8 +183,8 @@
                             </div>
                         </div>
                     <?php endforeach; */ ?>
-                    <?php foreach ($series_classes as $key => $sub_id) : ?>
-                        <?php foreach ($series_classes[$key] as $key2 => $series_id) : ?>
+                    <?php foreach ($series_classes as $key => $sub_id) { ?>
+                        <?php foreach ($series_classes[$key] as $key2 => $series_id) { ?>
                             <div class="col-lg-6 p-2">
                                 <input type="hidden" name="series[]" value="<?= $key ?>">
                                 <select class="form-control series-select" disabled>
@@ -182,17 +195,17 @@
                                     <option value="<?= $key2 ?>" selected><?= $series_arr[$key2] ?></option>
                                 </select>
                                 <div class="row m-0 series-classes-container pb-2">
-                                    <?php foreach ($series_with_all_classes[$key] as $class) : ?>
+                                    <?php foreach ($series_with_all_classes[$key] as $class) { ?>
                                         <span class="col-md-3">
-                                            <input class="m-1" type="checkbox" name="<?= $key2 ?>Classes[]" value="<?= $class->id ?>" <?php if ($series_classes[$key]) : ?> <?= (in_array($class->id, $series_classes[$key][$key2])) ?  'checked' : '' ?> <?php else : ?> <?= in_array($class->id, $teacher_classes) ? 'checked' : '' ?> <?php endif; ?>>
+                                            <input class="m-1" type="checkbox" name="<?= $key2 ?>Classes[]" value="<?= $class->id ?>" <?php if ($series_classes[$key]) { ?> <?= (in_array($class->id, $series_classes[$key][$key2])) ? 'checked' : '' ?> <?php } else { ?> <?= in_array($class->id, $teacher_classes) ? 'checked' : '' ?> <?php } ?>>
                                             <label class="m-1"><?= $class->name ?></label>
                                         </span>
-                                    <?php endforeach; ?>
+                                    <?php } ?>
                                     <div style="margin: 2rem 1.5rem 0 auto;"><span class="btn btn-sm btn-danger px-3 removeSeries" data-seriesValue="${seriesValue}" data-seriesName="${seriesName}" data-clasesName="${seriesValue}Classes[]">Remove</span></div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger float-right" data-dismiss="modal">Cancel</button>
@@ -200,7 +213,7 @@
                 </div>
             </div>
         </form>
-    <?php endforeach; ?>
+    <?php } ?>
 </main>
 
 <script>

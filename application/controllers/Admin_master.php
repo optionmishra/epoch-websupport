@@ -51,7 +51,7 @@ class Admin_master extends CI_Controller
     private function upload_file($file_name, $path, $field_name)
     {
         // Check if upload directory exists, create if it doesn't
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
@@ -278,6 +278,8 @@ class Admin_master extends CI_Controller
                 'subject' => $subject,
                 'stu_limit' => $this->input->post('stu_limit'),
                 'series_classes' => $serialized_series_classes,
+                'session_start' => $this->input->post('session_start'),
+                'session_end' => $this->input->post('session_end'),
             ];
             $res = $this->AuthModel->update_webu($details, $id);
             if (! $res) {
@@ -751,6 +753,8 @@ class Admin_master extends CI_Controller
                 'address' => $this->input->post('address'),
                 'city' => $this->input->post('city'),
                 'subject' => implode(',', $this->input->post('subject')),
+                'session_start' => $this->input->post('session_start'),
+                'session_end' => $this->input->post('session_end'),
             ];
             $res = $this->AuthModel->update_webu($details, $id);
             if (! $res) {
@@ -953,7 +957,7 @@ class Admin_master extends CI_Controller
             $path = 'assets/cat_icons';
 
             // Check if upload directory exists, create if it doesn't
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
@@ -997,7 +1001,7 @@ class Admin_master extends CI_Controller
             $path = 'assets/cat_icons';
 
             // Check if upload directory exists, create if it doesn't
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
@@ -2315,7 +2319,7 @@ class Admin_master extends CI_Controller
             'password' => $this->input->post('password'),
         ];
 
-        if (!empty($existing_user)) {
+        if (! empty($existing_user)) {
             // Update existing record
             $this->db->where('email', $email);
             $res = $this->db->update('web_user', $user_data);
@@ -2347,8 +2351,8 @@ class Admin_master extends CI_Controller
             // $this->email->initialize($config);
             $this->email->to($email);
             $this->email->from($this->siteEmail, $this->siteName);
-            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, ' . $this->siteEmail);
-            $this->email->subject('Thank you for registering with ' . $this->siteName . ' Web Support');
+            $this->email->cc('mayank@epochstudio.net, newagekids@newagepublishers.com, '.$this->siteEmail);
+            $this->email->subject('Thank you for registering with '.$this->siteName.' Web Support');
             $this->email->message($this->load->view('web/email_template', $data, true));
             $this->email->send();
 
@@ -2430,7 +2434,7 @@ class Admin_master extends CI_Controller
             }
             $activeBooks = implode(',', $sub);
             $classes = implode(',', $classes);
-            $teacher_code = 'NEWAGE'. $this->randomPass(6);
+            $teacher_code = 'NEWAGE'.mt_rand(100000, 999999);
             // activeBooks
             // $count = count($this->input->post('class'));
             // for ($i = 1; $i <= $count; $i++) {
@@ -3005,6 +3009,7 @@ class Admin_master extends CI_Controller
                 'password' => $res[0]->password,
                 'siteName' => $this->siteName,
                 'email' => $this->siteEmail,
+                'logo' => $this->AuthModel->content_row('Logo'),
             ];
 
             $config = [
@@ -3020,10 +3025,9 @@ class Admin_master extends CI_Controller
             // Now fetch email
             $recipient = isset($data['email']) ? trim($data['email']) : '';
 
-            if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-                die("Invalid email: " . htmlspecialchars($recipient));
+            if (! filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+                exit('Invalid email: '.htmlspecialchars($recipient));
             }
-
 
             // $this->email->initialize($config);
             $this->email->to($recipient);
@@ -3268,7 +3272,7 @@ class Admin_master extends CI_Controller
         $path = 'assets/question_files';
 
         // Check if upload directory exists, create if it doesn't
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
@@ -3649,5 +3653,30 @@ class Admin_master extends CI_Controller
             $this->message('error', $this->AuthModel->error);
         }
         $this->message('success', 'Support Successfully Uploaded.');
+    }
+
+    public function webu2()
+    {
+        $res = $this->AuthModel->webu2();
+        $i = 1;
+        foreach ($res as $key => &$value) {
+            $value->sr_no = $i;
+            if ($value->status == '1') {
+                $active = 'Active';
+            } else {
+                $active = 'Inactive';
+            }
+            $subject_data = $this->AuthModel->msubject_mod($value->subject);
+            $subject_names = array_column($subject_data, 'name');
+            $value->subjects = implode(',', $subject_names);
+            $value->status = $active;
+            $value->action = "<a webu_id='".$value->id."' class='pr-2 pointer edit-webu' data-toggle='modal' data-target='#edit-webu'><i class='fa fa-edit'></i></a>"
+                ."<a webu_id='".$value->id."' title='Block' class='pr-2 pointer status_webu'><i class='fa fa-times text-danger'></i></a>"
+                ."<a webu_id='".$value->id."' title='Unblock' class='pr-2 pointer statuss_webu'><i class='fa fa-check text-success'></i></a>"
+                ."<a webu_id='".$value->id."' class='pointer delete_webu'><i class='fa fa-trash text-danger'></i></a>";
+            $i++;
+        }
+
+        $this->message('success', '', $res);
     }
 }

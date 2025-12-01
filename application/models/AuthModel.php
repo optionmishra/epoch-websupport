@@ -1001,6 +1001,7 @@ class AuthModel extends CI_Model
             $this->db->where('id', $id);
         }
         $this->db->where('user_type', 'Student');
+        $this->db->where('stu_teacher_id IS NOT NULL');
         $res = $this->db->get('web_user')->result();
 
         return $res;
@@ -2080,7 +2081,7 @@ class AuthModel extends CI_Model
             // Check if there are series classes defined for the given main subject
             if (isset($series_classes_data[$msubject_id]) && is_array($series_classes_data[$msubject_id])) {
                 foreach ($series_classes_data[$msubject_id] as $classes_array) {
-                        $classesArr = array_merge($classesArr, $classes_array);
+                    $classesArr = array_merge($classesArr, $classes_array);
                 }
                 $classesArr = array_unique($classesArr);
             }
@@ -2440,6 +2441,18 @@ class AuthModel extends CI_Model
         // $this->db->where('subject.id', $this->session->userdata('selected_book'));
         // MOD
         $res = $this->db->get()->result();
+
+        return $res;
+    }
+
+    public function webu2($id = null)
+    {
+        if (! empty($id)) {
+            $this->db->where('id', $id);
+        }
+        $this->db->where('user_type', 'Student');
+        $this->db->where('stu_teacher_id', null);
+        $res = $this->db->get('web_user')->result();
 
         return $res;
     }
