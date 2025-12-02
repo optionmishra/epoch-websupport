@@ -2456,4 +2456,17 @@ class AuthModel extends CI_Model
 
         return $res;
     }
+
+    public function getUserClasses($classIdsStr)
+    {
+        if (empty($classIdsStr)) {
+            return [];
+        }
+        $classIdsArr = explode(',', $classIdsStr);
+        $this->db->select('id, name');
+        $this->db->where_in('id', $classIdsArr);
+        $res = $this->db->get('classes')->result();
+
+        return $res;
+    }
 }

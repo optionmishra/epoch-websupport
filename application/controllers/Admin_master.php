@@ -655,6 +655,9 @@ class Admin_master extends CI_Controller
             $subject_data = $this->AuthModel->msubject_mod($value->subject);
             $subject_names = array_column($subject_data, 'name');
             $value->subjects = implode(',', $subject_names);
+            $classes_data = $this->AuthModel->getUserClasses($value->classes);
+            $classes_names = array_column($classes_data, 'name');
+            $value->classes = implode(',', $classes_names);
             $value->status = $active;
             $value->action = "<a webu_id='".$value->id."' class='pr-2 pointer edit-webu' data-toggle='modal' data-target='#edit-webu'><i class='fa fa-edit'></i></a>"
                 ."<a webu_id='".$value->id."' title='Block' class='pr-2 pointer status_webu'><i class='fa fa-times text-danger'></i></a>"
@@ -683,6 +686,9 @@ class Admin_master extends CI_Controller
 
             $value->status = $active;
             $value->subject = $subject;
+            $classes_data = $this->AuthModel->getUserClasses($value->classes);
+            $classes_names = array_column($classes_data, 'name');
+            $value->classes = implode(',', $classes_names);
             $value->action = "<a user_id='".$value->id."' class='pr-2 pointer edit-user' href='superadmin/teacher_update/".$value->id."'><i class='fa fa-edit'></i></a>"
                 ."<a webu_id='".$value->id."' title='Block' class='pr-2 pointer status_webu'><i class='fa fa-times text-danger'></i></a>"
                 ."<a webu_id='".$value->id."' title='Unblock' class='pr-2 pointer statuss_webu'><i class='fa fa-check text-success'></i></a>"
@@ -3670,6 +3676,9 @@ class Admin_master extends CI_Controller
             $subject_names = array_column($subject_data, 'name');
             $value->subjects = implode(',', $subject_names);
             $value->status = $active;
+            $classes_data = $this->AuthModel->getUserClasses($value->classes);
+            $classes_names = array_column($classes_data, 'name');
+            $value->classes = implode(',', $classes_names);
             $value->action = "<a webu_id='".$value->id."' class='pr-2 pointer edit-webu' data-toggle='modal' data-target='#edit-webu'><i class='fa fa-edit'></i></a>"
                 ."<a webu_id='".$value->id."' title='Block' class='pr-2 pointer status_webu'><i class='fa fa-times text-danger'></i></a>"
                 ."<a webu_id='".$value->id."' title='Unblock' class='pr-2 pointer statuss_webu'><i class='fa fa-check text-success'></i></a>"
