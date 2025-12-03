@@ -2333,7 +2333,7 @@ class Admin_master extends CI_Controller
         } else {
             // Insert new record
             $res = $this->db->insert('web_user', $user_data);
-            $success_message = 'You have successfully registered with us. Please check your registered email for your account credentials.';
+            $success_message = 'You are successfully registered with us. Please check your registered email for your account credentials.';
         }
 
         if ($res) {
@@ -2374,7 +2374,7 @@ class Admin_master extends CI_Controller
     {
         $check = $this->WebModel->validate_email($this->input->post('email'));
         if (! empty($check)) {
-            $this->session->set_flashdata('error', 'The email address provided is already registered. Please use a different email.');
+            $this->session->set_flashdata('error', 'The email provided is already registered. Please use a different email.');
             redirect(''.'/teacher-registration');
         } else {
             // Calculate the session start and end dates based on the input month.
@@ -2506,7 +2506,7 @@ class Admin_master extends CI_Controller
                 $this->session->set_flashdata('error', 'Registration failed. Please try again.');
                 redirect(''.'/teacher-registration');
             } else {
-                $this->session->set_flashdata('success', 'You have successfully registered with us. Please check your registered email for your account credentials.');
+                $this->session->set_flashdata('success', 'You are successfully registered with us. Please check your registered email for your account credentials.');
                 redirect(''.'/teacher-registration');
             }
         }

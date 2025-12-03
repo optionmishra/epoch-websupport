@@ -424,8 +424,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="flashModalBody">
+            <div class="modal-body">
+              <div>
+                <img style="background-color: white; border: 8px solid white; border-radius:5px" class="nw-ft-img" src="assets/img/<?php echo $logo['file_name']; ?>">
+              </div>
+              <div id="flashModalBody">
                 <!-- Flash message will be inserted here -->
+              </div>
             </div>
             <div class="modal-footer">
                 <a href="/"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></a>
@@ -469,13 +474,13 @@ function showFlashModal(title, message, type) {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    <?php if ($this->session->flashdata('success')): ?>
+    <?php if ($this->session->flashdata('success')) { ?>
     showFlashModal('Success', '<?= $this->session->flashdata('success') ?>', 'success');
     <?php $this->session->unset_userdata('success'); ?>
-    <?php elseif ($this->session->flashdata('error')): ?>
+    <?php } elseif ($this->session->flashdata('error')) { ?>
     showFlashModal('Error', '<?= $this->session->flashdata('error') ?>', 'error');
     <?php $this->session->unset_userdata('error'); ?>
-    <?php endif; ?>
+    <?php } ?>
 });
 </script>
 </body>
