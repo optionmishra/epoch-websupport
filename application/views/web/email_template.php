@@ -33,6 +33,9 @@
 							<tr>
 								<td class="m_106582725290803236m_-6920465394801571479container-padding" bgcolor="#ffffff" style="background-color:#ffffff;padding-left:30px;padding-right:30px;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;color:#333"><br>
 									<div style="background-color:#ddd;height:1px;width:100%"> </div>
+									Hello: <?= $fullname ?><br>
+									Username: <?= $user ?><br>
+									<br>
 									<p>Thanks for your registration to access amazing AI based features of your text book published by NEW AGE Kids ! </p>
 									<br>
 									<p>Your account will be validated within next 3 working days.</p>

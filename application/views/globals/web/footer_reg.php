@@ -418,16 +418,16 @@
 <div class="modal fade" id="flashModal" tabindex="-1" role="dialog" aria-labelledby="flashModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header" id="flashModalHeader">
-                <h5 class="modal-title" id="flashModalLabel">Notification</h5>
+            <div class="modal-header flex justify-content-center" id="flashModalHeader">
+              <div style="max-width: 200px; border: 8px solid white; border-radius: 5px;">
+                <img src="assets/img/<?= $logo['file_name']; ?>">
+              </div>
+                <!--<h5 class="modal-title" id="flashModalLabel">Notification</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>
+                </button>-->
             </div>
             <div class="modal-body">
-              <div>
-                <img style="background-color: white; border: 8px solid white; border-radius:5px" class="nw-ft-img" src="assets/img/<?php echo $logo['file_name']; ?>">
-              </div>
               <div id="flashModalBody">
                 <!-- Flash message will be inserted here -->
               </div>
@@ -446,7 +446,7 @@ function showFlashModal(title, message, type) {
     const modalBody = document.getElementById('flashModalBody');
 
     // Set title and message
-    modalTitle.textContent = title;
+    // modalTitle.textContent = title;
     modalBody.innerHTML = message;
 
     // Remove previous color classes
