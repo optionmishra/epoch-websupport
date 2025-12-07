@@ -1,6 +1,6 @@
 <div class="home-side">
     <div class="flex flex-col items-center wmain_sidebar">
-        <div class="bg-[#6D3332] w-36 transition-all rounded-2xl shadow-sm text-white my-5 p-2 text-center font-semibold uppercase">
+        <div class="bg-[#6D3332] transition-all rounded-2xl shadow-sm text-white my-5 p-2 text-center font-semibold uppercase">
             For Teachers & Students
         </div>
         <ul class="flex flex-wrap gap-4 justify-center <?= $user_type === 'Teacher' ? 'userTeacher' : '' ?>">
@@ -19,7 +19,7 @@
                 <?php } ?>
             <?php } ?>
         </ul>
-        <div class="bg-[#6D3332] w-36 transition-all rounded-2xl shadow-sm text-white my-5 p-2 text-center font-semibold uppercase">
+        <div class="bg-[#6D3332] transition-all rounded-2xl shadow-sm text-white my-5 p-2 text-center font-semibold uppercase">
             For Teachers Only
         </div>
         <ul class="flex flex-wrap gap-4 justify-center <?= $user_type === 'Teacher' ? 'userTeacher' : '' ?>">
