@@ -141,7 +141,7 @@
 
 				</div>
 				<div class="col-lg-4">
-					<h3 class="teacher-ttl">Teacher Code - <?= $user[0]->stu_teacher_id ?></h3>
+					<h3 class="teacher-ttl">Teacher Code - <?= $user->stu_teacher_id ?></h3>
 				</div>
 			</div>
 		</div>
@@ -156,37 +156,37 @@
 				<div class="d-flex align-items-center justify-content-center h-100 py-3">
 					<div class="d-flex flex-column">
 						<div class="row py-5">
-							<?php if ($objective_test1 || $objective_test2 || $objective_test3 || $objective_test4 || $subjective_test1 || $subjective_test2) : ?>
-								<form action="<?= base_url() . 'web/objective_paper' ?>" method="post">
+							<?php if ($objective_test1 || $objective_test2 || $objective_test3 || $objective_test4 || $subjective_test1 || $subjective_test2) { ?>
+								<form action="<?= base_url().'web/objective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="11">
 									<?= $objective_test1 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Objective Test 1</button><div id="ob1_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
-								<form action="<?= base_url() . 'web/objective_paper' ?>" method="post">
+								<form action="<?= base_url().'web/objective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="12">
 									<?= $objective_test2 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Objective Test 2</button><div id="ob2_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
-								<form action="<?= base_url() . 'web/objective_paper' ?>" method="post">
+								<form action="<?= base_url().'web/objective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="13">
 									<?= $objective_test3 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Objective Test 3</button><div id="ob3_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
-								<form action="<?= base_url() . 'web/objective_paper' ?>" method="post">
+								<form action="<?= base_url().'web/objective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="14">
 									<?= $objective_test4 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Objective Test 4</button><div id="ob4_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
 
-								<form action="<?= base_url() . 'web/subjective_paper' ?>" method="post">
+								<form action="<?= base_url().'web/subjective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="21">
 									<?= $subjective_test1 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Subjective Test 1</button><div id="sub1_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
-								<form action="<?= base_url() . 'web/subjective_paper' ?>" method="post">
+								<form action="<?= base_url().'web/subjective_paper' ?>" method="post">
 									<input type="hidden" name="paper_mode" id="" value="22">
 									<?= $subjective_test2 ? '<button type="submit" class="btn btn-danger btn-lg m-2" >Subjective Test 2</button><div id="sub2_dt" class="text-danger text-center" style="font-weight:400;"></div>' : ''; ?>
 								</form>
-							<?php else : ?>
-								<?= ('<h3>' . $msg . '</h3>'); ?>
-							<?php endif; ?>
-							<!-- <button><? #$objective_test1, $subjective_test1 
-											?></button> -->
+							<?php } else { ?>
+								<?= ('<h3>'.$msg.'</h3>'); ?>
+							<?php } ?>
+							<!-- <button><?php // $objective_test1, $subjective_test1
+                                            ?></button> -->
 						</div>
 					</div>
 				</div>
@@ -202,7 +202,7 @@
 </main>
 <script>
 	$(document).ready(function() {
-		// Update the count down every 1 second 
+		// Update the count down every 1 second
 		const updateTimeRemaining = (elementID, endDate) => {
 			const x = setInterval(function() {
 
