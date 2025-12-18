@@ -35,7 +35,7 @@ class Web extends CI_Controller
 
     public function index($msg = null)
     {
-        if (! filter_var($_ENV['AUTH'], FILTER_VALIDATE_BOOLEAN)) {
+        if (isset($_ENV['AUTH']) && ! filter_var($_ENV['AUTH'], FILTER_VALIDATE_BOOLEAN)) {
             return redirect('web/auto_login');
         }
         $data = [
