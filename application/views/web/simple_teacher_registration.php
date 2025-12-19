@@ -124,7 +124,7 @@
 						<div class="py-2 col-lg-6">
 							<div class="form-group">
 								<label for="teacher_email">Email (Teacher) *</label>
-								<input type="email" class="form-control" id="teacher_email" name="email" required="true" placeholder="Enter Email(School)">
+								<input type="email" class="form-control" id="teacher_email" name="email" required="true" placeholder="Enter Email (Teacher)">
 								<div id="getemail_descc"></div>
 							</div>
 						</div>
