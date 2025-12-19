@@ -3574,10 +3574,13 @@ class Admin_master extends CI_Controller
         }
         $res = $this->db->insert('web_user', [
             'fullname' => $this->input->post('name'),
-            'mobile' => $this->input->post('mobile'),
+            // 'mobile' => $this->input->post('mobile'),
             'email' => $email,
+            'dob' => $this->input->post('dob'),
             'password' => $this->input->post('password'),
             'board_name' => 'All',
+            'school_name' => $this->input->post('school_name'),
+            'address' => $this->input->post('address'),
             'status' => 1,
             'user_type' => 'Teacher',
         ]);

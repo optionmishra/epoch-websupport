@@ -115,12 +115,12 @@
 								<input type="text" class="form-control" id="teacher_name" name="name" required="true" placeholder="Enter full Name">
 							</div>
 						</div>
-						<div class="py-2 col-lg-6">
+						<!--<div class="py-2 col-lg-6">
 							<div class="form-group">
 								<label for="teacher_mobile">Mobile *</label>
 								<input type="tel" class="form-control" id="teacher_mobile" name="mobile" pattern="[1-9]{1}[0-9]{9}" title="10 digit Mobile number" required="true" placeholder="Enter Mobile Number">
 							</div>
-						</div>
+						</div>-->
 						<div class="py-2 col-lg-6">
 							<div class="form-group">
 								<label for="teacher_email">Email(School) *</label>
@@ -133,6 +133,18 @@
 								<label for="teacher_password">Password *</label>
 								<input type="password" class="form-control" id="teacher_password" name="password" pattern=".{8,}" title="Must contain at least 8 or more characters" required="true" placeholder="Enter Password">
 								<div id="getemail_desc"></div>
+							</div>
+						</div>
+						<div class="col-lg-6 py-2">
+							<div class="form-group">
+								<label for="school_nameT">School Name *</label>
+								<input type="text" class="form-control" id="school_nameT" name="school_name" required="true" placeholder="Enter School Name">
+							</div>
+						</div>
+						<div class="col-lg-6 py-2">
+							<div class="form-group">
+								<label for="teacher_address">Address(School) *</label>
+								<textarea class="form-control" id="teacher_address" name="address" required="true" placeholder="Enter Address(School)"></textarea>
 							</div>
 						</div>
 					</div>
