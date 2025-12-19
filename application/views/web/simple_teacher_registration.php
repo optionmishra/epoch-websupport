@@ -123,9 +123,15 @@
 						</div>-->
 						<div class="py-2 col-lg-6">
 							<div class="form-group">
-								<label for="teacher_email">Email(School) *</label>
+								<label for="teacher_email">Email (Teacher) *</label>
 								<input type="email" class="form-control" id="teacher_email" name="email" required="true" placeholder="Enter Email(School)">
 								<div id="getemail_descc"></div>
+							</div>
+						</div>
+						<div class="col-lg-6 py-2">
+							<div class="form-group">
+								<label for="teacher_dob">DOB</label>
+								<input type="date" class="form-control" id="teacher_dob" name="dob">
 							</div>
 						</div>
 						<div class="py-2 col-lg-6">
@@ -143,7 +149,7 @@
 						</div>
 						<div class="col-lg-6 py-2">
 							<div class="form-group">
-								<label for="teacher_address">Address(School) *</label>
+								<label for="teacher_address">Address (School) *</label>
 								<textarea class="form-control" id="teacher_address" name="address" required="true" placeholder="Enter Address(School)"></textarea>
 							</div>
 						</div>
