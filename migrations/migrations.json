@@ -1,0 +1,9 @@
+{
+  "migrations": [
+    {
+      "class": "SetDefaultsNullMigration",
+      "description": "Set default value to NULL for classes and subject columns in web_user table",
+      "enabled": true
+    }
+  ]
+}
