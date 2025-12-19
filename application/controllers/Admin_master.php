@@ -51,7 +51,7 @@ class Admin_master extends CI_Controller
     private function upload_file($file_name, $path, $field_name)
     {
         // Check if upload directory exists, create if it doesn't
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
@@ -953,7 +953,7 @@ class Admin_master extends CI_Controller
             $path = 'assets/cat_icons';
 
             // Check if upload directory exists, create if it doesn't
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
@@ -997,7 +997,7 @@ class Admin_master extends CI_Controller
             $path = 'assets/cat_icons';
 
             // Check if upload directory exists, create if it doesn't
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
@@ -3150,7 +3150,7 @@ class Admin_master extends CI_Controller
         $path = 'assets/question_files';
 
         // Check if upload directory exists, create if it doesn't
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             mkdir($path, 0755, true);
         }
 
@@ -3531,5 +3531,116 @@ class Admin_master extends CI_Controller
             $this->message('error', $this->AuthModel->error);
         }
         $this->message('success', 'Support Successfully Uploaded.');
+    }
+
+    public function simpleStudentRegistration()
+    {
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        $check = $this->WebModel->validate_email($email);
+        if (! empty($check)) {
+            $this->session->set_flashdata('error', 'Email ID is already in Use.');
+
+            return redirect(base_url('student-registration'));
+        }
+
+        $res = $this->db->insert('web_user', [
+            'fullname' => $this->input->post('name'),
+            'mobile' => $this->input->post('mobile'),
+            'email' => $email,
+            'password' => $this->input->post('password'),
+            'board_name' => 'All',
+            'classes' => $this->input->post('class'),
+            'status' => 1,
+            'user_type' => 'Student',
+        ]);
+
+        $data = [
+            'user' => $email,
+            'password' => $password,
+            'fullname' => $this->input->post('name'),
+            'logo' => $this->AuthModel->content_row('Logo'),
+            'mobile1' => $this->AuthModel->content_row('Mobile1'),
+            'siteName' => $this->siteName,
+            'email' => $this->siteEmail,
+        ];
+
+        $this->sendRegistrationEmail($data, $email);
+
+        if (! $res) {
+            $this->session->set_flashdata('error', 'Something is wrong! Your are not registerd');
+
+            return redirect(base_url('student-registration'));
+        } else {
+            $login = $this->AuthModel->validate_web($email, $password);
+            if ($login) {
+                return redirect(base_url('dashboard'));
+            }
+            $this->session->set_flashdata('error', 'Something went wrong!');
+
+            return redirect(base_url('student-registration'));
+        }
+    }
+
+    public function simpleTeacherRegistration()
+    {
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        $check = $this->WebModel->validate_email($email);
+        if (! empty($check)) {
+            $this->session->set_flashdata('error', 'Email ID is already in Use.');
+
+            return redirect(base_url('/teacher-registration'));
+        }
+        $res = $this->db->insert('web_user', [
+            'fullname' => $this->input->post('name'),
+            'mobile' => $this->input->post('mobile'),
+            'email' => $email,
+            'password' => $this->input->post('password'),
+            'board_name' => 'All',
+            'status' => 1,
+            'user_type' => 'Teacher',
+        ]);
+
+        $data = [
+            'user' => $email,
+            'password' => $password,
+            'fullname' => $this->input->post('name'),
+            'logo' => $this->AuthModel->content_row('Logo'),
+            'mobile1' => $this->AuthModel->content_row('Mobile1'),
+            'siteName' => $this->siteName,
+            'email' => $this->siteEmail,
+        ];
+
+        $this->sendRegistrationEmail($data, $email);
+
+        if (! $res) {
+            $this->session->set_flashdata('error', 'Something is wrong! Your are not registerd');
+            redirect(''.'/teacher-registration');
+        } else {
+            $login = $this->AuthModel->validate_web($email, $password);
+            if ($login) {
+                return redirect(base_url('dashboard'));
+            }
+            $this->session->set_flashdata('error', 'Something went wrong!');
+
+            return redirect(base_url('teacher-registration'));
+        }
+    }
+
+    public function sendRegistrationEmail($data, $email)
+    {
+        $config = [
+            'charset' => 'utf-8',
+            'wordwrap' => true,
+            'mailtype' => 'html',
+        ];
+        $this->email->initialize($config);
+        $this->email->to($email);
+        $this->email->from($this->siteEmail, $this->siteName);
+        $this->email->cc('mayank@epochstudio.net, '.$this->siteEmail);
+        $this->email->subject('Your Credentials for '.$this->siteName.' Web Support');
+        $this->email->message($this->load->view('web/email_template', $data, true));
+        $this->email->send();
     }
 }

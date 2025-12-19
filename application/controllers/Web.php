@@ -301,7 +301,13 @@ class Web extends CI_Controller
         ];
 
         $this->load->view('globals/web/header_reg', $data);
-        $this->load->view('web/student_registration', $data);
+
+        if ($this->config->item('SIMPLE_REG')) {
+            $this->load->view('web/simple_student_registration', $data);
+        } else {
+            $this->load->view('web/student_registration', $data);
+        }
+
         $this->load->view('globals/web/footer_reg', $data);
     }
 
@@ -328,7 +334,13 @@ class Web extends CI_Controller
         ];
 
         $this->load->view('globals/web/header_reg', $data);
-        $this->load->view('web/teacher_registration', $data);
+
+        if ($this->config->item('SIMPLE_REG')) {
+            $this->load->view('web/simple_teacher_registration', $data);
+        } else {
+            $this->load->view('web/teacher_registration', $data);
+        }
+
         $this->load->view('globals/web/footer_reg', $data);
     }
 
