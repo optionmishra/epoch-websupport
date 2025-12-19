@@ -388,18 +388,24 @@ class AuthModel extends CI_Model
         $this->session->set_userdata('type', $user->user_type);
 
         [$main_subject, $selected_class] = $this->validateDefSelection();
-        $selected_book = $this->selectable_books($main_subject, $selected_class->id)[0];
-        $category = $this->get_categories($selected_book->id, $username)[0];
+        $selectable_books = $this->selectable_books($main_subject, $selected_class->id);
+        $selected_book = !empty($selectable_books) ? $selectable_books[0] : null;
+        
+        $category = null;
+        if ($selected_book) {
+            $categories = $this->get_categories($selected_book->id, $username);
+            $category = !empty($categories) ? $categories[0] : null;
+        }
 
         $this->session->set_userdata('publication', $publication->id);
         $this->session->set_userdata('board_name', $user->board_name);
-        $this->session->set_userdata('category', $category->id);
-        $this->session->set_userdata('category_name', $category->name);
+        $this->session->set_userdata('category', $category?->id);
+        $this->session->set_userdata('category_name', $category?->name);
         $this->session->set_userdata('class_name', $selected_class->name);
         $this->session->set_userdata('main_subject', $main_subject);
         $this->session->set_userdata('classes', $selected_class->id);
         $this->session->set_userdata('publication_name', $publication->name);
-        $this->session->set_userdata('selected_book', $selected_book->id);
+        $this->session->set_userdata('selected_book', $selected_book?->id);
         switch ($user->user_type) {
             case 'Student':
                 $this->session->set_userdata('section', $user->class_section);
