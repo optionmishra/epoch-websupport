@@ -61,8 +61,6 @@ class Analytics extends CI_Controller
 
     public function download_websupport($id)
     {
-        // echo '<pre>', var_dump($this->session->userdata('user_id')), '</pre>';
-        // exit;
         $this->is_user_login();
         $this->db->where('id', $id);
         $websupport = $this->db->get('websupport')->row();
@@ -76,9 +74,13 @@ class Analytics extends CI_Controller
         if ($websupport->file_url === null || $websupport->file_url === '') {
             return redirect("/assets/files/$websupport->file_name");
         }
+        if ($websupport->file_url === 'https://www.eduqrcode.com/login?param1=base64_encode(emailid)&key=64d725202a3ab3c76bc93b7318f91463') {
+            $userEmail = $this->session->userdata('username');
+
+            return redirect("https://www.eduqrcode.com/login?param1=base64_encode($userEmail)&key=64d725202a3ab3c76bc93b7318f91463");
+        }
 
         return redirect($websupport->file_url);
-        // echo '<pre>', var_dump($this->db->get('websupport')->row()),'</pre>';
     }
 
     public function getLists()
