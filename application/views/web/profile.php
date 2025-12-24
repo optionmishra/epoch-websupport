@@ -5,9 +5,13 @@
                 <div class="col-lg-3 pr-0">
                     <div class="info logo-preview">
                         <?php if (empty($user->dp)) { ?>
-                            <img class="user-img mx-auto fit-image" src="<?= base_url('assets/img/3.png') ?>" id="logo_prof" style="margin-bottom:10px;">
+                            <img class="user-img mx-auto fit-image" src="<?= base_url(
+                                "assets/img/3.png",
+                            ) ?>" id="logo_prof" style="margin-bottom:10px;">
                         <?php } else { ?>
-                            <img class="user-img mx-auto fit-image" src="<?= base_url('assets/img/'.$user->dp.'') ?>" id="logo_prof" style="margin-bottom:10px;">
+                            <img class="user-img mx-auto fit-image" src="<?= base_url(
+                                "assets/img/" . $user->dp . "",
+                            ) ?>" id="logo_prof" style="margin-bottom:10px;">
                         <?php } ?>
                         <div class="middle">
                             <label class="btn btn-sm btn-primary">
@@ -82,7 +86,7 @@
                                     <div class="col-md-4 mb-4">
                                         <label>Board</label>
                                         <select class="form-control" name="board" id="board" required="true" disabled="true">
-                                            <option value="<?php echo $user->board_name ?>" selected><?php echo $user->board_name ?></option>
+                                            <option value="<?php echo $user->board_name; ?>" selected><?php echo $user->board_name; ?></option>
                                             <!-- <option value="CBSE">CBSE</option> -->
                                             <!-- <option value="ICSE">ICSE</option> -->
                                         </select>
@@ -92,7 +96,7 @@
 
 
 
-                                <?php if ($user->country == '105') { ?>
+                                <?php if ($user->country == "105") { ?>
 
                                     <div class="row">
                                         <div class="col-md-4">
@@ -102,15 +106,16 @@
                                         <div class="clearfix"></div>
                                         <div class="col-md-4 mb-4">
                                             <label>State</label>
-                                            <?php
-                                            foreach ($states as $value) {
-                                                if ($user->state == $value['id']) {
-                                                    $state_name = $value['name'];
+                                            <?php foreach ($states as $value) {
+                                                if (
+                                                    $user->state == $value["id"]
+                                                ) {
+                                                    $state_name =
+                                                        $value["name"];
                                                 }
-                                            }
-                                    ?>
+                                            } ?>
 
-                                            <input class="form-control" type="text" id="wpro_dob" name="emails" value="<?= $state_name; ?>" disabled>
+                                            <input class="form-control" type="text" id="wpro_dob" name="emails" value="<?= $state_name ?>" disabled>
                                         </div>
                                         <div class="col-md-4 mb-4">
                                             <label>City</label>
@@ -129,7 +134,7 @@
                                         <div class="col-md-4 mb-4">
                                             <label>state</label>
 
-                                            <input class="form-control" type="text" id="wpro_dob" name="emails" value="<?= $user->oth_city; ?>" disabled>
+                                            <input class="form-control" type="text" id="wpro_dob" name="emails" value="<?= $user->oth_city ?>" disabled>
                                         </div>
                                         <div class="col-md-4 mb-4">
                                             <label>City</label>
@@ -162,16 +167,16 @@
                                         <label>Series</label>
                                         <textarea class="form-control" rows="10" type="text" id="wpro_address" name="addresss" disabled>
 										<?php
-                                        // $series = array(); old
-                                        // $series = $user->subject; old
-                                        $series = explode(',', $user->subject);
-                        foreach ($msubject as $sub) {
-                            if (in_array($sub->id, $series)) {
-                                ?>
-										  <?php echo $sub->name.','; ?>
+          // $series = array(); old
+          // $series = $user->subject; old
+          $series = explode(",", $user->subject);
+          foreach ($msubject as $sub) {
+              if (in_array($sub->id, $series)) { ?>
+										  <?php echo $sub->name . ","; ?>
 
 										<?php }
-                            } ?>
+          }
+          ?>
 										</textarea>
                                     </div>
                                     <div class="clearfix"></div>
@@ -179,16 +184,17 @@
                                         <label>Classes</label>
                                         <textarea class="form-control" rows="10" type="text" id="wpro_address" name="addresss" disabled>
 										<?php
-                            // $classes = array(); old
-                            $classes = explode(',', $user->classes);
-                        foreach ($classes as $class) {
-                            // if (!in_array($class->id, $classes)) {
-                            ?>
-										  <?php echo 'Class'.$class.','; ?>
+          // $classes = array(); old
+          $classes = explode(",", $user->classes);
+          foreach ($classes as $class) {<?php
+              // if (!in_array($class->id, $classes)) {
+              ?>
+										  <?php echo "Class" . $class . ","; ?>
 
 										<?php }
-                        // }
-                        ?>
+
+// }
+?>
 										</textarea>
                                     </div>
                                 </div>
@@ -197,7 +203,9 @@
                         <div class="tab-pane fade" id="user-settings">
                             <div class="tile user-settings">
                                 <h4 class="line-head">Account Setting</h4>
-                                <form id="updateUserProfile" class="smooth-submit" method="post" action="<?= base_url('admin_master/wupdate_profile_account') ?>">
+                                <form id="updateUserProfile" class="smooth-submit" method="post" action="<?= base_url(
+                                    "admin_master/wupdate_profile_account",
+                                ) ?>">
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <label>Email</label>
@@ -232,7 +240,9 @@
                         <div class="tab-pane fade" id="user-edit">
                             <div class="tile user-settings">
                                 <h4 class="line-head">Edit Profile</h4>
-                                <form id="wupdateUserPro" class="smooth-submit" method="post" action="<?= base_url('admin_master/wupdate_profile') ?>">
+                                <form id="wupdateUserPro" class="smooth-submit" method="post" action="<?= base_url(
+                                    "admin_master/wupdate_profile",
+                                ) ?>">
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <label>Full Name</label>

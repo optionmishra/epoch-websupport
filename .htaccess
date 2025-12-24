@@ -1,16 +1,25 @@
 <IfModule mod_rewrite.c>
-    RewriteEngine on
+    RewriteEngine On
+
+    # Security: Disable directory browsing
     Options -Indexes
-    RewriteCond $1 !^(index\.php|public|assets|\.txt)
+
+    # Block access to sensitive files
+    <FilesMatch "(^\.htaccess|^\.env|^\.git|composer\.json|composer\.lock|\.sql|\.log)$">
+        Order deny,allow
+        Deny from all
+    </FilesMatch>
+
+    # Protect application and system directories
+    RewriteRule ^(application|system) - [F,L]
+
+    # Allow existing files and directories
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php?$1 [L]
-</IfModule>
 
-<IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "http://localhost:5173"
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE, PUT"
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
-    Header set Access-Control-Allow-Credentials "true"
-</IfModule>
+    # Allow access to public assets and specific files
+    RewriteCond $1 !^(index\.php|public|assets|robots\.txt|sitemap\.xml|favicon\.ico)
 
+    # Route everything else to index.php (with query string for shared hosting)
+    RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+</IfModule>

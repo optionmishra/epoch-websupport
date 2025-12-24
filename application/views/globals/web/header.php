@@ -173,8 +173,8 @@
 					<div class="row d-none d-lg-flex">
 						<div class="col-sm-4 col-md-3 col-lg-2 order-1 order-lg-1 logo">
 							<div class="logo">
-								<?php //print_r($logo);
-								?>
+								<?php // print_r($logo);
+                                ?>
 								<a href="<?= base_url('dashboard'); ?>">
 									<img style="background-color: white; border: 8px solid white; border-radius:5px" src="assets/img/<?php echo $logo['file_name']; ?>" alt="">
 								</a>

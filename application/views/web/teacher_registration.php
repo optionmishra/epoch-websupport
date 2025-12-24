@@ -176,9 +176,9 @@
 								<label for="country_type">Country *</label>
 								<select class="form-control" name="country_type" id="country_type" required="true" placeholder="">
 									<option value="">--Select country--</option>
-									<?php foreach ($country as $couy) { ?>
+									<?php foreach ($country as $couy): ?>
 										<option value="<?= $couy->id ?>"><?= $couy->name ?></option>
-									<?php } ?>
+									<?php endforeach; ?>
 								</select>
 
 							</div>
@@ -245,12 +245,14 @@
 								<label for="session_slot1">Board *</label>
 								<select class="form-control" name="board" id="board" required="true" placeholder="">
 									<option value="">Select</option>
-									<!-- <?php // foreach ($board as $cou) :
-                                            ?> -->
+									<!-- <?php
+# foreach ($board as $cou) :
+?> -->
 									<option value="<?= $board[0]->name ?>"><?= $board[0]->name ?></option>
 									<option value="<?= $board[1]->name ?>"><?= $board[1]->name ?></option>
-									<!-- <?php // endforeach;
-                                            ?> -->
+									<!-- <?php
+# endforeach;
+?> -->
 								</select>
 							</div>
 						</div>
@@ -283,15 +285,15 @@
 					<div class="row m-0 py-2">
 						<div class="col-lg-6 py-2">
 							<div class="form-group">
-								<label for="referrel_name">Representative’s Name *</label>
-								<input type="text" class="form-control" id="referrel_name" name="referrel_name" required="true" placeholder="Enter Representative’s Name">
+								<label for="referrel_name">Representative's Name *</label>
+								<input type="text" class="form-control" id="referrel_name" name="referrel_name" required="true" placeholder="Enter Representative's Name">
 							</div>
 						</div>
 
 						<div class="col-lg-6 py-2">
 							<div class="form-group">
-								<label for="referrel_mobile">Representative’s Contact *</label>
-								<input type="text" class="form-control" id="referrel_mobile" pattern="[1-9]{1}[0-9]{9}" title="10 digit Mobile number" name="referrel_mobile" required="true" placeholder="Enter Representative’s Contact">
+								<label for="referrel_mobile">Representative's Contact *</label>
+								<input type="text" class="form-control" id="referrel_mobile" pattern="[1-9]{1}[0-9]{9}" title="10 digit Mobile number" name="referrel_mobile" required="true" placeholder="Enter Representative's Contact">
 							</div>
 						</div>
 
@@ -303,7 +305,24 @@
 							</select>
 						</div>
 					</div>
+				<!-- Captcha Section -->
+				<div class="row m-0 py-2">
+					<div class="col-lg-12 py-2">
+						<div class="form-group">
+							<label for="captcha">Security Check *</label>
+							<div class="d-flex align-items-center" style="gap: 10px;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff; min-width: 160px; min-height: 50px; display: flex; align-items: center; justify-content: center;">
+									<?= $captcha_image ?>
+								</div>
+								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">
+									&#x21bb; Refresh
+								</button>
+							</div>
+							<input type="text" class="form-control mt-2" id="captcha" name="captcha" required="true" placeholder="Enter the characters shown above *" style="max-width: 200px;">
+						</div>
+					</div>
 				</div>
+			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-center">
 			<button class="btn btn-primary btn--red">Register</button>
@@ -312,3 +331,16 @@
 	</div>
 </div>
 </div>
+
+<script>
+function refreshCaptcha() {
+	fetch('<?= base_url("web/refreshCaptcha") ?>')
+		.then(res => res.json())
+		.then(data => {
+			if (data.success) {
+				document.getElementById('captcha-image').innerHTML = data.image;
+			}
+		})
+		.catch(err => console.error('Failed to refresh captcha:', err));
+}
+</script>
