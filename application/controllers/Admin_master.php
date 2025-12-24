@@ -2180,6 +2180,15 @@ class Admin_master extends CI_Controller
 
     public function add_student_custom()
     {
+        // Validate captcha
+        $captcha_answer = strtolower($this->input->post('captcha'));
+        $expected = $this->session->userdata('captcha_word');
+        $this->session->unset_userdata('captcha_word');
+        if (!$captcha_answer || $captcha_answer !== $expected) {
+            $this->session->set_flashdata('error', 'Invalid captcha. Please try again.');
+            return redirect(base_url('student-registration'));
+        }
+
         $check = $this->WebModel->validate_email($this->input->post('email'));
 
         if (! empty($check)) {
@@ -2259,6 +2268,15 @@ class Admin_master extends CI_Controller
 
     public function add_teacher_custom()
     {
+        // Validate captcha
+        $captcha_answer = strtolower($this->input->post('captcha'));
+        $expected = $this->session->userdata('captcha_word');
+        $this->session->unset_userdata('captcha_word');
+        if (!$captcha_answer || $captcha_answer !== $expected) {
+            $this->session->set_flashdata('error', 'Invalid captcha. Please try again.');
+            return redirect(base_url('teacher-registration'));
+        }
+
         $check = $this->WebModel->validate_email($this->input->post('email'));
         if (! empty($check)) {
             $this->session->set_flashdata('error', 'Email ID is already in Use.');
@@ -3515,6 +3533,15 @@ class Admin_master extends CI_Controller
 
     public function simpleStudentRegistration()
     {
+        // Validate captcha
+        $captcha_answer = strtolower($this->input->post('captcha'));
+        $expected = $this->session->userdata('captcha_word');
+        $this->session->unset_userdata('captcha_word');
+        if (!$captcha_answer || $captcha_answer !== $expected) {
+            $this->session->set_flashdata('error', 'Invalid captcha. Please try again.');
+            return redirect(base_url('student-registration'));
+        }
+
         $email = $this->input->post('email');
         $password = $this->input->post('password');
         $check = $this->WebModel->validate_email($email);
@@ -3564,6 +3591,15 @@ class Admin_master extends CI_Controller
 
     public function simpleTeacherRegistration()
     {
+        // Validate captcha
+        $captcha_answer = strtolower($this->input->post('captcha'));
+        $expected = $this->session->userdata('captcha_word');
+        $this->session->unset_userdata('captcha_word');
+        if (!$captcha_answer || $captcha_answer !== $expected) {
+            $this->session->set_flashdata('error', 'Invalid captcha. Please try again.');
+            return redirect(base_url('teacher-registration'));
+        }
+
         $email = $this->input->post('email');
         $password = $this->input->post('password');
         $check = $this->WebModel->validate_email($email);

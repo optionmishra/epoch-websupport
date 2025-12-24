@@ -14,6 +14,7 @@ class Web extends CI_Controller
         $this->load->database();
         $this->load->helper("url");
         $this->load->helper("string");
+        $this->load->helper("captcha");
         $this->load->library("session");
         $this->load->library("form_validation");
         $this->load->library("Permission");
@@ -307,8 +308,47 @@ class Web extends CI_Controller
         }
     }
 
+    /**
+     * Generate captcha image and store word in session
+     */
+    private function generateCaptcha()
+    {
+        $captcha = create_captcha([
+            'img_path' => './assets/captcha/',
+            'img_url' => base_url('assets/captcha/'),
+            'img_width' => 150,
+            'img_height' => 40,
+            'expiration' => 7200,
+            'word_length' => 5,
+            'pool' => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'colors' => [
+                'background' => [255, 255, 255],
+                'border' => [153, 153, 153],
+                'text' => [51, 51, 51],
+                'grid' => [220, 220, 220]
+            ]
+        ]);
+        $this->session->set_userdata('captcha_word', strtolower($captcha['word']));
+        return $captcha;
+    }
+
+    /**
+     * AJAX endpoint to refresh captcha without page reload
+     */
+    public function refreshCaptcha()
+    {
+        $captcha = $this->generateCaptcha();
+        echo json_encode([
+            'image' => $captcha['image'],
+            'success' => true
+        ]);
+    }
+
     public function student_reg($msg = null)
     {
+        // Generate captcha
+        $captcha = $this->generateCaptcha();
+
         $data = [
             "title" => "Student Registration",
             "page" => "student_registration",
@@ -326,6 +366,7 @@ class Web extends CI_Controller
             "subject" => $this->AuthModel->subject(),
             "classes" => $this->AuthModel->classes(),
             "siteName" => $this->siteName,
+            "captcha_image" => $captcha['image'],
         ];
 
         $this->load->view("globals/web/header_reg", $data);
@@ -341,6 +382,9 @@ class Web extends CI_Controller
 
     public function teacher_reg($msg = null)
     {
+        // Generate captcha
+        $captcha = $this->generateCaptcha();
+
         $data = [
             "title" => "Teacher Registration",
             "page" => "teacher_registration",
@@ -358,6 +402,7 @@ class Web extends CI_Controller
             "board" => $this->AuthModel->board(),
             "classes" => $this->AuthModel->classes(),
             "siteName" => $this->siteName,
+            "captcha_image" => $captcha['image'],
         ];
 
         $this->load->view("globals/web/header_reg", $data);

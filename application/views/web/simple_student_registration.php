@@ -110,6 +110,24 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Captcha Section -->
+				<div class="py-2 m-0 row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label for="captcha">Security Check *</label>
+							<div class="d-flex align-items-center gap-2" style="gap: 10px;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff;">
+									<?= $captcha_image ?>
+								</div>
+								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">
+									&#x21bb; Refresh
+								</button>
+							</div>
+							<input type="text" class="form-control mt-2" id="captcha" name="captcha" required="true" placeholder="Enter the characters shown above *" style="max-width: 200px;">
+						</div>
+					</div>
+				</div>
 				<div class="card-footer d-flex justify-content-center">
 					<button class="float-left btn btn-primary btn--red">Register</button>
 				</div>
@@ -117,3 +135,16 @@
 		</div>
 	</div>
 </div>
+
+<script>
+function refreshCaptcha() {
+	fetch('<?= base_url("web/refreshCaptcha") ?>')
+		.then(res => res.json())
+		.then(data => {
+			if (data.success) {
+				document.getElementById('captcha-image').innerHTML = data.image;
+			}
+		})
+		.catch(err => console.error('Failed to refresh captcha:', err));
+}
+</script>
