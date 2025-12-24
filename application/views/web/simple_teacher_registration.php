@@ -143,7 +143,7 @@
 						<div class="form-group">
 							<label for="captcha">Security Check *</label>
 							<div class="d-flex align-items-center gap-2" style="gap: 10px;">
-								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff; min-width: 160px; min-height: 50px; display: flex; align-items: center; justify-content: center;">
 									<?= $captcha_image ?>
 								</div>
 								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">

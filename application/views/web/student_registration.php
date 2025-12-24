@@ -67,7 +67,7 @@
 		</div>
 
 		<div class="card-body">
-			<form method="post" action="<?= base_url('admin_master/add_student_custom') ?>">
+			<form method="post" action="<?= base_url("admin_master/add_student_custom") ?>">
 				<div class="form-body">
 					<div class="row m-0 py-2">
 						<div class="col-lg-6 py-2">
@@ -113,8 +113,8 @@
 								<!-- <label for="student_state">State *</label> -->
 								<select class="form-control" name="state" id="state" required="true" placeholder="State *">
 									<option value="">--Select State--</option>
-									<?php foreach ($state as $value) : ?>
-										<option value="<?= $value['id']; ?>"><?= $value['name']; ?></option>
+									<?php foreach ($state as $value): ?>
+										<option value="<?= $value["id"] ?>"><?= $value["name"] ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -133,7 +133,7 @@
 								<!-- <label for="student_class">Class *</label> -->
 								<select class="form-control get_section" name="class" id="stu_class" required="true" placeholder="Class *">
 									<option value="">--Select Class--</option>
-									<?php foreach ($classes as $class) : ?>
+									<?php foreach ($classes as $class): ?>
 										<option value="<?= $class->id ?>"><?= $class->name ?></option>
 									<?php endforeach; ?>
 								</select>
@@ -169,7 +169,7 @@
 						<div class="form-group">
 							<label for="captcha">Security Check *</label>
 							<div class="d-flex align-items-center" style="gap: 10px;">
-								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff; min-width: 160px; min-height: 50px; display: flex; align-items: center; justify-content: center;">
 									<?= $captcha_image ?>
 								</div>
 								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">

@@ -176,7 +176,7 @@
 								<label for="country_type">Country *</label>
 								<select class="form-control" name="country_type" id="country_type" required="true" placeholder="">
 									<option value="">--Select country--</option>
-									<?php foreach ($country as $couy) : ?>
+									<?php foreach ($country as $couy): ?>
 										<option value="<?= $couy->id ?>"><?= $couy->name ?></option>
 									<?php endforeach; ?>
 								</select>
@@ -245,12 +245,14 @@
 								<label for="session_slot1">Board *</label>
 								<select class="form-control" name="board" id="board" required="true" placeholder="">
 									<option value="">Select</option>
-									<!-- <?php # foreach ($board as $cou) : 
-											?> -->
+									<!-- <?php
+# foreach ($board as $cou) :
+?> -->
 									<option value="<?= $board[0]->name ?>"><?= $board[0]->name ?></option>
 									<option value="<?= $board[1]->name ?>"><?= $board[1]->name ?></option>
-									<!-- <?php # endforeach; 
-											?> -->
+									<!-- <?php
+# endforeach;
+?> -->
 								</select>
 							</div>
 						</div>
@@ -309,7 +311,7 @@
 						<div class="form-group">
 							<label for="captcha">Security Check *</label>
 							<div class="d-flex align-items-center" style="gap: 10px;">
-								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff; min-width: 160px; min-height: 50px; display: flex; align-items: center; justify-content: center;">
 									<?= $captcha_image ?>
 								</div>
 								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">

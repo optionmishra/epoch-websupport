@@ -314,21 +314,39 @@ class Web extends CI_Controller
     private function generateCaptcha()
     {
         $captcha = create_captcha([
-            'img_path' => './assets/captcha/',
-            'img_url' => base_url('assets/captcha/'),
-            'img_width' => 150,
-            'img_height' => 40,
-            'expiration' => 7200,
-            'word_length' => 5,
-            'pool' => '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'colors' => [
-                'background' => [255, 255, 255],
-                'border' => [153, 153, 153],
-                'text' => [51, 51, 51],
-                'grid' => [220, 220, 220]
-            ]
+            "img_path" => "./assets/captcha/",
+            "img_url" => base_url("assets/captcha/"),
+            "img_width" => 150,
+            "img_height" => 40,
+            "expiration" => 7200,
+            "word_length" => 5,
+            "pool" => "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "colors" => [
+                "background" => [255, 255, 255],
+                "border" => [153, 153, 153],
+                "text" => [51, 51, 51],
+                "grid" => [220, 220, 220],
+            ],
         ]);
-        $this->session->set_userdata('captcha_word', strtolower($captcha['word']));
+
+        // Handle captcha generation failure
+        if ($captcha === false) {
+            log_message(
+                "error",
+                "Captcha generation failed. Check: 1) GD extension installed 2) assets/captcha/ directory exists and is writable",
+            );
+            return [
+                "word" => "",
+                "image" =>
+                    '<span style="color:red;">Captcha unavailable</span>',
+            ];
+        }
+
+        $this->session->set_userdata(
+            "captcha_word",
+            strtolower($captcha["word"]),
+        );
+
         return $captcha;
     }
 
@@ -339,8 +357,8 @@ class Web extends CI_Controller
     {
         $captcha = $this->generateCaptcha();
         echo json_encode([
-            'image' => $captcha['image'],
-            'success' => true
+            "image" => $captcha["image"],
+            "success" => true,
         ]);
     }
 
@@ -366,7 +384,7 @@ class Web extends CI_Controller
             "subject" => $this->AuthModel->subject(),
             "classes" => $this->AuthModel->classes(),
             "siteName" => $this->siteName,
-            "captcha_image" => $captcha['image'],
+            "captcha_image" => $captcha["image"],
         ];
 
         $this->load->view("globals/web/header_reg", $data);
@@ -402,9 +420,8 @@ class Web extends CI_Controller
             "board" => $this->AuthModel->board(),
             "classes" => $this->AuthModel->classes(),
             "siteName" => $this->siteName,
-            "captcha_image" => $captcha['image'],
+            "captcha_image" => $captcha["image"],
         ];
-
         $this->load->view("globals/web/header_reg", $data);
 
         if ($this->config->item("SIMPLE_REG")) {

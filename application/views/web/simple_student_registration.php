@@ -67,7 +67,9 @@
 		</div>
 
 		<div class="card-body">
-			<form method="post" action="<?= base_url('admin_master/simpleStudentRegistration') ?>">
+			<form method="post" action="<?= base_url(
+       "admin_master/simpleStudentRegistration",
+   ) ?>">
 				<div class="form-body">
 					<div class="py-2 m-0 row">
 						<div class="py-2 col-lg-6">
@@ -102,7 +104,7 @@
 								<label for="student_class">Class *</label>
 								<select class="form-control get_section" name="class" id="stu_class" required="true" placeholder="Class *">
 									<option value="">--Select Class--</option>
-									<?php foreach ($classes as $class) : ?>
+									<?php foreach ($classes as $class): ?>
 										<option value="<?= $class->id ?>"><?= $class->name ?></option>
 									<?php endforeach; ?>
 								</select>
@@ -117,7 +119,7 @@
 						<div class="form-group">
 							<label for="captcha">Security Check *</label>
 							<div class="d-flex align-items-center gap-2" style="gap: 10px;">
-								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff;">
+								<div id="captcha-image" style="border: 1px solid #ced4da; border-radius: 5px; padding: 5px; background: #fff; min-width: 160px; min-height: 50px; display: flex; align-items: center; justify-content: center;">
 									<?= $captcha_image ?>
 								</div>
 								<button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshCaptcha()" title="Get new captcha">
