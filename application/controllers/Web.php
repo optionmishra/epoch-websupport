@@ -1,6 +1,6 @@
 <?php
 
-if (! defined('BASEPATH')) {
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -22,6 +22,7 @@ class Web extends CI_Controller
         $this->load->library('upload');
         $this->load->model('WebModel');
         $this->siteName = $_ENV['NAME'];
+
         // Ckeditor's configuration
     }
 
@@ -35,7 +36,7 @@ class Web extends CI_Controller
 
     public function index($msg = null)
     {
-        if (isset($_ENV['AUTH']) && ! filter_var($_ENV['AUTH'], FILTER_VALIDATE_BOOLEAN)) {
+        if (isset($_ENV['AUTH']) && !filter_var($_ENV['AUTH'], FILTER_VALIDATE_BOOLEAN)) {
             return redirect('web/auto_login');
         }
         $data = [
@@ -65,8 +66,8 @@ class Web extends CI_Controller
 
     private function check_isvalidated()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url());
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url());
         }
     }
 
@@ -76,7 +77,7 @@ class Web extends CI_Controller
     public function logout(): void
     {
         $this->session->sess_destroy(); // Destroy the entire session for a complete logout
-        header('location:'.base_url());
+        header('location:' . base_url());
         exit(); // It's good practice to exit after a header redirect
     }
 
@@ -85,12 +86,12 @@ class Web extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
         $res = $this->AuthModel->validate_web($username, $password);
-        if (! $res) {
+        if (!$res) {
             $status = $this->session->userdata('status');
             $this->session->set_flashdata('error', 'Sorry! Email or Password is incorrect');
             redirect();
         } else {
-            header('location:'.base_url().'dashboard');
+            header('location:' . base_url() . 'dashboard');
         }
     }
 
@@ -126,7 +127,10 @@ class Web extends CI_Controller
             // mod
             'selectable_subjects' => $this->AuthModel->msubject_mod($this->WebModel->Webuser()->subject),
             'selectable_classes' => $this->AuthModel->selectable_classes($this->session->userdata('main_subject')),
-            'selectable_books' => $this->AuthModel->selectable_books($this->session->userdata('main_subject'), $this->session->userdata('classes')),
+            'selectable_books' => $this->AuthModel->selectable_books(
+                $this->session->userdata('main_subject'),
+                $this->session->userdata('classes'),
+            ),
             'selectable_categories' => $this->AuthModel->get_categories($this->session->userdata('selected_book')),
             'online_tpgs' => $this->AuthModel->online_tpg(),
         ];
@@ -137,12 +141,14 @@ class Web extends CI_Controller
         // exit();
 
         if ($this->session->flashdata('login_type') == 'auto') {
+            $this->session->set_userdata('type', 'student');
             $this->load->view('globals/web/header_auto', $data);
         } else {
             $this->load->view('globals/web/header', $data);
         }
         $this->load->view('web/dashboard/index', $data);
         $this->load->view('globals/web/footer', $data);
+
         // $this->load->view('globals/revamp/header', $data);
         // $this->load->view('globals/revamp/footer', $data);
         // $this->load->view('web/new-dashboard', $data);
@@ -260,8 +266,8 @@ class Web extends CI_Controller
 
     public function teacher_que_query()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url());
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url());
         } else {
             $data = [
                 'title' => 'Help',
@@ -280,7 +286,6 @@ class Web extends CI_Controller
 
     public function student_reg($msg = null)
     {
-
         $data = [
             'title' => 'Student Registration',
             'page' => 'student_registration',
@@ -313,7 +318,6 @@ class Web extends CI_Controller
 
     public function teacher_reg($msg = null)
     {
-
         $data = [
             'title' => 'Teacher Registration',
             'page' => 'teacher_registration',
@@ -346,8 +350,8 @@ class Web extends CI_Controller
 
     public function teacher_panel()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Teacher Panel',
@@ -360,7 +364,10 @@ class Web extends CI_Controller
                 'email2' => $this->AuthModel->content('Email2'),
                 'address' => $this->AuthModel->content('Address'),
                 'copyright' => $this->AuthModel->content('Copyright'),
-                'classes' => $this->AuthModel->classes_teacher_new($this->session->userdata('teacher_classess'), $this->session->userdata('teacher_code')),
+                'classes' => $this->AuthModel->classes_teacher_new(
+                    $this->session->userdata('teacher_classess'),
+                    $this->session->userdata('teacher_code'),
+                ),
                 'user' => $this->WebModel->Webuser(),
                 'sub' => $this->WebModel->subjects(),
                 'student' => $this->AuthModel->teacher_student(),
@@ -374,8 +381,8 @@ class Web extends CI_Controller
 
     public function test_assign()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Test Assign',
@@ -388,7 +395,10 @@ class Web extends CI_Controller
                 'email2' => $this->AuthModel->content('Email2'),
                 'address' => $this->AuthModel->content('Address'),
                 'copyright' => $this->AuthModel->content('Copyright'),
-                'classes' => $this->AuthModel->classes_teacher_new($this->session->userdata('teacher_classess'), $this->session->userdata('teacher_code')),
+                'classes' => $this->AuthModel->classes_teacher_new(
+                    $this->session->userdata('teacher_classess'),
+                    $this->session->userdata('teacher_code'),
+                ),
                 'user' => $this->WebModel->Webuser(),
                 'assigntest' => $this->AuthModel->assigntest($this->session->userdata('teacher_code')),
                 'class_section_array' => $this->AuthModel->class_section_array(),
@@ -404,8 +414,8 @@ class Web extends CI_Controller
 
     public function result()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Result',
@@ -418,7 +428,10 @@ class Web extends CI_Controller
                 'email2' => $this->AuthModel->content('Email2'),
                 'address' => $this->AuthModel->content('Address'),
                 'copyright' => $this->AuthModel->content('Copyright'),
-                'classes' => $this->AuthModel->classes_teacher_new($this->session->userdata('teacher_classess'), $this->session->userdata('teacher_code')),
+                'classes' => $this->AuthModel->classes_teacher_new(
+                    $this->session->userdata('teacher_classess'),
+                    $this->session->userdata('teacher_code'),
+                ),
                 'user' => $this->WebModel->Webuser(),
                 'assigntest' => $this->AuthModel->assigntest($this->session->userdata('teacher_code')),
             ];
@@ -432,23 +445,70 @@ class Web extends CI_Controller
 
     public function student_panel()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $student_code = $this->session->userdata('stu_teacher_code');
             $date = date('Y-m-d');
-            $date2 = date('Y-m-d', strtotime($date.' + 1 day'));
+            $date2 = date('Y-m-d', strtotime($date . ' + 1 day'));
 
-            $checkpaper = $this->AuthModel->check_class_paper($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2);
+            $checkpaper = $this->AuthModel->check_class_paper(
+                $this->session->userdata('classes'),
+                $this->session->userdata('section'),
+                $student_code,
+                $date,
+                $date2,
+            );
             if ($checkpaper) {
+                $check_subjective_1 = $this->AuthModel->check_subjective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '21',
+                );
+                $check_subjective_2 = $this->AuthModel->check_subjective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '22',
+                );
 
-                $check_subjective_1 = $this->AuthModel->check_subjective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '21');
-                $check_subjective_2 = $this->AuthModel->check_subjective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '22');
-
-                $check_objective_1 = $this->AuthModel->check_objective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '11');
-                $check_objective_2 = $this->AuthModel->check_objective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '12');
-                $check_objective_3 = $this->AuthModel->check_objective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '13');
-                $check_objective_4 = $this->AuthModel->check_objective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '14');
+                $check_objective_1 = $this->AuthModel->check_objective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '11',
+                );
+                $check_objective_2 = $this->AuthModel->check_objective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '12',
+                );
+                $check_objective_3 = $this->AuthModel->check_objective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '13',
+                );
+                $check_objective_4 = $this->AuthModel->check_objective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    '14',
+                );
 
                 $sub1_date = $check_subjective_1['date_end'];
                 $sub2_date = $check_subjective_2['date_end'];
@@ -459,8 +519,14 @@ class Web extends CI_Controller
 
                 if ($check_subjective_1) {
                     $assignid_test1 = $check_subjective_1['id'];
-                    $subjective_test1 = $this->AuthModel->check_subjective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid_test1, '21');
-                    if (! $subjective_test1) {
+                    $subjective_test1 = $this->AuthModel->check_subjective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid_test1,
+                        '21',
+                    );
+                    if (!$subjective_test1) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $subjective_test1 = '';
@@ -468,8 +534,14 @@ class Web extends CI_Controller
                 }
                 if ($check_subjective_2) {
                     $assignid_test2 = $check_subjective_2['id'];
-                    $subjective_test2 = $this->AuthModel->check_subjective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid_test2, '22');
-                    if (! $subjective_test2) {
+                    $subjective_test2 = $this->AuthModel->check_subjective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid_test2,
+                        '22',
+                    );
+                    if (!$subjective_test2) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $subjective_test2 = '';
@@ -482,63 +554,83 @@ class Web extends CI_Controller
                 // 	// $msg = 'Your Paper will be started on:- ';
                 // }
                 if ($check_objective_1) {
-
                     $assignid2_1 = $check_objective_1['id'];
-                    $objective_test1 = $this->AuthModel->check_objective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid2_1, '11');
-                    if (! $objective_test1) {
+                    $objective_test1 = $this->AuthModel->check_objective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid2_1,
+                        '11',
+                    );
+                    if (!$objective_test1) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $objective_test1 = '';
                     }
                 } else {
-
                     $objective_test1 = '';
                     $msg = 'You are already Done! Thank You.';
+
                     // $msg = 'Your Paper will be started on:- ';
                 }
                 if ($check_objective_2) {
-
                     $assignid2_2 = $check_objective_2['id'];
-                    $objective_test2 = $this->AuthModel->check_objective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid2_2, '12');
-                    if (! $objective_test2) {
+                    $objective_test2 = $this->AuthModel->check_objective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid2_2,
+                        '12',
+                    );
+                    if (!$objective_test2) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $objective_test2 = '';
                     }
                 } else {
-
                     $objective = '';
                     $msg = 'You are already Done! Thank You.';
+
                     // $msg = 'Your Paper will be started on:- ';
                 }
                 if ($check_objective_3) {
-
                     $assignid2_3 = $check_objective_3['id'];
-                    $objective_test3 = $this->AuthModel->check_objective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid2_3, '13');
-                    if (! $objective_test3) {
+                    $objective_test3 = $this->AuthModel->check_objective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid2_3,
+                        '13',
+                    );
+                    if (!$objective_test3) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $objective_test3 = '';
                     }
                 } else {
-
                     $objective = '';
                     $msg = 'You are already Done! Thank You.';
+
                     // $msg = 'Your Paper will be started on:- ';
                 }
                 if ($check_objective_4) {
-
                     $assignid2_4 = $check_objective_4['id'];
-                    $objective_test4 = $this->AuthModel->check_objective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid2_4, '14');
-                    if (! $objective_test4) {
+                    $objective_test4 = $this->AuthModel->check_objective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid2_4,
+                        '14',
+                    );
+                    if (!$objective_test4) {
                         // } else {
                         $msg = 'You are already Done! Thank You.';
                         $objective_test4 = '';
                     }
                 } else {
-
                     $objective = '';
                     $msg = 'You are already Done! Thank You.';
+
                     // $msg = 'Your Paper will be started on:- ';
                 }
             } else {
@@ -589,32 +681,56 @@ class Web extends CI_Controller
     public function subjective_paper()
     {
         $paper_mode = $this->input->post('paper_mode');
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $student_code = $this->session->userdata('stu_teacher_code');
             $date = date('Y-m-d');
-            $date2 = date('Y-m-d', strtotime($date.' + 1 day'));
+            $date2 = date('Y-m-d', strtotime($date . ' + 1 day'));
 
-            $checkpaper = $this->AuthModel->check_class_paper($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2);
+            $checkpaper = $this->AuthModel->check_class_paper(
+                $this->session->userdata('classes'),
+                $this->session->userdata('section'),
+                $student_code,
+                $date,
+                $date2,
+            );
             if ($checkpaper) {
-
-                $check_subjective = $this->AuthModel->check_subjective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, $paper_mode);
+                $check_subjective = $this->AuthModel->check_subjective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    $paper_mode,
+                );
                 // $check_subjective_test2 = $this->AuthModel->check_subjective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, '22');
 
                 if ($check_subjective) {
                     $assignid = $check_subjective['id'];
-                    $subject = $this->AuthModel->check_subjective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid, $paper_mode);
+                    $subject = $this->AuthModel->check_subjective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid,
+                        $paper_mode,
+                    );
                     // var_dump($subject);
                     // exit();
                     if ($subject) {
-                        $subjective = $this->AuthModel->summativeQues($this->session->userdata('main_subject'), $this->session->userdata('classes'), $check_subjective['paper_mode']);
+                        $subjective = $this->AuthModel->summativeQues(
+                            $this->session->userdata('main_subject'),
+                            $this->session->userdata('classes'),
+                            $check_subjective['paper_mode'],
+                        );
                     }
+
                     // } else {
                     // 	$msg = 'Your are already Done! Thanku.';
                     // 	$subjective = '';
                     // }
                 }
+
                 // if ($check_subjective_test2) {
                 // 	$assignid_test2 = $check_subjective_test2['id'];
                 // 	$subject_test2 = $this->AuthModel->check_subjective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid_test2);
@@ -623,7 +739,6 @@ class Web extends CI_Controller
                 // 	}
                 // }
                 //  else {
-
                 // 	$subjective = '';
                 // 	$msg = 'Not to be Started';
                 // }
@@ -649,7 +764,11 @@ class Web extends CI_Controller
                 'msg' => $msg,
                 'created_date' => $check_subjective['created_date'],
                 'paper_mode' => $paper_mode,
-                'paper_set' => $this->AuthModel->get_paper_set($this->session->userdata('classes'), $this->session->userdata('main_subject'), $paper_mode),
+                'paper_set' => $this->AuthModel->get_paper_set(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('main_subject'),
+                    $paper_mode,
+                ),
             ];
             // var_dump($check_subjective_test1);
             // echo '<pre>', var_dump($this->session->userdata()), '</pre>';
@@ -661,29 +780,50 @@ class Web extends CI_Controller
     public function objective_paper()
     {
         $paper_mode = $this->input->post('paper_mode');
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $student_code = $this->session->userdata('stu_teacher_code');
             $date = date('Y-m-d');
-            $date2 = date('Y-m-d', strtotime($date.' + 1 day'));
+            $date2 = date('Y-m-d', strtotime($date . ' + 1 day'));
 
-            $checkpaper = $this->AuthModel->check_class_paper($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2);
+            $checkpaper = $this->AuthModel->check_class_paper(
+                $this->session->userdata('classes'),
+                $this->session->userdata('section'),
+                $student_code,
+                $date,
+                $date2,
+            );
             if ($checkpaper) {
-
-                $check_objective = $this->AuthModel->check_objective($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $date, $date2, $paper_mode);
+                $check_objective = $this->AuthModel->check_objective(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('section'),
+                    $student_code,
+                    $date,
+                    $date2,
+                    $paper_mode,
+                );
 
                 if ($check_objective) {
                     $assignid = $check_objective['id'];
-                    $object = $this->AuthModel->check_objective_submission($this->session->userdata('classes'), $this->session->userdata('section'), $student_code, $assignid, $paper_mode);
+                    $object = $this->AuthModel->check_objective_submission(
+                        $this->session->userdata('classes'),
+                        $this->session->userdata('section'),
+                        $student_code,
+                        $assignid,
+                        $paper_mode,
+                    );
                     if ($object) {
-                        $objective = $this->AuthModel->objectiveQues($this->session->userdata('main_subject'), $this->session->userdata('classes'), $check_objective['paper_mode']);
+                        $objective = $this->AuthModel->objectiveQues(
+                            $this->session->userdata('main_subject'),
+                            $this->session->userdata('classes'),
+                            $check_objective['paper_mode'],
+                        );
                     } else {
                         $msg = 'Your are already Done! Thank You.';
                         $objective = '';
                     }
                 } else {
-
                     $objective = '';
                     $msg = 'Not to be Started';
                 }
@@ -707,7 +847,11 @@ class Web extends CI_Controller
                 'msg' => $msg,
                 'created_date' => $check_objective['created_date'],
                 'paper_mode' => $paper_mode,
-                'paper_set' => $this->AuthModel->get_paper_set($this->session->userdata('classes'), $this->session->userdata('main_subject'), $paper_mode),
+                'paper_set' => $this->AuthModel->get_paper_set(
+                    $this->session->userdata('classes'),
+                    $this->session->userdata('main_subject'),
+                    $paper_mode,
+                ),
             ];
             // var_dump($check_objective);
             // exit();
@@ -717,8 +861,8 @@ class Web extends CI_Controller
 
     public function preview_question()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Preview Student Panel',
@@ -743,8 +887,8 @@ class Web extends CI_Controller
 
     public function pre_summative_paper()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Preview Summative Question',
@@ -767,8 +911,8 @@ class Web extends CI_Controller
 
     public function pre_objective_paper()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $data = [
                 'title' => 'Preview Objective Question',
@@ -790,8 +934,8 @@ class Web extends CI_Controller
 
     public function view_subjective_paper()
     {
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
             $student_id = $this->uri->segment(3);
             // $test_assign_id  = $this->uri->segment(4);
@@ -799,11 +943,9 @@ class Web extends CI_Controller
             $check_student = $this->AuthModel->check_student_paper($student_id);
             $summative = $this->AuthModel->summativeQuestion_solved_for_view($student_id, $paper_mode);
 
-            if (! $check_student) {
-
-                header('location:'.base_url('web/teacher_panel'));
+            if (!$check_student) {
+                header('location:' . base_url('web/teacher_panel'));
             } else {
-
                 $data = [
                     'title' => 'View Summative Question',
                     'page' => 'view Summative Question',
@@ -817,7 +959,11 @@ class Web extends CI_Controller
                     'copyright' => $this->AuthModel->content('Copyright'),
                     'summative' => $summative,
                     'student' => $this->AuthModel->webu($student_id)[0],
-                    'paper_set' => $this->AuthModel->get_paper_set($summative[0]->student_class, $summative[0]->series, $paper_mode),
+                    'paper_set' => $this->AuthModel->get_paper_set(
+                        $summative[0]->student_class,
+                        $summative[0]->series,
+                        $paper_mode,
+                    ),
                 ];
 
                 $this->load->view('web/view_summative_paper', $data);
@@ -827,22 +973,18 @@ class Web extends CI_Controller
 
     public function view_objective_paper()
     {
-
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
-
             $id = $this->uri->segment(3);
             $paper_mode = $this->uri->segment(4);
 
             $check_student = $this->AuthModel->check_student_paper($id);
             $objective = $this->AuthModel->objectiveQuestion_solved($id, $paper_mode);
 
-            if (! $check_student) {
-
-                header('location:'.base_url('web/teacher_panel'));
+            if (!$check_student) {
+                header('location:' . base_url('web/teacher_panel'));
             } else {
-
                 $data = [
                     'title' => 'View Summative Question',
                     'page' => 'view Summative Question',
@@ -856,7 +998,11 @@ class Web extends CI_Controller
                     'copyright' => $this->AuthModel->content('Copyright'),
                     'objective' => $objective,
                     'student' => $this->AuthModel->webu($id)[0],
-                    'paper_set' => $this->AuthModel->get_paper_set($objective[0]->student_class, $objective[0]->series, $paper_mode),
+                    'paper_set' => $this->AuthModel->get_paper_set(
+                        $objective[0]->student_class,
+                        $objective[0]->series,
+                        $paper_mode,
+                    ),
                 ];
                 // echo '<pre>', var_dump($objective), '</pre>';
                 // echo var_dump($data['paper_set']);
@@ -887,11 +1033,9 @@ class Web extends CI_Controller
 
     public function printPaperpdf()
     {
-
-        if (! $this->session->userdata('username')) {
-            header('location:'.base_url('web/logout'));
+        if (!$this->session->userdata('username')) {
+            header('location:' . base_url('web/logout'));
         } else {
-
             $id = $this->uri->segment(3);
 
             $data = [
@@ -940,11 +1084,10 @@ class Web extends CI_Controller
 
     public function auto_login()
     {
-
         $username = 'mayank@epochstudio.net';
         $password = 'german2012';
         $res = $this->AuthModel->validate_web($username, $password);
-        if (! $res) {
+        if (!$res) {
             $status = $this->session->userdata('status');
             $this->session->set_flashdata('error', 'Sorry! Email or Password is incorrect');
 
@@ -952,7 +1095,7 @@ class Web extends CI_Controller
         } else {
             $this->session->set_flashdata('login_type', 'auto');
 
-            return header('location:'.base_url().'dashboard');
+            return header('location:' . base_url() . 'dashboard');
         }
     }
 

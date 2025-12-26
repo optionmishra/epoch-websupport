@@ -1,6 +1,6 @@
 <?php
 
-if (! defined('BASEPATH')) {
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -18,7 +18,10 @@ class AuthModel extends CI_Model
     {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
-        $admin = $this->db->query('SELECT * FROM user WHERE username = ? AND password = ? LIMIT 1', [$username, $password]);
+        $admin = $this->db->query('SELECT * FROM user WHERE username = ? AND password = ? LIMIT 1', [
+            $username,
+            $password,
+        ]);
         $adm = $admin->row();
         if ($admin->num_rows() == 1) {
             $this->session->set_userdata('ausername', $username);
@@ -35,7 +38,7 @@ class AuthModel extends CI_Model
 
     public function val_email($email)
     {
-        if (! empty($email)) {
+        if (!empty($email)) {
             $this->db->where('email', $email);
         }
         $res = $this->db->get('web_user')->result();
@@ -45,7 +48,7 @@ class AuthModel extends CI_Model
 
     public function check_student_paper($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('student_id', $id);
             $res = $this->db->get('paper_submision')->result();
 
@@ -56,7 +59,7 @@ class AuthModel extends CI_Model
     // to view the paper
     public function check_student_paper_for_view($student_id, $test_assign_id)
     {
-        if (! empty($student_id)) {
+        if (!empty($student_id)) {
             $this->db->where('student_id', $student_id);
             $this->db->where('assign_id', $test_assign_id);
             $res = $this->db->get('paper_submision')->result();
@@ -83,11 +86,11 @@ class AuthModel extends CI_Model
 
     public function retrieveRecord($table, $condCol = null, $id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where($condCol, $id);
         }
         $res = $this->db->get($table)->result();
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -226,7 +229,9 @@ class AuthModel extends CI_Model
 
     public function objectiveQuestion_solved($id, $paper_mode)
     {
-        $this->db->select('touch_question.name,touch_question.series, touch_question.option_a, touch_question.option_b, touch_question.option_c, touch_question.option_d, touch_question.answer as correct_answer');
+        $this->db->select(
+            'touch_question.name,touch_question.series, touch_question.option_a, touch_question.option_b, touch_question.option_c, touch_question.option_d, touch_question.answer as correct_answer',
+        );
         $this->db->select('paper_submision.*');
         $this->db->from('paper_submision as paper_submision');
         $this->db->join('touch_question as touch_question', 'paper_submision.question_id=touch_question.id', 'INNER');
@@ -255,7 +260,7 @@ class AuthModel extends CI_Model
         $this->db->where('paper_mode', $paper_code);
         $res = $this->db->get('paper_assign')->result();
 
-        if (! $res) {
+        if (!$res) {
             // $this->error = $this->db->error()['message'];
             return true;
         } else {
@@ -278,7 +283,7 @@ class AuthModel extends CI_Model
     public function create_summativeQuestion($data)
     {
         $res = $this->db->insert('touch_question', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -292,7 +297,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('touch_question');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -306,7 +311,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('paper_submision');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -330,7 +335,7 @@ class AuthModel extends CI_Model
     public function create_objectiveQuestion($data)
     {
         $res = $this->db->insert('touch_question', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -344,7 +349,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('touch_question');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -372,13 +377,15 @@ class AuthModel extends CI_Model
 
     public function validate_web($username, $password)
     {
+        if ($this->session->flashdata('login_type'))
+            $this->session->unset_userdata('login_type');
         $publication = $this->publicationx()[0];
 
         $this->db->where('email', $username);
         $this->db->where('password', $password);
         $this->db->where('status', '1');
         $user = $this->db->get('web_user')->row();
-        if (! $user) {
+        if (!$user) {
             return false;
         }
 
@@ -421,7 +428,7 @@ class AuthModel extends CI_Model
     {
         $this->db->where($condColumn, $id);
         $res = $this->db->delete($table);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -433,11 +440,11 @@ class AuthModel extends CI_Model
     public function user_profile()
     {
         $username = $this->session->userdata('ausername');
-        if (! empty($username)) {
+        if (!empty($username)) {
             $this->db->where('username', $username);
         }
         $result = $this->db->get('user')->result();
-        if (! $result) {
+        if (!$result) {
             $this->error = $this->db->error();
 
             return false;
@@ -448,9 +455,8 @@ class AuthModel extends CI_Model
 
     public function salesman_profile()
     {
-
         $result = $this->db->get('salesman')->result();
-        if (! $result) {
+        if (!$result) {
             $this->error = $this->db->error();
 
             return false;
@@ -464,7 +470,7 @@ class AuthModel extends CI_Model
         $this->db->where('username', $username);
         $this->db->set($data);
         $res = $this->db->update('user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -478,7 +484,7 @@ class AuthModel extends CI_Model
         $this->db->where('email', $username);
         $this->db->set($data);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -492,7 +498,7 @@ class AuthModel extends CI_Model
         $this->db->where('username', $username);
         $this->db->set($data);
         $res = $this->db->update('user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -506,7 +512,7 @@ class AuthModel extends CI_Model
         $this->db->where('email', $username);
         $this->db->set($data);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -520,7 +526,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($data);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -534,7 +540,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($data);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -548,7 +554,7 @@ class AuthModel extends CI_Model
         $this->db->where('username', $username);
         $this->db->set($data);
         $res = $this->db->update('user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -562,7 +568,7 @@ class AuthModel extends CI_Model
         $this->db->where('email', $username);
         $this->db->set($data);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -575,7 +581,7 @@ class AuthModel extends CI_Model
 
     public function user($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('user')->result();
@@ -585,7 +591,7 @@ class AuthModel extends CI_Model
 
     public function salesman($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('salesman')->result();
@@ -595,7 +601,7 @@ class AuthModel extends CI_Model
 
     public function content($name = null)
     {
-        if (! empty($name)) {
+        if (!empty($name)) {
             $this->db->where('name', $name);
         }
         $res = $this->db->get('web_content')->result();
@@ -605,7 +611,7 @@ class AuthModel extends CI_Model
 
     public function content_row($name = null)
     {
-        if (! empty($name)) {
+        if (!empty($name)) {
             $this->db->where('name', $name);
         }
         $res = $this->db->get('web_content')->row_array();
@@ -615,7 +621,7 @@ class AuthModel extends CI_Model
 
     public function check_boardName($bid)
     {
-        if (! empty($bid)) {
+        if (!empty($bid)) {
             $this->db->where('id', $bid);
         }
         $res = $this->db->get('board')->result();
@@ -625,7 +631,7 @@ class AuthModel extends CI_Model
 
     public function check_pubName($pid)
     {
-        if (! empty($pid)) {
+        if (!empty($pid)) {
             $this->db->where('id', $pid);
         }
         $res = $this->db->get('publication')->result();
@@ -642,7 +648,7 @@ class AuthModel extends CI_Model
 
     public function check_catName($cid)
     {
-        if (! empty($cid)) {
+        if (!empty($cid)) {
             $this->db->where('id', $cid);
         }
         $res = $this->db->get('category')->result();
@@ -652,7 +658,7 @@ class AuthModel extends CI_Model
 
     public function state($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('state')->result();
@@ -706,7 +712,7 @@ class AuthModel extends CI_Model
     public function create_user($data)
     {
         $res = $this->db->insert('user', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -718,7 +724,7 @@ class AuthModel extends CI_Model
     public function create_salesman($data)
     {
         $res = $this->db->insert('salesman', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -732,7 +738,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -746,7 +752,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('salesman');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -757,7 +763,7 @@ class AuthModel extends CI_Model
 
     public function retrive_user_update($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('user')->result();
@@ -767,7 +773,7 @@ class AuthModel extends CI_Model
 
     public function retrive_teacher_update($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('web_user')->result();
@@ -777,7 +783,7 @@ class AuthModel extends CI_Model
 
     public function retrive_teacher_update_row($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('web_user')->row();
@@ -787,7 +793,7 @@ class AuthModel extends CI_Model
 
     public function retrive_salesman_update($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('salesman')->result();
@@ -799,7 +805,7 @@ class AuthModel extends CI_Model
     // Content Start
     public function cont($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('web_content')->result();
@@ -810,7 +816,7 @@ class AuthModel extends CI_Model
     public function create_con($data)
     {
         $res = $this->db->insert('web_content', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -824,7 +830,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('web_content');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -837,7 +843,7 @@ class AuthModel extends CI_Model
     // Permission Start
     public function permission($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('permission')->result();
@@ -848,7 +854,7 @@ class AuthModel extends CI_Model
     public function create_permission($data)
     {
         $res = $this->db->insert('permission', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -862,7 +868,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('permission');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -876,7 +882,7 @@ class AuthModel extends CI_Model
     // state Start
     public function country($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('country')->result();
@@ -886,7 +892,7 @@ class AuthModel extends CI_Model
 
     public function stated($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('StateID', $id);
         }
         $res = $this->db->get('state')->result();
@@ -897,7 +903,7 @@ class AuthModel extends CI_Model
     public function get_statess($id = null)
     {
         // echo 'alert("'.$id.'")';
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('country_id', $id);
         }
         $res = $this->db->get('states')->result_array();
@@ -908,7 +914,7 @@ class AuthModel extends CI_Model
     public function create_state($data)
     {
         $res = $this->db->insert('state', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -922,7 +928,7 @@ class AuthModel extends CI_Model
         $this->db->where('StateID', $id);
         $this->db->set($details);
         $res = $this->db->update('state');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -947,7 +953,7 @@ class AuthModel extends CI_Model
 
     public function cities($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('city')->result();
@@ -957,7 +963,7 @@ class AuthModel extends CI_Model
 
     public function get_cities($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('state_id', $id);
         }
         $res = $this->db->get('cities')->result_array();
@@ -968,7 +974,7 @@ class AuthModel extends CI_Model
     public function create_city($data)
     {
         $res = $this->db->insert('city', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -982,7 +988,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('city');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -997,7 +1003,7 @@ class AuthModel extends CI_Model
 
     public function webu($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $this->db->where('user_type', 'Student');
@@ -1008,7 +1014,7 @@ class AuthModel extends CI_Model
 
     public function webu_teacher($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $this->db->where('user_type', 'Teacher');
@@ -1022,7 +1028,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('web_user');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1035,7 +1041,7 @@ class AuthModel extends CI_Model
     // Board Start
     public function board($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('board')->result();
@@ -1045,7 +1051,7 @@ class AuthModel extends CI_Model
 
     public function board_name($name = null)
     {
-        if (! empty($name)) {
+        if (!empty($name)) {
             $this->db->where('name', $name);
         }
         $res = $this->db->get('board')->result();
@@ -1056,7 +1062,7 @@ class AuthModel extends CI_Model
     public function create_board($data)
     {
         $res = $this->db->insert('board', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1070,7 +1076,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('board');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1083,7 +1089,7 @@ class AuthModel extends CI_Model
     // Publication Start
     public function publication($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('publication')->result();
@@ -1094,7 +1100,7 @@ class AuthModel extends CI_Model
     public function create_publication($data)
     {
         $res = $this->db->insert('publication', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1108,7 +1114,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('publication');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1121,7 +1127,7 @@ class AuthModel extends CI_Model
     // Category Start
     public function category($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         // $this->db->where('allow','Teacher');
@@ -1146,7 +1152,7 @@ class AuthModel extends CI_Model
     public function create_category($data)
     {
         $res = $this->db->insert('category', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1160,7 +1166,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('category');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1173,7 +1179,7 @@ class AuthModel extends CI_Model
     // Main Subject Start
     public function msubject($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $this->db->order_by('serial', 'asc');
@@ -1187,7 +1193,7 @@ class AuthModel extends CI_Model
     {
         $sub_ids = explode(',', $id);
         $this->db->order_by('serial', 'asc');
-        if (count($sub_ids) > 0 && ! empty($sub_ids[0])) {
+        if (count($sub_ids) > 0 && !empty($sub_ids[0])) {
             $this->db->or_where_in('id', $sub_ids);
         }
         $res = $this->db->get('main_subject')->result();
@@ -1197,7 +1203,7 @@ class AuthModel extends CI_Model
 
     public function get_msubject($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('main_subject')->row_array();
@@ -1208,7 +1214,7 @@ class AuthModel extends CI_Model
     public function mcreate_subject($data)
     {
         $res = $this->db->insert('main_subject', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1222,7 +1228,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('main_subject');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1234,7 +1240,7 @@ class AuthModel extends CI_Model
     // Subject Start
     public function subject($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('subject')->result();
@@ -1244,7 +1250,7 @@ class AuthModel extends CI_Model
 
     public function subject_name($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('board', $id);
             $this->db->or_where('board', 'All');
         }
@@ -1267,7 +1273,7 @@ class AuthModel extends CI_Model
     public function create_subject($data)
     {
         $res = $this->db->insert('subject', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1281,7 +1287,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('subject');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1317,7 +1323,7 @@ class AuthModel extends CI_Model
     public function create_series($data)
     {
         $res = $this->db->insert('series', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1331,7 +1337,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('series');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1343,7 +1349,7 @@ class AuthModel extends CI_Model
     // Classes Start
     public function classes($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $this->db->order_by('class_position', 'asc');
@@ -1379,7 +1385,6 @@ class AuthModel extends CI_Model
 
     public function classes_array()
     {
-
         $id = $this->session->userdata('teacher_classess');
 
         $class_id = explode(',', $id);
@@ -1393,7 +1398,6 @@ class AuthModel extends CI_Model
 
     public function classes_arraystudent()
     {
-
         $stud_cla_id = $this->session->userdata('classes');
         $this->db->where('id', $stud_cla_id);
 
@@ -1455,7 +1459,6 @@ class AuthModel extends CI_Model
 
     public function get_section_class_paper($sid, $cid)
     {
-
         $this->db->select('web_user.fullname as name');
         $this->db->select('class_section.name as sectionName');
         $this->db->select('paper_submision.*');
@@ -1553,7 +1556,7 @@ class AuthModel extends CI_Model
     public function create_classes($data)
     {
         $res = $this->db->insert('classes', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1564,7 +1567,7 @@ class AuthModel extends CI_Model
 
     public function assigntest($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('teacher_code', $id);
         }
         $res = $this->db->get('paper_assign')->result();
@@ -1574,9 +1577,8 @@ class AuthModel extends CI_Model
 
     public function create_assigntest($data)
     {
-
         $res = $this->db->insert('paper_assign', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1590,7 +1592,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('paper_assign');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1602,7 +1604,7 @@ class AuthModel extends CI_Model
     public function paper_submision($data)
     {
         $res = $this->db->insert('paper_submision', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1613,7 +1615,6 @@ class AuthModel extends CI_Model
 
     public function check_class_paper($class, $section, $teachercode, $date, $date2)
     {
-
         $this->db->where('class_name', $class);
         $this->db->where('section_name', $section);
         $this->db->where('teacher_code', $teachercode);
@@ -1621,7 +1622,7 @@ class AuthModel extends CI_Model
         $this->db->where('date_end <=', $date2);
         $this->db->where('status', '1');
         $res = $this->db->get('paper_assign')->result();
-        if (! $res) {
+        if (!$res) {
             return false;
         } else {
             return '1';
@@ -1660,7 +1661,7 @@ class AuthModel extends CI_Model
         $this->db->where('status', '1');
         $res = $this->db->get('paper_assign')->row_array();
 
-        if (! $res) {
+        if (!$res) {
             return false;
         } else {
             return $res;
@@ -1669,7 +1670,6 @@ class AuthModel extends CI_Model
 
     public function check_objective($class, $section, $teachercode, $date, $date2, $paper_mode)
     {
-
         // $this->db->select('id');
         $this->db->where('class_name', $class);
         $this->db->where('section_name', $section);
@@ -1679,7 +1679,7 @@ class AuthModel extends CI_Model
         $this->db->where('date_end <=', $date2);
         $this->db->where('status', '1');
         $res = $this->db->get('paper_assign')->row_array();
-        if (! $res) {
+        if (!$res) {
             return false;
         } else {
             return $res;
@@ -1688,14 +1688,13 @@ class AuthModel extends CI_Model
 
     public function check_subjective_submission($class, $section, $teachercode, $assignid, $paper_mode)
     {
-
         $this->db->where('assign_id', $assignid);
         $this->db->where('student_class', $class);
         $this->db->where('student_section', $section);
         $this->db->where('student_code', $teachercode);
         $this->db->where('paper_mode', $paper_mode);
         $res = $this->db->get('paper_submision')->row_array();
-        if (! $res) {
+        if (!$res) {
             return '1';
         } else {
             return '0';
@@ -1704,14 +1703,13 @@ class AuthModel extends CI_Model
 
     public function check_objective_submission($class, $section, $teachercode, $assignid, $paper_mode)
     {
-
         $this->db->where('assign_id', $assignid);
         $this->db->where('student_class', $class);
         $this->db->where('student_section', $section);
         $this->db->where('student_code', $teachercode);
         $this->db->where('paper_mode', $paper_mode);
         $res = $this->db->get('paper_submision')->row_array();
-        if (! $res) {
+        if (!$res) {
             return '1';
         } else {
             return '0';
@@ -1720,7 +1718,6 @@ class AuthModel extends CI_Model
 
     public function check_paper_summative($id)
     {
-
         $this->db->where('student_id', $id);
         $this->db->where('paper_mode', 'subjective');
         $res = $this->db->get('paper_submision')->result();
@@ -1757,7 +1754,7 @@ class AuthModel extends CI_Model
     public function create_classesSection($data)
     {
         $res = $this->db->insert('class_section', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1771,7 +1768,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('classes');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1785,7 +1782,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($details);
         $res = $this->db->update('class_section');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1798,7 +1795,7 @@ class AuthModel extends CI_Model
     // Support Start
     public function support($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->select('board.name as boardName');
             $this->db->select('publication.name as publicationName');
             $this->db->select('subject.name as subjectName');
@@ -1818,7 +1815,7 @@ class AuthModel extends CI_Model
 
     public function supportt($id = null)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->select('board.name as boardName');
             $this->db->select('publication.name as publicationName');
             $this->db->select('subject.name as subjectName');
@@ -1841,7 +1838,7 @@ class AuthModel extends CI_Model
     public function addSupport($data)
     {
         $res = $this->db->insert('websupport', $data);
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -1852,7 +1849,7 @@ class AuthModel extends CI_Model
 
     public function retrive_support_update($id)
     {
-        if (! empty($id)) {
+        if (!empty($id)) {
             $this->db->where('id', $id);
         }
         $res = $this->db->get('websupport')->result();
@@ -1865,7 +1862,7 @@ class AuthModel extends CI_Model
         $this->db->where('id', $id);
         $this->db->set($data);
         $res = $this->db->update('websupport');
-        if (! $res) {
+        if (!$res) {
             $this->error = $this->db->error()['message'];
 
             return false;
@@ -2035,11 +2032,17 @@ class AuthModel extends CI_Model
     public function selectable_main_subjects()
     {
         $user_id = $this->session->userdata('user_id');
-        $user = $this->db->where('id', $user_id)->get('web_user')->row();
+        $user = $this->db
+            ->where('id', $user_id)
+            ->get('web_user')
+            ->row();
 
         if ($user?->subject) {
             $main_subject_ids = explode(',', $user->subject);
-            $main_subjects = $this->db->where_in('id', $main_subject_ids)->get('main_subject')->result();
+            $main_subjects = $this->db
+                ->where_in('id', $main_subject_ids)
+                ->get('main_subject')
+                ->result();
 
             return $main_subjects;
         }
@@ -2064,14 +2067,14 @@ class AuthModel extends CI_Model
 
         if (empty($user_row?->series_classes)) {
             // User does not have series-specific class assignments (older format or none)
-            if (! empty($user_row->classes)) {
+            if (!empty($user_row->classes)) {
                 // Use classes directly assigned to the user
                 $classesArr = explode(',', $user_row->classes);
             } else {
                 // Fallback: use classes associated with the main subject
                 $this->db->where('id', $msubject_id);
                 $main_subject = $this->db->get('main_subject')->row();
-                if ($main_subject && ! empty($main_subject->classes)) {
+                if ($main_subject && !empty($main_subject->classes)) {
                     $classesArr = explode(',', $main_subject->classes);
                 }
             }
@@ -2118,7 +2121,7 @@ class AuthModel extends CI_Model
         }
         // First, attempt to fetch data with the sid and class_ID conditions
         $initial_query_had_specific_where = false;
-        if (! empty($sid) && ! empty($class_ID)) {
+        if (!empty($sid) && !empty($class_ID)) {
             $this->db->where(['sid' => $sid, 'class' => $class_ID]);
             $initial_query_had_specific_where = true;
         }
@@ -2139,7 +2142,7 @@ class AuthModel extends CI_Model
 
             // The $user_series_arr variable should already be populated from the code above this rewrite block
             // if boolval($user_row?->series_classes) was true.
-            if (isset($user_series_arr) && ! empty($user_series_arr)) {
+            if (isset($user_series_arr) && !empty($user_series_arr)) {
                 $this->db->where_in('series_id', $user_series_arr);
             }
             // Now, get the results from the 'subject' table with only the re-applied series_id condition (or no conditions if series_id was not applicable).
@@ -2164,7 +2167,7 @@ class AuthModel extends CI_Model
         $subject = $this->db->get('subject')->row();
 
         // If no subject is found, return an empty array
-        if (! $subject) {
+        if (!$subject) {
             return [];
         }
 
@@ -2180,7 +2183,10 @@ class AuthModel extends CI_Model
         // Get the username from the session for comparison
         $session_username = $this->session->userdata('username');
 
-        if (($session_username === 'bookorama.customercare@gmail.com') || ($username === 'bookorama.customercare@gmail.com')) {
+        if (
+            $session_username === 'bookorama.customercare@gmail.com'
+            || $username === 'bookorama.customercare@gmail.com'
+        ) {
             // For bookorama user: Get category IDs, then filter to only include 'Flip Book'
             $this->db->where_in('id', $category_ids);
             $this->db->where('name', 'Flip Book');
@@ -2308,7 +2314,7 @@ class AuthModel extends CI_Model
     {
         $this->db->where('id', $user_id);
         $user = $this->db->get('web_user')->row();
-        if (! isset($user->series_classes)) {
+        if (!isset($user->series_classes)) {
             return null;
         }
         $series_classes = unserialize($user->series_classes);
@@ -2326,7 +2332,7 @@ class AuthModel extends CI_Model
     {
         $this->db->where('id', $user_id);
         $user_row = $this->db->get('web_user')->row();
-        if (! $user_row->series_classes) {
+        if (!$user_row->series_classes) {
             return null;
         }
         $series_classes = unserialize($user_row->series_classes);
@@ -2344,12 +2350,13 @@ class AuthModel extends CI_Model
     {
         $this->db->where('id', $user_id);
         $user_row = $this->db->get('web_user')->row();
-        if (! $user_row->series_classes) {
+        if (!$user_row->series_classes) {
             return null;
         }
         $data = unserialize($user_row->series_classes);
 
         return array_keys($data);
+
         // return $data;
     }
 
@@ -2359,7 +2366,7 @@ class AuthModel extends CI_Model
     {
         $this->db->where('id', $user_id);
         $user_row = $this->db->get('web_user')->row();
-        if (! $user_row->series_classes) {
+        if (!$user_row->series_classes) {
             // return user classes if user doesn't have series classes in new format
             $classes = explode(',', $user_row->classes);
 
@@ -2368,6 +2375,7 @@ class AuthModel extends CI_Model
         $data = unserialize($user_row->series_classes);
 
         return $data[$series_id][0][1];
+
         // return $data;
     }
 
@@ -2387,6 +2395,7 @@ class AuthModel extends CI_Model
                 $this->db->where_in('id', $book_class_arr);
                 $classes = $this->db->get('classes')->result();
                 $res[$msub_id] = $classes;
+
                 // array_push($res[$msub_id], $classes);
             }
         }
@@ -2417,6 +2426,7 @@ class AuthModel extends CI_Model
 
         return $res;
     }
+
     // mod
 
     public function all_states()
@@ -2460,7 +2470,9 @@ class AuthModel extends CI_Model
         // $this->db->order_by('class_id', 'asc');
         // $res = $this->db->get('tpg_class_books')->result();
         // return $res;
-        $this->db->select('tpg_class_books.*, main_subject.name as subject_name, subject.name as name, series.name as series_name');
+        $this->db->select(
+            'tpg_class_books.*, main_subject.name as subject_name, subject.name as name, series.name as series_name',
+        );
         $this->db->from('tpg_class_books');
         $this->db->join('subject', 'tpg_class_books.book_id = subject.id');
         $this->db->join('main_subject', 'subject.sid = main_subject.id');
